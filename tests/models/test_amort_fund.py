@@ -23,11 +23,11 @@ class Test_AmortFund:
 
         assert type(amortFund) is AmortFund
 
-        assert amortFund.pk == amortPk
+        assert amortFund.amortId == amortPk
         assert amortFund.ccy == amortCcy
         assert amortFund.val == amortVal
-        assert amortFund.date == amortDate
-        assert amortFund.fund.pk == fundPk
+        assert amortFund.data == amortDate
+        assert amortFund.fund.dealId == fundPk
         assert amortFund.fund.kold == fundKold
         assert amortFund.fund.ccy == fundCcy
         assert amortFund.fund.princ == fundPrinc

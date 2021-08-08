@@ -16,7 +16,7 @@ class Test_Deal:
 
         assert type(deal) is Deal
 
-        assert deal.pk == pk
+        assert deal.dealId == pk
         assert deal.ccy == ccy
         assert deal.princ == princ
         assert deal.ini == ini

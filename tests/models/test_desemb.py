@@ -26,13 +26,13 @@ class Test_Desemb:
 
         assert type(desemb) is Desemb
 
-        assert desemb.pk == desembPk
+        assert desemb.dealId == desembPk
         assert desemb.ccb == desembCcb
         assert desemb.ccy == desembCcy
         assert desemb.princ == desembPrinc
         assert desemb.ini == desembIni
         assert desemb.venc == desembVenc
-        assert desemb.fund.pk == fundPk
+        assert desemb.fund.dealId == fundPk
         assert desemb.fund.kold == fundKold
         assert desemb.fund.ccy == fundCcy
         assert desemb.fund.princ == fundPrinc

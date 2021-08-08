@@ -1,17 +1,18 @@
 from datetime import date
 
 from src.models.enums.ccy import CCY
+from src.models.enums.dict_keys import *
 
 
 class Deal:
-    pk: int = None
+    dealId: int = None
     ccy: CCY
     princ: float
     ini: date
     venc: date
 
     def __init__(self, ccy: CCY, princ: float, ini: date, venc: date, pk: int = None):
-        self.pk = pk
+        self.dealId = pk
         self.ccy = ccy
         self.princ = princ
         self.ini = ini
@@ -19,11 +20,11 @@ class Deal:
 
     def __str__(self):
         return (
-            f'deal = {{ '
-            f'pk = {self.pk},'
-            f'\tccy = {self.ccy},'
-            f'\tprinc = {self.princ},'
-            f'\tini = {self.ini},'
-            f'\tvenc = {self.venc}'
+            f'{MODEL.DEAL} = {{ '
+            f'{DEAL.ID} = {self.dealId},'
+            f'\t{DEAL.CCY} = {self.ccy},'
+            f'\t{DEAL.PRINC} = {self.princ},'
+            f'\t{DEAL.INI} = {self.ini},'
+            f'\t{DEAL.VENC} = {self.venc}'
             f'}}'
         )

@@ -17,7 +17,7 @@ class Test_Fund:
 
         assert type(fund) is Fund
 
-        assert fund.pk == pk
+        assert fund.dealId == pk
         assert fund.kold == kold
         assert fund.ccy == ccy
         assert fund.princ == princ

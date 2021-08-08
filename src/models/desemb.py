@@ -2,6 +2,7 @@ from datetime import date
 
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
+from src.models.enums.dict_keys import *
 from src.models.fund import Fund
 
 
@@ -18,30 +19,33 @@ class Desemb(Deal):
 
     def __str__(self):
         return (
-            f'desemb = {{ '
-            f'pk = {self.pk},'
-            f'\tccb = {self.ccb},'
-            f'\tccy = {self.ccy},'
-            f'\tprinc = {self.princ},'
-            f'\tini = {self.ini},'
-            f'\tvenc = {self.venc},'
-            f'\tfund = {{ '
-            f'pk = {self.fund.pk},'
-            f'\tkold = {self.fund.kold},'
-            f'\tccy = {self.fund.ccy},'
-            f'\tprinc = {self.fund.princ},'
-            f'\tini = {self.fund.ini},'
-            f'\tvenc = {self.fund.venc} '
+            f'{MODEL.DESEMB} = {{ '
+            f'{DESEMB.ID} = {self.dealId},'
+            f'\t{DESEMB.CCB} = {self.ccb},'
+            f'\t{DESEMB.CCY} = {self.ccy},'
+            f'\t{DESEMB.PRINC} = {self.princ},'
+            f'\t{DESEMB.INI} = {self.ini},'
+            f'\t{DESEMB.VENC} = {self.venc},'
+            f'\t{MODEL.FUND} = {{ '
+            f'{FUND.ID} = {self.fund.dealId},'
+            f'\t{FUND.KOLD} = {self.fund.kold},'
+            f'\t{FUND.CCY} = {self.fund.ccy},'
+            f'\t{FUND.PRINC} = {self.fund.princ},'
+            f'\t{FUND.INI} = {self.fund.ini},'
+            f'\t{FUND.VENC} = {self.fund.venc} '
             f'}} '
             f'}}'
         )
 
     @staticmethod
     def fromDict(d: dict):
-        fund = Fund(d['fund_kold'], d['fund_ccy'], d['fund_princ'], d['fund_ini'].date(), d['fund_venc'].date(), d['fund_id'])
+        fund = Fund(
+            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value].date(),
+            d[FUND.VENC.value].date(), d[FUND.ID.value]
+        )
         desemb = Desemb(
-            fund, d['desemb_ccb'], d['desemb_ccy'], d['desemb_princ'],
-            d['desemb_ini'].date(), d['desemb_venc'].date(), d['desemb_id']
+            fund, d[DESEMB.CCB.value], d[DESEMB.CCY.value], d[DESEMB.PRINC.value],
+            d[DESEMB.INI.value].date(), d[DESEMB.VENC.value].date(), d[DESEMB.ID.value]
         )
 
         return desemb

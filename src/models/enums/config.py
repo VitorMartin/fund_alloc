@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class CONFIG(Enum):
+    def __str__(self):
+        return self.value
+
     CONFIG_PATH = './src/config.json'
 
     REPOSITORY_TYPE = 'repository_type'
@@ -11,6 +14,3 @@ class CONFIG(Enum):
     ACCESS = 'access'
 
     FUNC = 'func'
-
-    def __str__(self):
-        return self.value

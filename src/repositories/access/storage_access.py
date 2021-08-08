@@ -1,11 +1,10 @@
-import enum
-
 import pyodbc
 import os
 
 from src.interfaces.i_storage import IStorage
 from src.models.desemb import Desemb
-from src.repositories.access.en_tables import *
+from src.models.enums.dict_keys import *
+from src.repositories.access.en_tables import TABLE
 
 
 class StorageAccess(IStorage):
@@ -24,28 +23,28 @@ class StorageAccess(IStorage):
         self.__cursor = self.__connection.cursor()
 
     def getAllFunds(self):
-        self.__cursor.execute(f'SELECT * FROM {TABLES.FUNDS.value}')
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS.value}')
         return self.__cursor.fetchall()
 
     def getAllDesembs(self):
-        self.__cursor.execute(f'SELECT * FROM {TABLES.DESEMBS.value}')
+        self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS.value}')
         return self.__cursor.fetchall()
 
     def getAllAmortFunds(self):
-        self.__cursor.execute(f'SELECT * FROM {TABLES.AMORT_FUNDS.value}')
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS.value}')
         return self.__cursor.fetchall()
 
     def getAllAmortDesembs(self):
-        self.__cursor.execute(f'SELECT * FROM {TABLES.AMORT_DESEMBS.value}')
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS.value}')
         return self.__cursor.fetchall()
 
     def getDesembsInFundByKold(self, kold: str):
         self.__cursor.execute(
             f'SELECT * '
-            f'FROM {TABLES.DESEMBS} INNER JOIN {TABLES.FUNDS} '
-            f'ON {TABLES.FUNDS}.{FUNDS.ID} = {TABLES.DESEMBS}.{DESEMBS.FUND_ID} '
-            f'WHERE {TABLES.FUNDS}.{FUNDS.KOLD} = \'{kold}\' '
-            f'ORDER BY {TABLES.FUNDS}.{FUNDS.VENC}'
+            f'FROM {TABLE.DESEMBS} INNER JOIN {TABLE.FUNDS} '
+            f'ON {TABLE.FUNDS}.{FUND.ID} = {TABLE.DESEMBS}.{DESEMB.FUND_ID} '
+            f'WHERE {TABLE.FUNDS}.{FUND.KOLD} = \'{kold}\' '
+            f'ORDER BY {TABLE.FUNDS}.{FUND.VENC}'
         )
 
         columns = [column[0] for column in self.__cursor.description]

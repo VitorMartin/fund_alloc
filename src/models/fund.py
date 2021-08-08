@@ -2,6 +2,7 @@ from datetime import date
 
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
+from src.models.enums.dict_keys import *
 
 
 class Fund(Deal):
@@ -13,12 +14,12 @@ class Fund(Deal):
 
     def __str__(self):
         return (
-            f'fund = {{ '
-            f'pk = {self.pk},'
-            f'\tkold = {self.kold},'
-            f'\tccy = {self.ccy},'
-            f'\tprinc = {self.princ},'
-            f'\tini = {self.ini},'
-            f'\tvenc = {self.venc}'
+            f'{MODEL.FUND} = {{ '
+            f'{FUND.ID} = {self.dealId},'
+            f'\t{FUND.KOLD} = {self.kold},'
+            f'\t{FUND.CCY} = {self.ccy},'
+            f'\t{FUND.PRINC} = {self.princ},'
+            f'\t{FUND.INI} = {self.ini},'
+            f'\t{FUND.VENC} = {self.venc}'
             f'}}'
         )

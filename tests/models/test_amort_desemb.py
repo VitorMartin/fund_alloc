@@ -32,19 +32,19 @@ class Test_AmortDesemb:
 
         assert type(amortDesemb) is AmortDesemb
 
-        assert amortDesemb.pk == amortPk
+        assert amortDesemb.amortId == amortPk
         assert amortDesemb.ccy == amortCcy
         assert amortDesemb.val == amortVal
-        assert amortDesemb.date == amortDate
+        assert amortDesemb.data == amortDate
 
-        assert amortDesemb.desemb.pk == desembPk
+        assert amortDesemb.desemb.dealId == desembPk
         assert amortDesemb.desemb.ccb == desembCcb
         assert amortDesemb.desemb.ccy == desembCcy
         assert amortDesemb.desemb.princ == desembPrinc
         assert amortDesemb.desemb.ini == desembIni
         assert amortDesemb.desemb.venc == desembVenc
 
-        assert amortDesemb.desemb.fund.pk == fundPk
+        assert amortDesemb.desemb.fund.dealId == fundPk
         assert amortDesemb.desemb.fund.kold == fundKold
         assert amortDesemb.desemb.fund.ccy == fundCcy
         assert amortDesemb.desemb.fund.princ == fundPrinc

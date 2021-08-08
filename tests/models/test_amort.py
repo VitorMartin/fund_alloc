@@ -15,7 +15,7 @@ class Test_Amort:
 
         assert type(amort) is Amort
 
-        assert amort.pk == pk
-        assert amort.date == data
+        assert amort.amortId == pk
+        assert amort.data == data
         assert amort.ccy == ccy
         assert amort.val == val
