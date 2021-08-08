@@ -1,6 +1,6 @@
-import enum
+from enum import Enum
 
 
-class CCY(enum.Enum):
+class CCY(Enum):
     USD = 'USD'
     EUR = 'EUR'

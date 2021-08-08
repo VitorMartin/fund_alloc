@@ -43,8 +43,8 @@ class MockData(ABC):
         amortFund7, amortFund8, amortFund9, amortFund10, amortFund11
     ]
 
-    amortDesemb1  = AmortDesemb(desemb1, date(22, 10, 30),   CCY.USD, 1_750_000, pk=1)
-    amortDesemb2  = AmortDesemb(desemb1, date(23, 10, 30),   CCY.USD, 1_750_000, pk=2)
+    amortDesemb1  = AmortDesemb(desemb1, date(2022, 10, 30),   CCY.USD, 1_750_000, pk=1)
+    amortDesemb2  = AmortDesemb(desemb1, date(2023, 10, 30),   CCY.USD, 1_750_000, pk=2)
     amortDesemb3  = AmortDesemb(desemb2, date(2022, 9, 4),   CCY.USD, 2_000_000, pk=3)
     amortDesemb4  = AmortDesemb(desemb3, date(2022, 12, 12), CCY.USD, 3_500_000, pk=4)
     amortDesemb5  = AmortDesemb(desemb3, date(2023, 12, 12), CCY.USD, 3_500_000, pk=5)
