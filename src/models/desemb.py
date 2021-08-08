@@ -40,12 +40,12 @@ class Desemb(Deal):
     @staticmethod
     def fromDict(d: dict):
         fund = Fund(
-            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value].date(),
-            d[FUND.VENC.value].date(), d[FUND.ID.value]
+            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value],
+            d[FUND.VENC.value], d[FUND.ID.value]
         )
         desemb = Desemb(
             fund, d[DESEMB.CCB.value], d[DESEMB.CCY.value], d[DESEMB.PRINC.value],
-            d[DESEMB.INI.value].date(), d[DESEMB.VENC.value].date(), d[DESEMB.ID.value]
+            d[DESEMB.INI.value], d[DESEMB.VENC.value], d[DESEMB.ID.value]
         )
 
         return desemb

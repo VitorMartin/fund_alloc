@@ -51,6 +51,10 @@ class StorageAccess(IStorage):
         desembs = []
         for desemb in self.__cursor.fetchall():
             d = dict(zip(columns, desemb))
+            d[FUND.INI.value] = d[FUND.INI.value].date()
+            d[FUND.VENC.value] = d[FUND.VENC.value].date()
+            d[DESEMB.INI.value] = d[DESEMB.INI.value].date()
+            d[DESEMB.VENC.value] = d[DESEMB.VENC.value].date()
             desembs.append(Desemb.fromDict(d))
 
         return desembs

@@ -23,3 +23,12 @@ class Fund(Deal):
             f'\t{FUND.VENC} = {self.venc}'
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        fund = Fund(
+            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value],
+            d[FUND.VENC.value], d[FUND.ID.value]
+        )
+
+        return fund

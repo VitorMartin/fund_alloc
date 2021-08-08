@@ -28,3 +28,12 @@ class Deal:
             f'\t{DEAL.VENC} = {self.venc}'
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        deal = Deal(
+            d[DEAL.CCY.value], d[DEAL.PRINC.value], d[DEAL.INI.value],
+            d[DEAL.VENC.value], d[DEAL.ID.value]
+        )
+
+        return deal

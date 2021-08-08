@@ -30,3 +30,15 @@ class AmortFund(Amort):
             f'}} '
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        fund = Fund(
+            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value],
+            d[FUND.VENC.value], d[FUND.ID.value]
+        )
+        amortFund = AmortFund(
+            fund, d[AMORT_FUND.DATA.value], d[AMORT_FUND.CCY.value], d[AMORT_FUND.VAL.value], d[AMORT_FUND.ID.value]
+        )
+
+        return amortFund

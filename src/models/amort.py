@@ -25,3 +25,11 @@ class Amort:
             f'\t{AMORT.DATA} = {self.data}'
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        amort = Amort(
+            d[AMORT.DATA.value], d[AMORT.CCY.value], d[AMORT.VAL.value], d[AMORT.ID.value]
+        )
+
+        return amort

@@ -4,6 +4,7 @@ from src.models.amort import Amort
 from src.models.desemb import Desemb
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
+from src.models.fund import Fund
 
 
 class AmortDesemb(Amort):
@@ -38,3 +39,20 @@ class AmortDesemb(Amort):
             f'}} '
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        fund = Fund(
+            d[FUND.KOLD.value], d[FUND.CCY.value], d[FUND.PRINC.value], d[FUND.INI.value],
+            d[FUND.VENC.value], d[FUND.ID.value]
+        )
+        desemb = Desemb(
+            fund, d[DESEMB.CCB.value], d[DESEMB.CCY.value], d[DESEMB.PRINC.value],
+            d[DESEMB.INI.value], d[DESEMB.VENC.value], d[DESEMB.ID.value]
+        )
+        amortDesemb = AmortDesemb(
+            desemb, d[AMORT_DESEMB.DATA.value], d[AMORT_DESEMB.CCY.value],
+            d[AMORT_DESEMB.VAL.value], d[AMORT_DESEMB.ID.value]
+        )
+
+        return amortDesemb

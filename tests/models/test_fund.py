@@ -1,7 +1,9 @@
 from datetime import date
 
+from src.models.enums.dict_keys import *
 from src.models.fund import Fund
 from src.models.enums.ccy import CCY
+from src.repositories.mock.mock_data import MockData
 
 
 class Test_Fund:
@@ -23,3 +25,24 @@ class Test_Fund:
         assert fund.princ == princ
         assert fund.ini == ini
         assert fund.venc == venc
+
+    def test_from_dict(self):
+        d = {
+            FUND.ID.value: MockData.fund1.dealId,
+            FUND.KOLD.value: MockData.fund1.kold,
+            FUND.CCY.value: MockData.fund1.ccy,
+            FUND.PRINC.value: MockData.fund1.princ,
+            FUND.INI.value: MockData.fund1.ini,
+            FUND.VENC.value: MockData.fund1.venc
+        }
+
+        fund = Fund.fromDict(d)
+
+        assert type(fund) is Fund
+
+        assert fund.dealId == MockData.fund1.dealId
+        assert fund.kold == MockData.fund1.kold
+        assert fund.ccy == MockData.fund1.ccy
+        assert fund.princ == MockData.fund1.princ
+        assert fund.ini == MockData.fund1.ini
+        assert fund.venc == MockData.fund1.venc
