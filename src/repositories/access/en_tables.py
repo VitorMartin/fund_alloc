@@ -15,25 +15,25 @@ class FUNDS(Enum):
     def __str__(self):
         return self.value
 
-    ID = 'id'
-    KOLD = 'kold'
-    CCY = 'ccy'
-    PRINC = 'princ'
-    INI = 'ini'
-    VENC = 'venc'
+    ID = 'fund_id'
+    KOLD = 'fund_kold'
+    CCY = 'fund_ccy'
+    PRINC = 'fund_princ'
+    INI = 'fund_ini'
+    VENC = 'fund_venc'
 
 
 class DESEMBS(Enum):
     def __str__(self):
         return self.value
 
-    ID = 'id'
-    FUND = 'fund'
-    CCB = 'ccb'
-    CCY = 'ccy'
-    PRINC = 'princ'
-    INI = 'ini'
-    VENC = 'venc'
+    ID = 'desemb_id'
+    FUND_ID = 'fund_id'
+    CCB = 'desemb_ccb'
+    CCY = 'desemb_ccy'
+    PRINC = 'desemb_princ'
+    INI = 'desemb_ini'
+    VENC = 'desemb_venc'
 
 
 class AMORT_FUNDS(Enum):

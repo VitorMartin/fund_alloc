@@ -17,3 +17,7 @@ class IStorage(ABC):
     @abstractmethod
     def getAllAmortDesembs(self):
         pass
+
+    @abstractmethod
+    def getDesembsInFundByKold(self, kold: str):
+        pass

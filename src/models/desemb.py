@@ -35,3 +35,13 @@ class Desemb(Deal):
             f'}} '
             f'}}'
         )
+
+    @staticmethod
+    def fromDict(d: dict):
+        fund = Fund(d['fund_kold'], d['fund_ccy'], d['fund_princ'], d['fund_ini'].date(), d['fund_venc'].date(), d['fund_id'])
+        desemb = Desemb(
+            fund, d['desemb_ccb'], d['desemb_ccy'], d['desemb_princ'],
+            d['desemb_ini'].date(), d['desemb_venc'].date(), d['desemb_id']
+        )
+
+        return desemb

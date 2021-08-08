@@ -1,4 +1,5 @@
 from src.usecases.uc_get_all import *
+from src.usecases.uc_get_desembs_in_fund import *
 
 
 class CStorageFunc:
@@ -18,3 +19,6 @@ class CStorageFunc:
 
     def getAllAmortDesembs(self):
         return UCGetAllAmortDesembs(self.storage)()
+
+    def getDesembsInFundByKold(self, kold: str):
+        return UCGetDesembsInFundByKold(self.storage)(kold)

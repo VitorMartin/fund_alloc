@@ -33,4 +33,5 @@ class StorageMock(IStorage):
     def getAllAmortDesembs(self):
         return self.__amortDesembs
 
-
+    def getDesembsInFundByKold(self, kold: str):
+        pass
