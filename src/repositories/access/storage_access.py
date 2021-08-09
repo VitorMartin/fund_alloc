@@ -1,3 +1,5 @@
+from typing import Any
+
 import pyodbc
 import os
 
@@ -9,18 +11,27 @@ from src.repositories.access.en_tables import TABLE
 
 class StorageAccess(IStorage):
     __connectionStr: str
+    __dbFilename: str
     __dbPath: str
     __connection: pyodbc.Connection
     __cursor: pyodbc.Cursor
 
     def __init__(self):
-        self.__dbPath = os.path.join(os.path.dirname(__file__), 'db.accdb')
+        self.__dbFilename = 'db.accdb'
+        self.__dbPath = os.path.join(os.path.dirname(__file__), self.__dbFilename)
         self.__connectionStr = (
             r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
             r'DBQ=' + self.__dbPath
         )
         self.__connection = pyodbc.connect(self.__connectionStr)
         self.__cursor = self.__connection.cursor()
+
+    def customQuery(self, sql: str, params: Any = None):
+        if params:
+            self.__cursor.execute(sql, params)
+        else:
+            self.__cursor.execute(sql)
+        return self.__cursor.fetchall()
 
     def getAllFunds(self):
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS.value}')
