@@ -1,11 +1,14 @@
-from typing import Any
+from typing import Any, List
 
 import pyodbc
 import os
 
 from src.interfaces.i_storage import IStorage
+from src.models.amort_desemb import AmortDesemb
+from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.enums.dict_keys import *
+from src.models.fund import Fund
 from src.repositories.access.en_tables import TABLE
 
 
@@ -26,30 +29,108 @@ class StorageAccess(IStorage):
         self.__connection = pyodbc.connect(self.__connectionStr)
         self.__cursor = self.__connection.cursor()
 
-    def customQuery(self, sql: str, params: Any = None):
+    def customQuery(self, sql: str, params: Any = None) -> List[Any]:
         if params:
             self.__cursor.execute(sql, params)
         else:
             self.__cursor.execute(sql)
         return self.__cursor.fetchall()
 
-    def getAllFunds(self):
+    def getAllFunds(self) -> List[Fund]:
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS.value}')
-        return self.__cursor.fetchall()
 
-    def getAllDesembs(self):
+        columns = [column[0] for column in self.__cursor.description]
+        funds = []
+        for row in self.__cursor.fetchall():
+            d = dict(zip(columns, row))
+            d[FUND.INI.value] = d[FUND.INI.value].date()
+            d[FUND.VENC.value] = d[FUND.VENC.value].date()
+            funds.append(Fund.fromDict(d))
+
+        return funds
+
+    def getAllDesembs(self) -> List[Desemb]:
         self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS.value}')
-        return self.__cursor.fetchall()
 
-    def getAllAmortFunds(self):
+        desembs = []
+        rows = self.__cursor.fetchall()
+        colsDesemb = [column[0] for column in self.__cursor.description]
+        for desemb in rows:
+            dDesemb = dict(zip(colsDesemb, desemb))
+
+            # Fetching Fund from fund_id
+            self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[FUND.ID.value]}')
+            row = self.__cursor.fetchone()
+            colsFund = [column[0] for column in self.__cursor.description]
+            dFund = dict(zip(colsFund, row))
+
+            dJoin = dFund | dDesemb
+
+            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+            dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+            dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+            desembs.append(Desemb.fromDict(dJoin))
+
+        return desembs
+
+    def getAllAmortFunds(self) -> List[AmortFund]:
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS.value}')
-        return self.__cursor.fetchall()
 
-    def getAllAmortDesembs(self):
+        amortFunds = []
+        rows = self.__cursor.fetchall()
+        colsAmortFund = [column[0] for column in self.__cursor.description]
+        for amortFund in rows:
+            dAmortFund = dict(zip(colsAmortFund, amortFund))
+
+            # Fetching Fund from fund_id
+            self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dAmortFund[FUND.ID.value]}')
+            row = self.__cursor.fetchone()
+            colsFund = [column[0] for column in self.__cursor.description]
+            dFund = dict(zip(colsFund, row))
+
+            dJoin = dFund | dAmortFund
+
+            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+            dJoin[AMORT_FUND.DATA.value] = dJoin[AMORT_FUND.DATA.value].date()
+            amortFunds.append(AmortFund.fromDict(dJoin))
+
+        return amortFunds
+
+    def getAllAmortDesembs(self) -> List[AmortDesemb]:
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS.value}')
-        return self.__cursor.fetchall()
 
-    def getDesembsInFundByKold(self, kold: str):
+        amortDesembs = []
+        rows = self.__cursor.fetchall()
+        colsAmortDesemb = [column[0] for column in self.__cursor.description]
+        for amortDesemb in rows:
+            dAmortDesemb = dict(zip(colsAmortDesemb, amortDesemb))
+
+            # Fetching Desemb from desemb_id
+            self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dAmortDesemb[DESEMB.ID.value]}')
+            rowDesemb = self.__cursor.fetchone()
+            colsDesemb = [column[0] for column in self.__cursor.description]
+            dDesemb = dict(zip(colsDesemb, rowDesemb))
+
+            # Fetching Fund from fund_id
+            self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[FUND.ID.value]}')
+            rowFund = self.__cursor.fetchone()
+            colsFund = [column[0] for column in self.__cursor.description]
+            dFund = dict(zip(colsFund, rowFund))
+
+            dJoin = dFund | dDesemb | dAmortDesemb
+
+            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+            dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+            dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+            dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
+            amortDesembs.append(AmortDesemb.fromDict(dJoin))
+
+        return amortDesembs
+
+    def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
         self.__cursor.execute(
             f'SELECT * '
             f'FROM {TABLE.DESEMBS} INNER JOIN {TABLE.FUNDS} '

@@ -1,3 +1,5 @@
+from typing import List
+
 from src.interfaces.i_storage import IStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
@@ -21,17 +23,17 @@ class StorageMock(IStorage):
         self.__amortFunds = amortFunds
         self.__amortDesembs = amortDesembs
 
-    def getAllFunds(self):
+    def getAllFunds(self) -> List[Fund]:
         return self.__funds
 
-    def getAllDesembs(self):
+    def getAllDesembs(self) -> List[Desemb]:
         return self.__desembs
 
-    def getAllAmortFunds(self):
+    def getAllAmortFunds(self) -> List[AmortFund]:
         return self.__amortFunds
 
-    def getAllAmortDesembs(self):
+    def getAllAmortDesembs(self) -> List[AmortDesemb]:
         return self.__amortDesembs
 
-    def getDesembsInFundByKold(self, kold: str):
+    def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
         pass
