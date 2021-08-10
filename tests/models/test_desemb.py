@@ -1,7 +1,4 @@
-from datetime import date
-
 from src.models.desemb import Desemb
-from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData

@@ -1,9 +1,3 @@
-from typing import List
-
-from src.models.amort_desemb import AmortDesemb
-from src.models.amort_fund import AmortFund
-from src.models.desemb import Desemb
-from src.models.fund import Fund
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *

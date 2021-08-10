@@ -1,9 +1,9 @@
 import json
 
+from src.controllers.c_storage_func import CStorageFunc
 from src.models.enums.config import CONFIG
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.storage_mock import StorageMock
-from src.controllers.c_storage_func import CStorageFunc
 
 
 class Init:

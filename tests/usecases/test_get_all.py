@@ -1,6 +1,6 @@
 from src.controllers.c_storage_func import CStorageFunc
-from src.repositories.mock.storage_mock import StorageMock
 from src.repositories.mock.mock_data import MockData
+from src.repositories.mock.storage_mock import StorageMock
 
 
 class Test_UCGetAll:
