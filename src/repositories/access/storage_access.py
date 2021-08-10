@@ -150,3 +150,75 @@ class StorageAccess(IStorage):
             desembs.append(Desemb.fromDict(d))
 
         return desembs
+
+    def getFundById(self, dealId: int) -> Fund:
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dealId}')
+        columns = [column[0] for column in self.__cursor.description]
+        d = dict(zip(columns, self.__cursor.fetchone()))
+        d[FUND.INI.value] = d[FUND.INI.value].date()
+        d[FUND.VENC.value] = d[FUND.VENC.value].date()
+        return Fund.fromDict(d)
+
+    def getDesembById(self, dealId: int) -> Desemb:
+        self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dealId}')
+        colsDesemb = [column[0] for column in self.__cursor.description]
+        dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
+
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}')
+        colsFund = [column[0] for column in self.__cursor.description]
+        dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+        dJoin = dFund | dDesemb
+
+        dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+        dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+        dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+        dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+
+        return Desemb.fromDict(dJoin)
+
+    def getAmortFundById(self, amortId: int) -> AmortFund:
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.ID} = {amortId}')
+        colsAmortFund = [column[0] for column in self.__cursor.description]
+        dAmortFund = dict(zip(colsAmortFund, self.__cursor.fetchone()))
+
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dAmortFund[AMORT_FUND.FUND_ID.value]}')
+        colsFund = [column[0] for column in self.__cursor.description]
+        dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+        dJoin = dFund | dAmortFund
+
+        dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+        dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+        dJoin[AMORT_FUND.DATA.value] = dJoin[AMORT_FUND.DATA.value].date()
+
+        return AmortFund.fromDict(dJoin)
+
+    def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS} WHERE {AMORT_DESEMB.ID} = {amortId}')
+        colsAmortDesemb = [column[0] for column in self.__cursor.description]
+        dAmortDesemb = dict(zip(colsAmortDesemb, self.__cursor.fetchone()))
+
+        # Fetch Desemb by desemb_id
+        self.__cursor.execute(
+            f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dAmortDesemb[AMORT_DESEMB.DESEMB_ID.value]}'
+        )
+        colsDesemb = [column[0] for column in self.__cursor.description]
+        dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
+
+        # Fetch Fund by fund_id
+        self.__cursor.execute(
+            f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}'
+        )
+        colsFund = [column[0] for column in self.__cursor.description]
+        dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+        dJoin = dFund | dDesemb | dAmortDesemb
+
+        dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+        dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+        dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+        dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+        dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
+
+        return AmortDesemb.fromDict(dJoin)

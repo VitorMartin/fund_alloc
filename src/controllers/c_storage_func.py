@@ -6,6 +6,7 @@ from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
+from src.usecases.uc_get_op_by_attr import *
 
 
 class CStorageFunc:
@@ -28,3 +29,15 @@ class CStorageFunc:
 
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
         return UCGetDesembsInFundByKold(self.storage)(kold)
+
+    def getFundById(self, dealId: int) -> Fund:
+        return UCGetFundById(self.storage)(dealId)
+
+    def getDesembById(self, dealId: int) -> Desemb:
+        return UCGetDesembById(self.storage)(dealId)
+
+    def getAmortFundById(self, amortId: int) -> AmortFund:
+        return UCGetAmortFundById(self.storage)(amortId)
+
+    def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+        return UCGetAmortDesembById(self.storage)(amortId)

@@ -64,7 +64,7 @@ class AMORT_FUND(Enum):
         return self.value
 
     ID = 'amort_fund_id'
-    FUND = 'fund_id'
+    FUND_ID = 'fund_id'
     DATA = 'amort_fund_data'
     CCY = 'amort_fund_ccy'
     VAL = 'amort_fund_val'
@@ -75,7 +75,7 @@ class AMORT_DESEMB(Enum):
         return self.value
 
     ID = 'amort_desemb_id'
-    DESEMB = 'desemb_id'
+    DESEMB_ID = 'desemb_id'
     DATA = 'amort_desemb_data'
     CCY = 'amort_desemb_ccy'
     VAL = 'amort_desemb_val'

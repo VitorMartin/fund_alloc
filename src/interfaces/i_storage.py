@@ -27,3 +27,19 @@ class IStorage(ABC):
     @abstractmethod
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
         pass
+
+    @abstractmethod
+    def getFundById(self, dealId: int) -> Fund:
+        pass
+
+    @abstractmethod
+    def getDesembById(self, dealId: int) -> Desemb:
+        pass
+
+    @abstractmethod
+    def getAmortFundById(self, amortId: int) -> AmortFund:
+        pass
+
+    @abstractmethod
+    def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+        pass
