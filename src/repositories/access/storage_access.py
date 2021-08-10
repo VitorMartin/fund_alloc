@@ -107,13 +107,13 @@ class StorageAccess(IStorage):
         for amortDesemb in rows:
             dAmortDesemb = dict(zip(colsAmortDesemb, amortDesemb))
 
-            # Fetching Desemb from desemb_id
+            # Fetching Desemb
             self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dAmortDesemb[DESEMB.ID.value]}')
             rowDesemb = self.__cursor.fetchone()
             colsDesemb = [column[0] for column in self.__cursor.description]
             dDesemb = dict(zip(colsDesemb, rowDesemb))
 
-            # Fetching Fund from fund_id
+            # Fetching Fund
             self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[FUND.ID.value]}')
             rowFund = self.__cursor.fetchone()
             colsFund = [column[0] for column in self.__cursor.description]
@@ -160,10 +160,12 @@ class StorageAccess(IStorage):
         return Fund.fromDict(d)
 
     def getDesembById(self, dealId: int) -> Desemb:
+        # Fetching desemb
         self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dealId}')
         colsDesemb = [column[0] for column in self.__cursor.description]
         dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
 
+        # Fetching Fund by fund_id
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}')
         colsFund = [column[0] for column in self.__cursor.description]
         dFund = dict(zip(colsFund, self.__cursor.fetchone()))
@@ -178,10 +180,12 @@ class StorageAccess(IStorage):
         return Desemb.fromDict(dJoin)
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
+        # Fetching amort fund
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.ID} = {amortId}')
         colsAmortFund = [column[0] for column in self.__cursor.description]
         dAmortFund = dict(zip(colsAmortFund, self.__cursor.fetchone()))
 
+        # Fetching Fund by fund_id
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dAmortFund[AMORT_FUND.FUND_ID.value]}')
         colsFund = [column[0] for column in self.__cursor.description]
         dFund = dict(zip(colsFund, self.__cursor.fetchone()))
@@ -195,18 +199,19 @@ class StorageAccess(IStorage):
         return AmortFund.fromDict(dJoin)
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+        # Fetching amort desemb
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS} WHERE {AMORT_DESEMB.ID} = {amortId}')
         colsAmortDesemb = [column[0] for column in self.__cursor.description]
         dAmortDesemb = dict(zip(colsAmortDesemb, self.__cursor.fetchone()))
 
-        # Fetch Desemb by desemb_id
+        # Fetching Desemb
         self.__cursor.execute(
             f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dAmortDesemb[AMORT_DESEMB.DESEMB_ID.value]}'
         )
         colsDesemb = [column[0] for column in self.__cursor.description]
         dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
 
-        # Fetch Fund by fund_id
+        # Fetching Fund
         self.__cursor.execute(
             f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}'
         )
