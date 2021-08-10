@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Any
 
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
@@ -23,6 +24,9 @@ class Fund(Deal):
             f'\t{FUND.VENC} = {self.venc}'
             f'}}'
         )
+
+    def __eq__(self, other: Any):
+        return self.__dict__ == other.__dict__
 
     @staticmethod
     def fromDict(d: dict):

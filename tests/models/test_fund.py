@@ -8,23 +8,17 @@ from src.repositories.mock.mock_data import MockData
 
 class Test_Fund:
     def test_instance(self):
-        pk = 1
-        kold = '111111'
-        ccy = CCY.USD
-        princ = 500.66
-        ini = date(2020, 1, 30)
-        venc = date(2020, 12, 30)
+        fund = Fund(
+            MockData.fund1.kold,
+            MockData.fund1.ccy,
+            MockData.fund1.princ,
+            MockData.fund1.ini,
+            MockData.fund1.venc,
+            pk=MockData.fund1.dealId
+        )
 
-        fund = Fund(kold, ccy, princ, ini, venc, pk=pk)
-
-        assert type(fund) is Fund
-
-        assert fund.dealId == pk
-        assert fund.kold == kold
-        assert fund.ccy == ccy
-        assert fund.princ == princ
-        assert fund.ini == ini
-        assert fund.venc == venc
+        assert isinstance(fund, Fund)
+        assert fund == MockData.fund1
 
     def test_from_dict(self):
         d = {
@@ -38,11 +32,6 @@ class Test_Fund:
 
         fund = Fund.fromDict(d)
 
-        assert type(fund) is Fund
+        assert isinstance(fund, Fund)
 
-        assert fund.dealId == MockData.fund1.dealId
-        assert fund.kold == MockData.fund1.kold
-        assert fund.ccy == MockData.fund1.ccy
-        assert fund.princ == MockData.fund1.princ
-        assert fund.ini == MockData.fund1.ini
-        assert fund.venc == MockData.fund1.venc
+        assert fund == MockData.fund1

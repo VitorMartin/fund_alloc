@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Any
 
 from src.models.amort import Amort
 from src.models.desemb import Desemb
@@ -39,6 +40,9 @@ class AmortDesemb(Amort):
             f'}} '
             f'}}'
         )
+
+    def __eq__(self, other: Any):
+        return self.__dict__ == other.__dict__
 
     @staticmethod
     def fromDict(d: dict):

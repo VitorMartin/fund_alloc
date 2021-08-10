@@ -2,14 +2,22 @@ from abc import ABC
 
 from datetime import date
 
+from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
+from src.models.deal import Deal
 from src.models.desemb import Desemb
 from src.models.enums.ccy import CCY
 from src.models.fund import Fund
 
 
 class MockData(ABC):
+    deal1 = Deal(CCY.USD, 1_000., date(2020, 1, 1), date(2021, 1, 1), pk=1)
+    deal2 = Deal(CCY.USD, 1_500., date(2021, 4, 23), date(2021, 9, 23), pk=2)
+    deal3 = Deal(CCY.EUR, 500., date(2020, 6, 17), date(2023, 6, 17), pk=3)
+
+    deals = [deal1, deal2, deal3]
+
     fund1 = Fund('350150', CCY.USD.value, 4_000_000.,  date(2021, 12, 2), date(2023, 4, 5), pk=1)
     fund2 = Fund('350151', CCY.USD.value, 20_000_000., date(2020, 2, 9),  date(2025, 2, 9), pk=2)
     fund3 = Fund('984620', CCY.EUR.value, 1_000_000.,  date(2021, 8, 25), date(2022, 1, 25), pk=3)
@@ -25,6 +33,12 @@ class MockData(ABC):
     desemb6 = Desemb(fund4, '1159635', CCY.EUR.value, 2_500_000.,  date(2021, 10, 1),  date(2023, 10, 1), pk=6)
 
     desembs = [desemb1, desemb2, desemb3, desemb4, desemb5, desemb6]
+
+    amort1 = Amort(date(2021, 8, 30), CCY.USD, 2_550_000, pk=1)
+    amort2 = Amort(date(2022, 2, 4), CCY.USD, 1_800_000, pk=2)
+    amort3 = Amort(date(2023, 12, 15), CCY.EUR, 2_550_000, pk=3)
+
+    amorts = [amort1, amort2, amort3]
 
     amortFund1  = AmortFund(fund1, date(2022, 4, 5),  CCY.USD.value, 2_000_000., pk=1)
     amortFund2  = AmortFund(fund1, date(2023, 4, 5),  CCY.USD.value, 2_000_000., pk=2)

@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Any
 
 from src.models.amort import Amort
 from src.models.enums.ccy import CCY
@@ -30,6 +31,9 @@ class AmortFund(Amort):
             f'}} '
             f'}}'
         )
+
+    def __eq__(self, other: Any):
+        return self.__dict__ == other.__dict__
 
     @staticmethod
     def fromDict(d: dict):
