@@ -27,4 +27,4 @@ class Init:
         else:
             raise Exception('Invalid controller type')
 
-        return repo, ctrl
+        return ctrl

@@ -4,7 +4,7 @@ from src.repositories.access.en_tables import TABLE
 from src.repositories.access.storage_access import StorageAccess
 
 if __name__ == '__main__':
-    (repo, ctrl) = Init()()
+    ctrl = Init()()
 
     funds = ctrl.getAllFunds()
     for fund in funds:
