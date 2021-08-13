@@ -1,9 +1,10 @@
+from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
 
 
-class CStorageFunc:
+class CStorageFunc(ICStorage):
     __storage: IStorage
 
     def __init__(self, storage: IStorage):
