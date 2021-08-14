@@ -206,6 +206,36 @@ class StorageAccess(IStorage):
 
         return AmortFund.fromDict(dJoin)
 
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        # Fetching amort funds
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.FUND_ID} = {dealId}')
+        colsAmortFund = [column[0] for column in self.__cursor.description]
+        rows = self.__cursor.fetchall()
+        lAmortFunds = []
+        for row in rows:
+            dAmortFund = dict(zip(colsAmortFund, row))
+
+            # Fetching Fund by fund_id
+            self.__cursor.execute(
+                f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dAmortFund[AMORT_FUND.FUND_ID.value]}'
+            )
+            colsFund = [column[0] for column in self.__cursor.description]
+            dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+            dJoin = dFund | dAmortFund
+
+            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+            dJoin[AMORT_FUND.DATA.value] = dJoin[AMORT_FUND.DATA.value].date()
+
+            lAmortFunds.append(dJoin)
+
+        retAmortFund = []
+        for amort in lAmortFunds:
+            retAmortFund.append(AmortFund.fromDict(amort))
+
+        return retAmortFund
+
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         # Fetching amort desemb
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS} WHERE {AMORT_DESEMB.ID} = {amortId}')

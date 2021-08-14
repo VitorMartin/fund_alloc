@@ -40,6 +40,27 @@ class Test_UCGetOpByAttr:
         assert isinstance(amortFund, AmortFund)
         assert amortFund == MockData.amortFund1
 
+    def test_get_amort_funds_by_fund_id(self):
+        controller = CStorageFunc(StorageAccess())
+
+        actualAmorts = controller.getAmortFundsByFundId(MockData.fund2.dealId)
+        actualAmorts.sort(key=lambda amort: amort.amortId, reverse=False) # https://stackoverflow.com/questions/403421/how-to-sort-a-list-of-objects-based-on-an-attribute-of-the-objects
+
+        expectedAmorts = [
+            MockData.amortFund3,
+            MockData.amortFund4,
+            MockData.amortFund5,
+            MockData.amortFund6,
+            MockData.amortFund7
+        ]
+
+        for i in range(len(actualAmorts)):
+            actualAmort = actualAmorts[i]
+            expectedAmort = expectedAmorts[i]
+
+            assert isinstance(actualAmort, AmortFund)
+            assert actualAmort == expectedAmort
+
     def test_get_amort_desemb_by_id(self):
         controller = CStorageFunc(StorageAccess())
 

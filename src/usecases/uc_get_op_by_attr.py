@@ -1,3 +1,5 @@
+from typing import List
+
 from src.interfaces.i_storage import IStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
@@ -43,6 +45,16 @@ class UCGetAmortFundById:
 
     def __call__(self, amortId: int) -> AmortFund:
         return self.storage.getAmortFundById(amortId)
+
+
+class UCGetAmortFundsByFundId:
+    storage: IStorage
+
+    def __init__(self, storageRepo: IStorage):
+        self.storage = storageRepo
+
+    def __call__(self, dealId: int) -> List[AmortFund]:
+        return self.storage.getAmortFundsByFundId(dealId)
 
 
 class UCGetAmortDesembById:

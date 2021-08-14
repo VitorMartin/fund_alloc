@@ -50,5 +50,8 @@ class StorageMock(IStorage):
     def getAmortFundById(self, amortId: int) -> AmortFund:
         pass
 
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        pass
+
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         pass

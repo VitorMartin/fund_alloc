@@ -45,5 +45,9 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        pass
+
+    @abstractmethod
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         pass

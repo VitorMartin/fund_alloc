@@ -45,5 +45,9 @@ class ICStorage(ABC):
         pass
 
     @staticmethod
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        pass
+
+    @staticmethod
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         pass

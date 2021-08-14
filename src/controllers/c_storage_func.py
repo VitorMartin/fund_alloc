@@ -37,5 +37,8 @@ class CStorageFunc(ICStorage):
     def getAmortFundById(self, amortId: int) -> AmortFund:
         return UCGetAmortFundById(self.storage)(amortId)
 
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        return UCGetAmortFundsByFundId(self.storage)(dealId)
+
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         return UCGetAmortDesembById(self.storage)(amortId)
