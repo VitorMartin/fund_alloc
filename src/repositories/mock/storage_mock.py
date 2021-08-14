@@ -41,6 +41,9 @@ class StorageMock(IStorage):
     def getFundById(self, dealId: int) -> Fund:
         pass
 
+    def getFundByKold(self, kold: str) -> Fund:
+        pass
+
     def getDesembById(self, dealId: int) -> Desemb:
         pass
 

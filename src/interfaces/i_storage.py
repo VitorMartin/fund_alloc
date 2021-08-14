@@ -33,6 +33,10 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
+    def getFundByKold(self, kold: str) -> Fund:
+        pass
+
+    @abstractmethod
     def getDesembById(self, dealId: int) -> Desemb:
         pass
 

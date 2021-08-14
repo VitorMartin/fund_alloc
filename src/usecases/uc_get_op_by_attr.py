@@ -15,6 +15,16 @@ class UCGetFundById:
         return self.storage.getFundById(dealId)
 
 
+class UCGetFundByKold:
+    storage: IStorage
+
+    def __init__(self, storageRepo: IStorage):
+        self.storage = storageRepo
+
+    def __call__(self, kold: str) -> Fund:
+        return self.storage.getFundByKold(kold)
+
+
 class UCGetDesembById:
     storage: IStorage
 

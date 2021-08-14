@@ -16,6 +16,14 @@ class Test_UCGetOpByAttr:
         assert isinstance(fund, Fund)
         assert fund == MockData.fund1
 
+    def test_get_fund_by_kold(self):
+        controller = CStorageFunc(StorageAccess())
+
+        fund = controller.getFundByKold(MockData.fund1.kold)
+
+        assert isinstance(fund, Fund)
+        assert fund == MockData.fund1
+
     def test_get_desemb_by_id(self):
         controller = CStorageFunc(StorageAccess())
 

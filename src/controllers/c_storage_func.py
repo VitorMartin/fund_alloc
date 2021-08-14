@@ -28,6 +28,9 @@ class CStorageFunc(ICStorage):
     def getFundById(self, dealId: int) -> Fund:
         return UCGetFundById(self.storage)(dealId)
 
+    def getFundByKold(self, kold: str) -> Fund:
+        return UCGetFundByKold(self.storage)(kold)
+
     def getDesembById(self, dealId: int) -> Desemb:
         return UCGetDesembById(self.storage)(dealId)
 

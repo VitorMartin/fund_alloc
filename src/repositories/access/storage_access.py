@@ -159,6 +159,14 @@ class StorageAccess(IStorage):
         d[FUND.VENC.value] = d[FUND.VENC.value].date()
         return Fund.fromDict(d)
 
+    def getFundByKold(self, kold: str) -> Fund:
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.KOLD} = \'{kold}\'')
+        columns = [column[0] for column in self.__cursor.description]
+        d = dict(zip(columns, self.__cursor.fetchone()))
+        d[FUND.INI.value] = d[FUND.INI.value].date()
+        d[FUND.VENC.value] = d[FUND.VENC.value].date()
+        return Fund.fromDict(d)
+
     def getDesembById(self, dealId: int) -> Desemb:
         # Fetching desemb
         self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dealId}')
