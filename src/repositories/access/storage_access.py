@@ -1,5 +1,6 @@
 import os
 from typing import Any, List
+from datetime import date
 
 import pyodbc
 
@@ -265,3 +266,18 @@ class StorageAccess(IStorage):
         dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
 
         return AmortDesemb.fromDict(dJoin)
+
+    def getRemainPrincInFundById(self, dealId: int) -> float:
+        today = date.today()
+        fund = self.getFundById(dealId)
+
+        remain = fund.princ
+
+        amorts = self.getAmortFundsByFundId(dealId)
+        amorts.sort(key=lambda amort: amort.data)
+
+        for amort in amorts:
+            if amort.data < today:
+                remain -= amort.val
+
+        return remain

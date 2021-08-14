@@ -2,6 +2,7 @@ from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
+from src.usecases.uc_get_values import *
 
 
 class CStorageFunc(ICStorage):
@@ -42,3 +43,6 @@ class CStorageFunc(ICStorage):
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         return UCGetAmortDesembById(self.storage)(amortId)
+
+    def getRemainPrincInFundById(self, dealId: int) -> float:
+        return UCgetRemainPrincInFundById(self.storage)(dealId)

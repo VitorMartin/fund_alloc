@@ -51,3 +51,7 @@ class IStorage(ABC):
     @abstractmethod
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         pass
+
+    @abstractmethod
+    def getRemainPrincInFundById(self, dealId: int) -> float:
+        pass

@@ -11,7 +11,10 @@ if __name__ == '__main__':
     # fund = ctrl.getFundByKold(kold)
     # print(fund)
 
-    amorts = ctrl.getAmortFundsByFundId(2)
-    [print(amort) for amort in amorts]
+    # amorts = ctrl.getAmortFundsByFundId(2)
+    # [print(amort) for amort in amorts]
+
+    remain = ctrl.getRemainPrincInFundById(4)
+    print(remain)
 
     pass
