@@ -60,8 +60,8 @@ class StorageMock(IStorage):
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
         pass
 
-    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
 
-    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         pass

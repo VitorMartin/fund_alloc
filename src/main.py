@@ -33,13 +33,13 @@ if __name__ == '__main__':
     print()
 
     print('Get remaining principal in Fund by ID')
-    remainFund = ctrl.getRemainPrincInFundById(fundId)
+    remainFund = ctrl.getFundPrincAfterAmortById(fundId)
     print(remainFund)
 
     print()
 
     print('Get remaining principal in Desemb by ID')
-    remainDesemb = ctrl.getRemainPrincInDesembById(desembId)
+    remainDesemb = ctrl.getDesembPrincAfterAmortById(desembId)
     print(remainDesemb)
 
     pass

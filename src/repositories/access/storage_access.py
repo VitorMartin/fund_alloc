@@ -306,7 +306,7 @@ class StorageAccess(IStorage):
 
         return retAmortDesembs
 
-    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         fund = self.getFundById(dealId)
 
         remain = fund.princ
@@ -320,7 +320,7 @@ class StorageAccess(IStorage):
 
         return remain
 
-    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         desemb = self.getDesembById(dealId)
 
         remain = desemb.princ

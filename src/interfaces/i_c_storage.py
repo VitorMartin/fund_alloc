@@ -58,9 +58,9 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
 
     @abstractmethod
-    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         pass

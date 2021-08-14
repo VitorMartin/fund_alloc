@@ -11,7 +11,7 @@ class UCgetRemainPrincInFundById:
         self.storage = storageRepo
 
     def __call__(self, dealId: int, basedate: date = date.today()) -> float:
-        return self.storage.getRemainPrincInFundById(dealId, basedate=basedate)
+        return self.storage.getFundPrincAfterAmortById(dealId, basedate=basedate)
 
 
 class UCgetRemainPrincInDesembById:
@@ -21,4 +21,4 @@ class UCgetRemainPrincInDesembById:
         self.storage = storageRepo
 
     def __call__(self, dealId: int, basedate: date = date.today()) -> float:
-        return self.storage.getRemainPrincInDesembById(dealId, basedate=basedate)
+        return self.storage.getDesembPrincAfterAmortById(dealId, basedate=basedate)
