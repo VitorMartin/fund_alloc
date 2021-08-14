@@ -17,7 +17,10 @@ if __name__ == '__main__':
     # remain = ctrl.getRemainPrincInFundById(4)
     # print(remain)
 
-    amorts = ctrl.getAmortDesembsByDesembId(1)
-    [print(amort) for amort in amorts]
+    # amorts = ctrl.getAmortDesembsByDesembId(1)
+    # [print(amort) for amort in amorts]
+
+    remain = ctrl.getRemainPrincInDesembById(4)
+    print(remain)
 
     pass

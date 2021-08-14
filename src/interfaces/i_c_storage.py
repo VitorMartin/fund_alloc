@@ -59,3 +59,7 @@ class ICStorage(ABC):
     @abstractmethod
     def getRemainPrincInFundById(self, dealId: int) -> float:
         pass
+
+    @abstractmethod
+    def getRemainPrincInDesembById(self, dealId: int) -> float:
+        pass

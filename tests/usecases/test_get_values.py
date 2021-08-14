@@ -11,4 +11,12 @@ class Test_UCgetValues:
 
         assert isinstance(remain, float)
         assert remain == 16_000_000.
+
+    def test_get_remaining_principal_in_desemb_by_id(self):
+        controller = CStorageFunc(StorageAccess())
+
+        remain = controller.getRemainPrincInDesembById(MockData.desemb1.dealId)
+
+        assert isinstance(remain, float)
+        assert remain == 3_500_000
         

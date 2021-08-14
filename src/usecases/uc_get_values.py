@@ -10,3 +10,13 @@ class UCgetRemainPrincInFundById:
 
     def __call__(self, dealId: int) -> float:
         return self.storage.getRemainPrincInFundById(dealId)
+
+
+class UCgetRemainPrincInDesembById:
+    storage: IStorage
+
+    def __init__(self, storageRepo: IStorage):
+        self.storage = storageRepo
+
+    def __call__(self, dealId: int) -> float:
+        return self.storage.getRemainPrincInDesembById(dealId)

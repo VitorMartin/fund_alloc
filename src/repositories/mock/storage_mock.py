@@ -61,3 +61,6 @@ class StorageMock(IStorage):
 
     def getRemainPrincInFundById(self, dealId: int) -> float:
         pass
+
+    def getRemainPrincInDesembById(self, dealId: int) -> float:
+        pass

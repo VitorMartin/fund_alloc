@@ -49,3 +49,6 @@ class CStorageFunc(ICStorage):
 
     def getRemainPrincInFundById(self, dealId: int) -> float:
         return UCgetRemainPrincInFundById(self.storage)(dealId)
+
+    def getRemainPrincInDesembById(self, dealId: int) -> float:
+        return UCgetRemainPrincInDesembById(self.storage)(dealId)
