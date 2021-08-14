@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import List
 
 from src.models.amort_desemb import AmortDesemb
@@ -8,46 +8,46 @@ from src.models.fund import Fund
 
 
 class ICStorage(ABC):
-    @staticmethod
+    @abstractmethod
     def getAllFunds(self) -> List[Fund]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAllDesembs(self) -> List[Desemb]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAllAmortFunds(self) -> List[AmortFund]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAllAmortDesembs(self) -> List[AmortDesemb]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getFundById(self, dealId: int) -> Fund:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getFundByKold(self, dealId: int) -> Fund:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getDesembById(self, dealId: int) -> Desemb:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAmortFundById(self, amortId: int) -> AmortFund:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
         pass
 
-    @staticmethod
+    @abstractmethod
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         pass
