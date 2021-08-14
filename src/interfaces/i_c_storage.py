@@ -33,6 +33,10 @@ class ICStorage(ABC):
         pass
 
     @staticmethod
+    def getFundByKold(self, dealId: int) -> Fund:
+        pass
+
+    @staticmethod
     def getDesembById(self, dealId: int) -> Desemb:
         pass
 
