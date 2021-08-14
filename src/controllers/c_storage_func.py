@@ -44,5 +44,8 @@ class CStorageFunc(ICStorage):
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         return UCGetAmortDesembById(self.storage)(amortId)
 
+    def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
+        return UCGetAmortDesembsByDesembId(self.storage)(dealId)
+
     def getRemainPrincInFundById(self, dealId: int) -> float:
         return UCgetRemainPrincInFundById(self.storage)(dealId)

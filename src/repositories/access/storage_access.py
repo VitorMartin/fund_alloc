@@ -231,11 +231,11 @@ class StorageAccess(IStorage):
 
             lAmortFunds.append(dJoin)
 
-        retAmortFund = []
+        retAmortFunds = []
         for amort in lAmortFunds:
-            retAmortFund.append(AmortFund.fromDict(amort))
+            retAmortFunds.append(AmortFund.fromDict(amort))
 
-        return retAmortFund
+        return retAmortFunds
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         # Fetching amort desemb
@@ -266,6 +266,45 @@ class StorageAccess(IStorage):
         dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
 
         return AmortDesemb.fromDict(dJoin)
+
+    def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
+        # Fetching amort desemb
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_DESEMBS} WHERE {AMORT_DESEMB.DESEMB_ID} = {dealId}')
+        colsAmortDesemb = [column[0] for column in self.__cursor.description]
+        rows = self.__cursor.fetchall()
+        lAmortDesembs = []
+        for row in rows:
+            dAmortDesemb = dict(zip(colsAmortDesemb, row))
+
+            # Fetching Desemb
+            self.__cursor.execute(
+                f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.ID} = {dAmortDesemb[AMORT_DESEMB.DESEMB_ID.value]}'
+            )
+            colsDesemb = [column[0] for column in self.__cursor.description]
+            dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
+
+            # Fetching Fund
+            self.__cursor.execute(
+                f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}'
+            )
+            colsFund = [column[0] for column in self.__cursor.description]
+            dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+            dJoin = dFund | dDesemb | dAmortDesemb
+
+            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+            dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+            dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+            dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
+
+            lAmortDesembs.append(dJoin)
+
+        retAmortDesembs = []
+        for amort in lAmortDesembs:
+            retAmortDesembs.append(AmortDesemb.fromDict(amort))
+
+        return retAmortDesembs
 
     def getRemainPrincInFundById(self, dealId: int) -> float:
         today = date.today()

@@ -65,3 +65,13 @@ class UCGetAmortDesembById:
 
     def __call__(self, amortId: int) -> AmortDesemb:
         return self.storage.getAmortDesembById(amortId)
+
+
+class UCGetAmortDesembsByDesembId:
+    storage: IStorage
+
+    def __init__(self, storageRepo: IStorage):
+        self.storage = storageRepo
+
+    def __call__(self, dealId: int) -> List[AmortDesemb]:
+        return self.storage.getAmortDesembsByDesembId(dealId)

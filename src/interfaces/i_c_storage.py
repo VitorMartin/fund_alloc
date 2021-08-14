@@ -53,5 +53,9 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
+    def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
+        pass
+
+    @abstractmethod
     def getRemainPrincInFundById(self, dealId: int) -> float:
         pass
