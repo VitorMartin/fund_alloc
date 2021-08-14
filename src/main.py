@@ -3,24 +3,43 @@ from src.init import Init
 if __name__ == '__main__':
     ctrl = Init()()
 
-    # kold = '350151'
-    # desembsInFund = ctrl.getDesembsInFundByKold(kold)
-    # for desemb in desembsInFund:
-    #     print(desemb)
-    # print()
-    # fund = ctrl.getFundByKold(kold)
-    # print(fund)
+    kold = '350151'
+    fundId = 2
+    desembId = 2
 
-    # amorts = ctrl.getAmortFundsByFundId(2)
-    # [print(amort) for amort in amorts]
+    print('Get Fund by KOLD')
+    fund = ctrl.getFundByKold(kold)
+    print(fund)
 
-    # remain = ctrl.getRemainPrincInFundById(4)
-    # print(remain)
+    print()
 
-    # amorts = ctrl.getAmortDesembsByDesembId(1)
-    # [print(amort) for amort in amorts]
+    print('Get Amort Funds by Fund ID')
+    amorts = ctrl.getAmortFundsByFundId(fundId)
+    [print(amort) for amort in amorts]
 
-    remain = ctrl.getRemainPrincInDesembById(4)
-    print(remain)
+    print()
+
+    print('Get Desembs in a Fund by KOLD')
+    desembsInFund = ctrl.getDesembsInFundByKold(kold)
+    for desemb in desembsInFund:
+        print(desemb)
+
+    print()
+
+    print('Get Amort Desembs by Desemb ID')
+    amorts = ctrl.getAmortDesembsByDesembId(desembId)
+    [print(amort) for amort in amorts]
+
+    print()
+
+    print('Get remaining principal in Fund by ID')
+    remainFund = ctrl.getRemainPrincInFundById(fundId)
+    print(remainFund)
+
+    print()
+
+    print('Get remaining principal in Desemb by ID')
+    remainDesemb = ctrl.getRemainPrincInDesembById(desembId)
+    print(remainDesemb)
 
     pass
