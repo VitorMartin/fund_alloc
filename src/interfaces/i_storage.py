@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import date
 from typing import List
 
 from src.models.amort_desemb import AmortDesemb
@@ -57,9 +58,9 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def getRemainPrincInFundById(self, dealId: int) -> float:
+    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
 
     @abstractmethod
-    def getRemainPrincInDesembById(self, dealId: int) -> float:
+    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
         pass

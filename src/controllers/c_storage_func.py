@@ -1,3 +1,5 @@
+from datetime import date
+
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
@@ -47,8 +49,8 @@ class CStorageFunc(ICStorage):
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
         return UCGetAmortDesembsByDesembId(self.storage)(dealId)
 
-    def getRemainPrincInFundById(self, dealId: int) -> float:
-        return UCgetRemainPrincInFundById(self.storage)(dealId)
+    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
+        return UCgetRemainPrincInFundById(self.storage)(dealId, basedate)
 
-    def getRemainPrincInDesembById(self, dealId: int) -> float:
-        return UCgetRemainPrincInDesembById(self.storage)(dealId)
+    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
+        return UCgetRemainPrincInDesembById(self.storage)(dealId, basedate=basedate)

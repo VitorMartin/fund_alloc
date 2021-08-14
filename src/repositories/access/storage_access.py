@@ -306,8 +306,7 @@ class StorageAccess(IStorage):
 
         return retAmortDesembs
 
-    def getRemainPrincInFundById(self, dealId: int) -> float:
-        today = date.today()
+    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
         fund = self.getFundById(dealId)
 
         remain = fund.princ
@@ -316,13 +315,12 @@ class StorageAccess(IStorage):
         amorts.sort(key=lambda amort: amort.data)
 
         for amort in amorts:
-            if amort.data < today:
+            if amort.data < basedate:
                 remain -= amort.val
 
         return remain
 
-    def getRemainPrincInDesembById(self, dealId: int) -> float:
-        today = date.today()
+    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
         desemb = self.getDesembById(dealId)
 
         remain = desemb.princ
@@ -331,7 +329,7 @@ class StorageAccess(IStorage):
         amorts.sort(key=lambda amort: amort.data)
 
         for amort in amorts:
-            if amort.data < today:
+            if amort.data < basedate:
                 remain -= amort.val
 
         return remain

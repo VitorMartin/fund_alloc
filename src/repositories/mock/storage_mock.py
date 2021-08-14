@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 
 from src.interfaces.i_storage import IStorage
@@ -59,8 +60,8 @@ class StorageMock(IStorage):
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
         pass
 
-    def getRemainPrincInFundById(self, dealId: int) -> float:
+    def getRemainPrincInFundById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
 
-    def getRemainPrincInDesembById(self, dealId: int) -> float:
+    def getRemainPrincInDesembById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
