@@ -1,39 +1,37 @@
+import src.repositories.mock.mock_data
 from src.init import Init
 
 if __name__ == '__main__':
     ctrl = Init()()
 
-    kold = '350151'
-    fundId = 2
-    desembId = 2
-    desembCcb = '1159631'
-
-    print('Get Fund by KOLD')
-    fund = ctrl.getFundByKold(kold)
-    print(fund)
-
+    # Example of searching for a new fund
+    desemb = src.repositories.mock.mock_data.MockData.desemb2
+    amortDesembs = ctrl.getAmortDesembsByDesembId(desemb.dealId)
+    print('Desemb:')
+    print(desemb)
     print()
-
-    print('Get Amort Funds by Fund ID')
-    amorts = ctrl.getAmortFundsByFundId(fundId)
-    [print(amort) for amort in amorts]
-
+    print('Original fund:')
+    print(desemb.fund)
     print()
-
-    print('Get Desembs in a Fund by KOLD')
-    desembsInFund = ctrl.getDesembsInFundByKold(kold)
-    [print(desemb) for desemb in desembsInFund]
-
+    print('Available funds:')
+    availFunds = sorted(ctrl.getAvailableFundsForDesembByCcb(desemb.ccb), key=lambda fund: fund.venc)
+    amortFunds = []
+    fundFound = False
+    for fund in availFunds:
+        if not fundFound:
+            if fund.dealId != desemb.dealId:
+                fundFound = True
+                print('[FOUND] ', end='')
+                selectedFund = fund
+                amortFunds = ctrl.getAmortFundsByFundId(selectedFund.dealId)
+        if fund.dealId == desemb.fund.dealId:
+            print(' [SAME] ', end='')
+        print(fund)
     print()
-
-    print('Get Amort Desembs by Desemb ID')
-    amorts = ctrl.getAmortDesembsByDesembId(desembId)
-    [print(amort) for amort in amorts]
-
-    print()
-
-    print('Get available funds for desemb by CCB')
-    availFunds = ctrl.getAvailableFundsForDesembByCcb(desembCcb)
-    [print(funds) for funds in availFunds]
+    print('Comparing cash flows:')
+    print('\tAmort Fund:')
+    [print(f'\t\t{amortFund}') for amortFund in amortFunds]
+    print('\tAmort Desemb:')
+    [print(f'\t\t{amortDesemb}') for amortDesemb in amortDesembs]
 
     pass
