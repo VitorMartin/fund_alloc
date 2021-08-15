@@ -1,4 +1,4 @@
-from src.controllers.c_storage_func import CStorageFunc
+from controllers.func.c_storage_func import CStorageFunc
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb

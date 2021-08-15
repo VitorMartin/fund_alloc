@@ -1,4 +1,4 @@
 {
   "repository_type": "access",
-  "controller_type": "func"
+  "controller_type": "fastapi"
 }

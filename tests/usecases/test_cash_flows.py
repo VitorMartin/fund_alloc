@@ -1,4 +1,4 @@
-from src.controllers.c_storage_func import CStorageFunc
+from controllers.func.c_storage_func import CStorageFunc
 from src.models.amort import Amort
 from src.models.enums.dict_keys import *
 from src.repositories.access.storage_access import StorageAccess
