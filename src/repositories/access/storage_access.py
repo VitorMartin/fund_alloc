@@ -1,6 +1,6 @@
 import os
-from typing import Any, List
 from datetime import date
+from typing import Any, List
 
 import pyodbc
 

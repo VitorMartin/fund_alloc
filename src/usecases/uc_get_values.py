@@ -1,7 +1,6 @@
 from datetime import date
 
 from src.interfaces.i_storage import IStorage
-from src.models.fund import Fund
 
 
 class UCgetRemainPrincInFundById:

@@ -1,5 +1,3 @@
-from datetime import date
-
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
