@@ -1,6 +1,5 @@
 from src.interfaces.i_c_storage import ICStorage
-from src.models.amort import Amort
-from src.usecases.uc_cash_flows import UCGenerateFundCashFlowByKold
+from src.usecases.uc_cash_flows import *
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
@@ -63,3 +62,6 @@ class CStorageFunc(ICStorage):
 
     def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
         return UCGenerateFundCashFlowByKold(self.storage)(kold)
+
+    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
+        return UCGenerateFundAvailabilityByKold(self.storage)(kold)

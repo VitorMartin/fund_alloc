@@ -1,13 +1,14 @@
 from prettytable.prettytable import PrettyTable
 
-import src.repositories.mock.mock_data
 from src.init import Init
+from src.models.enums.dict_keys import *
+from src.repositories.mock.mock_data import MockData
 
 if __name__ == '__main__':
     ctrl = Init()()
 
     # Example of searching for a new fund
-    desemb = src.repositories.mock.mock_data.MockData.desemb2
+    desemb = MockData.desemb2
     amortDesembs = ctrl.getAmortDesembsByDesembId(desemb.dealId)
     print('Desemb:')
     print(desemb)
@@ -36,14 +37,33 @@ if __name__ == '__main__':
     print('\tAmort Desemb:')
     [print(f'\t\t{amortDesemb}') for amortDesemb in amortDesembs]
     print()
-    print('Amorts in original fund:')
     flow = ctrl.generateAmortsInFundByKold(fund.kold)
-    printTable = PrettyTable(['Type', 'Date', 'Value'])
-    for movement in flow:
+    printTable = PrettyTable(['Count', 'Type', 'Date', 'Value'], title='Amorts in original fund')
+    for i in range(len(flow)):
+        movement = flow[i]
         type = movement.__class__.__name__
         date = movement.data
         value = movement.val
-        printTable.add_row([type, date, value])
+        printTable.add_row([i+1, type, date, value])
+    print(printTable)
+    print()
+    printTable = PrettyTable(
+        ['Count', 'Type', 'Data', 'Val', 'Fund Princ', 'Desemb Princ', 'Avail Before', 'Avail After'],
+        title='Complete cash flow fund'
+    )
+    fundAvail = ctrl.generateFundAvailByKold(fund.kold)
+    for i in range(len(fundAvail)):
+        movement = fundAvail[i]
+        printTable.add_row([
+            i + 1,
+            movement[MOVEMENT.TYPE.value],
+            movement[MOVEMENT.DATA.value],
+            movement[MOVEMENT.VAL.value],
+            movement[MOVEMENT.FUND_PRINC.value],
+            movement[MOVEMENT.DESEMB_PRINC.value],
+            movement[MOVEMENT.AVAIL_BEFORE.value],
+            movement[MOVEMENT.AVAIL_AFTER.value]
+        ])
     print(printTable)
 
     pass

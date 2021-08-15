@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date
-from typing import List
+from typing import Any, List
 
 from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
@@ -76,4 +76,8 @@ class ICStorage(ABC):
 
     @abstractmethod
     def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+        pass
+
+    @abstractmethod
+    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
         pass

@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import Any, List
 
 from src.interfaces.i_storage import IStorage
 from src.models.amort import Amort
@@ -74,4 +74,7 @@ class StorageMock(IStorage):
         pass
 
     def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+        pass
+
+    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
         pass

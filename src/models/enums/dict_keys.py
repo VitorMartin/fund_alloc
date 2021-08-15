@@ -79,3 +79,18 @@ class AMORT_DESEMB(Enum):
     DATA = 'amort_desemb_data'
     CCY = 'amort_desemb_ccy'
     VAL = 'amort_desemb_val'
+
+
+class MOVEMENT(Enum):
+    def __str__(self):
+        return self.value
+
+    OP = 'op_obj'
+    TYPE = 'op_type'
+    DATA = 'op_data'
+    VAL = 'op_val'
+    FUND_PRINC = 'fund_princ'
+    DESEMB_PRINC = 'desemb_princ'
+    AVAIL_BEFORE = 'avail_before'
+    AVAIL_AFTER = 'avail_after'
+

@@ -5,7 +5,6 @@ from src.models.fund import Fund
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.mock_data import MockData
 
-
 basedate = date(2021, 8, 13)
 
 
