@@ -48,6 +48,9 @@ class StorageMock(IStorage):
     def getDesembById(self, dealId: int) -> Desemb:
         pass
 
+    def getDesembByCcb(self, ccb: str) -> Desemb:
+        pass
+
     def getAmortFundById(self, amortId: int) -> AmortFund:
         pass
 

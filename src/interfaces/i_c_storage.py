@@ -42,6 +42,10 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
+    def getDesembByCcb(self, ccb: str) -> Desemb:
+        pass
+
+    @abstractmethod
     def getAmortFundById(self, amortId: int) -> AmortFund:
         pass
 

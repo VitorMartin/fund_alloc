@@ -36,6 +36,16 @@ class UCGetDesembById:
     def __call__(self, dealId: int) -> Desemb:
         return self.storage.getDesembById(dealId)
 
+    
+class UCGetDesembByCcb:
+    storage: IStorage
+
+    def __init__(self, storageRepo: IStorage):
+        self.storage = storageRepo
+
+    def __call__(self, ccb: str) -> Desemb:
+        return self.storage.getDesembByCcb(ccb)
+
 
 class UCGetAmortFundById:
     storage: IStorage

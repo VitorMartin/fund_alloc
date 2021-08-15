@@ -37,6 +37,9 @@ class CStorageFunc(ICStorage):
     def getDesembById(self, dealId: int) -> Desemb:
         return UCGetDesembById(self.storage)(dealId)
 
+    def getDesembByCcb(self, ccb: str) -> Desemb:
+        return UCGetDesembByCcb(self.storage)(ccb)
+
     def getAmortFundById(self, amortId: int) -> AmortFund:
         return UCGetAmortFundById(self.storage)(amortId)
 

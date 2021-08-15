@@ -188,6 +188,26 @@ class StorageAccess(IStorage):
 
         return Desemb.fromDict(dJoin)
 
+    def getDesembByCcb(self, ccb: str) -> Desemb:
+        # Fetching desemb
+        self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.CCB} = \'{ccb}\'')
+        colsDesemb = [column[0] for column in self.__cursor.description]
+        dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
+
+        # Fetching Fund by fund_id
+        self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}')
+        colsFund = [column[0] for column in self.__cursor.description]
+        dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+
+        dJoin = dFund | dDesemb
+
+        dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
+        dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
+        dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
+        dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
+
+        return Desemb.fromDict(dJoin)
+
     def getAmortFundById(self, amortId: int) -> AmortFund:
         # Fetching amort fund
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.ID} = {amortId}')

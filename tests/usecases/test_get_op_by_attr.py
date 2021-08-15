@@ -32,6 +32,14 @@ class Test_UCGetOpByAttr:
         assert isinstance(desemb, Desemb)
         assert desemb == MockData.desemb1
 
+    def test_get_desemb_by_ccb(self):
+        controller = CStorageFunc(StorageAccess())
+
+        desemb = controller.getDesembByCcb(MockData.desemb1.ccb)
+
+        assert isinstance(desemb, Desemb)
+        assert desemb == MockData.desemb1
+
     def test_get_amort_fund_by_id(self):
         controller = CStorageFunc(StorageAccess())
 
