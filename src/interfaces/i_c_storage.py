@@ -11,73 +11,73 @@ from src.models.fund import Fund
 
 class ICStorage(ABC):
     @abstractmethod
-    def getAllFunds(self) -> List[Fund]:
+    def getAllFunds(self) -> Any:
         pass
 
     @abstractmethod
-    def getAllDesembs(self) -> List[Desemb]:
+    def getAllDesembs(self) -> Any:
         pass
 
     @abstractmethod
-    def getAllAmortFunds(self) -> List[AmortFund]:
+    def getAllAmortFunds(self) -> Any:
         pass
 
     @abstractmethod
-    def getAllAmortDesembs(self) -> List[AmortDesemb]:
+    def getAllAmortDesembs(self) -> Any:
         pass
 
     @abstractmethod
-    def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
+    def getDesembsInFundByKold(self, kold: str) -> Any:
         pass
 
     @abstractmethod
-    def getFundById(self, dealId: int) -> Fund:
+    def getFundById(self, dealId: int) -> Any:
         pass
 
     @abstractmethod
-    def getFundByKold(self, dealId: int) -> Fund:
+    def getFundByKold(self, dealId: int) -> Any:
         pass
 
     @abstractmethod
-    def getDesembById(self, dealId: int) -> Desemb:
+    def getDesembById(self, dealId: int) -> Any:
         pass
 
     @abstractmethod
-    def getDesembByCcb(self, ccb: str) -> Desemb:
+    def getDesembByCcb(self, ccb: str) -> Any:
         pass
 
     @abstractmethod
-    def getAmortFundById(self, amortId: int) -> AmortFund:
+    def getAmortFundById(self, amortId: int) -> Any:
         pass
 
     @abstractmethod
-    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+    def getAmortFundsByFundId(self, dealId: int) -> Any:
         pass
 
     @abstractmethod
-    def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+    def getAmortDesembById(self, amortId: int) -> Any:
         pass
 
     @abstractmethod
-    def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
+    def getAmortDesembsByDesembId(self, dealId: int) -> Any:
         pass
 
     @abstractmethod
-    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> Any:
         pass
 
     @abstractmethod
-    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> Any:
         pass
 
     @abstractmethod
-    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> Any:
         pass
 
     @abstractmethod
-    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+    def generateAmortsInFundByKold(self, kold: str) -> Any:
         pass
 
     @abstractmethod
-    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
+    def generateFundAvailByKold(self, kold: str) -> Any:
         pass

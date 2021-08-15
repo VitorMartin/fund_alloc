@@ -41,6 +41,24 @@ class Desemb(Deal):
     def __eq__(self, other: Any):
         return self.__dict__ == other.__dict__
 
+    def toDict(self):
+        return {
+            DESEMB.ID: self.dealId,
+            DESEMB.CCB: self.ccb,
+            DESEMB.CCY: self.ccy,
+            DESEMB.PRINC: self.princ,
+            DESEMB.INI: self.ini,
+            DESEMB.VENC: self.venc,
+            MODEL.FUND: {
+                FUND.ID: self.fund.dealId,
+                FUND.KOLD: self.fund.kold,
+                FUND.CCY: self.fund.ccy,
+                FUND.PRINC: self.fund.princ,
+                FUND.INI: self.fund.ini,
+                FUND.VENC: self.fund.venc
+            }
+        }
+
     @staticmethod
     def fromDict(d: dict):
         fund = Fund(

@@ -2,6 +2,7 @@ import json
 
 from controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from controllers.func.c_storage_func import CStorageFunc
+from interfaces.i_c_storage import ICStorage
 from src.models.enums.config import *
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.storage_mock import StorageMock
@@ -36,7 +37,7 @@ class Init:
         # CONTROLLER TYPE #
         if self.ctrlType == CTRL_TYPE.FUNC.value:
             ctrl = CStorageFunc(repo)
-        elif self.ctrlType == CTRL_TYPE.FUNC.value:
+        elif self.ctrlType == CTRL_TYPE.FASTAPI.value:
             ctrl = CStorageFastAPI(repo)
         else:
             raise Exception('Invalid controller type')

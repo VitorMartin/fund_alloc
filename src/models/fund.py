@@ -28,6 +28,16 @@ class Fund(Deal):
     def __eq__(self, other: Any):
         return self.__dict__ == other.__dict__
 
+    def toDict(self):
+        return {
+            FUND.ID: self.dealId,
+            FUND.KOLD: self.kold,
+            FUND.CCY: self.ccy,
+            FUND.PRINC: self.princ,
+            FUND.INI: self.ini,
+            FUND.VENC: self.venc
+        }
+
     @staticmethod
     def fromDict(d: dict):
         fund = Fund(

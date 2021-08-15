@@ -1,12 +1,28 @@
-from fastapi import FastAPI
-from prettytable.prettytable import PrettyTable
+import uvicorn
+from fastapi import FastAPI, Response
 
+from controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from models.enums.config import *
 from src.init import Init
-from src.models.enums.dict_keys import *
-from src.repositories.mock.mock_data import MockData
 
 if __name__ == '__main__':
-    ctrl = Init(_REPO_TYPE=REPO_TYPE.ACCESS, _CTRL_TYPE=CTRL_TYPE.FASTAPI)
+    ctrl: CStorageFastAPI = Init(_REPO_TYPE=REPO_TYPE.ACCESS, _CTRL_TYPE=CTRL_TYPE.FASTAPI)()
+    app = FastAPI()
+
+    @app.get('/')
+    async def root():
+        return Response('{"msg": "Hello FastAPI"}')
+
+
+    @app.get('/fund/all')
+    async def getAllFunds():
+        return ctrl.getAllFunds()
+
+
+    @app.get('/desemb/all')
+    async def getAllDesembs():
+        return ctrl.getAllDesembs()
+
+    uvicorn.run(app, host='0.0.0.0', port=8000)
 
     pass
