@@ -1,3 +1,5 @@
+from prettytable.prettytable import PrettyTable
+
 import src.repositories.mock.mock_data
 from src.init import Init
 
@@ -33,5 +35,15 @@ if __name__ == '__main__':
     [print(f'\t\t{amortFund}') for amortFund in amortFunds]
     print('\tAmort Desemb:')
     [print(f'\t\t{amortDesemb}') for amortDesemb in amortDesembs]
+    print()
+    print('Amorts in original fund:')
+    flow = ctrl.generateAmortsInFundByKold(fund.kold)
+    printTable = PrettyTable(['Type', 'Date', 'Value'])
+    for movement in flow:
+        type = movement.__class__.__name__
+        date = movement.data
+        value = movement.val
+        printTable.add_row([type, date, value])
+    print(printTable)
 
     pass

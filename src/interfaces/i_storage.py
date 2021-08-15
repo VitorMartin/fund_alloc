@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 from typing import List
 
+from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
@@ -71,4 +72,8 @@ class IStorage(ABC):
 
     @abstractmethod
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+        pass
+
+    @abstractmethod
+    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
         pass

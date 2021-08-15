@@ -5,6 +5,7 @@ from typing import Any, List
 import pyodbc
 
 from src.interfaces.i_storage import IStorage
+from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
@@ -381,3 +382,19 @@ class StorageAccess(IStorage):
                 availFunds.append(fund)
 
         return availFunds
+
+    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+        fund = self.getFundByKold(kold)
+        self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.FUND_ID} = {fund.dealId}')
+        flow = []
+        for row in self.__cursor.fetchall():
+            flow.append(self.parseRow(MODEL.AMORT_FUND, row))
+        desembs = self.getDesembsInFundByKold(kold)
+        for desemb in desembs:
+            amortDesembs = self.getAmortDesembsByDesembId(desemb.dealId)
+            [flow.append(amortDesemb) for amortDesemb in amortDesembs]
+
+        flow.sort(key=lambda movement: movement.data)
+
+        return flow
+
