@@ -55,3 +55,6 @@ class CStorageFunc(ICStorage):
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         return UCgetRemainPrincInDesembById(self.storage)(dealId, basedate=basedate)
+
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+        return UCgetAvailableFundsForDesembByCcb(self.storage)(ccb, basedate=basedate)

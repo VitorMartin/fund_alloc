@@ -6,6 +6,7 @@ if __name__ == '__main__':
     kold = '350151'
     fundId = 2
     desembId = 2
+    desembCcb = '1159631'
 
     print('Get Fund by KOLD')
     fund = ctrl.getFundByKold(kold)
@@ -21,8 +22,7 @@ if __name__ == '__main__':
 
     print('Get Desembs in a Fund by KOLD')
     desembsInFund = ctrl.getDesembsInFundByKold(kold)
-    for desemb in desembsInFund:
-        print(desemb)
+    [print(desemb) for desemb in desembsInFund]
 
     print()
 
@@ -32,14 +32,8 @@ if __name__ == '__main__':
 
     print()
 
-    print('Get remaining principal in Fund by ID')
-    remainFund = ctrl.getFundPrincAfterAmortById(fundId)
-    print(remainFund)
-
-    print()
-
-    print('Get remaining principal in Desemb by ID')
-    remainDesemb = ctrl.getDesembPrincAfterAmortById(desembId)
-    print(remainDesemb)
+    print('Get available funds for desemb by CCB')
+    availFunds = ctrl.getAvailableFundsForDesembByCcb(desembCcb)
+    [print(funds) for funds in availFunds]
 
     pass

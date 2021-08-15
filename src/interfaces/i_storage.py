@@ -68,3 +68,7 @@ class IStorage(ABC):
     @abstractmethod
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
         pass
+
+    @abstractmethod
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+        pass

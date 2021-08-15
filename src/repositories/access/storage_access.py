@@ -369,3 +369,15 @@ class StorageAccess(IStorage):
                 remain -= amort.val
 
         return remain
+
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+        desemb = self.getDesembByCcb(ccb)
+        allFunds = self.getAllFunds()
+        availFunds = []
+
+        for fund in allFunds:
+            fundAvailability = self.getFundPrincAfterAmortById(fund.dealId, basedate=basedate)
+            if fund.ccy == desemb.ccy and fundAvailability > desemb.princ:
+                availFunds.append(fund)
+
+        return availFunds
