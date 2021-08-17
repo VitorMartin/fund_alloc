@@ -1,3 +1,8 @@
 **/*.pytest_cache
+**/__pycache__/*
+.idea
 .coverage
+venv
 src/repositories/access/db.*
+dist/*
+build/*

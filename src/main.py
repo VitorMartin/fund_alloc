@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, Response
 
-from controllers.fastapi.c_storage_fastapi import CStorageFastAPI
-from models.enums.config import *
+from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
+from src.models.enums.config import *
 from src.init import Init
 
 if __name__ == '__main__':

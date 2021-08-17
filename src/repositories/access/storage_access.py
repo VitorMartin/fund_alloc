@@ -4,6 +4,7 @@ from typing import Any, List
 
 import pyodbc
 
+from src.models.enums.config import CONFIG
 from src.interfaces.i_storage import IStorage
 from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
@@ -24,10 +25,10 @@ class StorageAccess(IStorage):
 
     def __init__(self):
         self.__dbFilename = 'db.accdb'
-        self.__dbPath = os.path.join(os.path.dirname(__file__), self.__dbFilename)
+        self.__dbPath = os.path.dirname(__file__)
         self.__connectionStr = (
             r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
-            r'DBQ=' + self.__dbPath
+            r'DBQ=' + os.path.join(self.__dbPath, self.__dbFilename)
         )
         self.__connection = pyodbc.connect(self.__connectionStr)
         self.__cursor = self.__connection.cursor()
