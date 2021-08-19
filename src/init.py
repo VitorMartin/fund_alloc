@@ -1,6 +1,7 @@
 import json
 import os
 
+from controllers.excel.c_storage_excel import CStorageExcel
 from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from src.controllers.func.c_storage_func import CStorageFunc
 from src.interfaces.i_c_storage import ICStorage
@@ -45,6 +46,8 @@ class Init:
             ctrl = CStorageFunc(repo)
         elif self.ctrlType == CTRL_TYPE.FASTAPI.value:
             ctrl = CStorageFastAPI(repo)
+        elif self.ctrlType == CTRL_TYPE.EXCEL.value:
+            ctrl = CStorageExcel(repo)
         else:
             raise Exception('Invalid controller type')
 

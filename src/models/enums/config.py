@@ -34,3 +34,4 @@ class CTRL_TYPE(Enum):
 
     FUNC = 'func'
     FASTAPI = 'fastapi'
+    EXCEL = 'excel'

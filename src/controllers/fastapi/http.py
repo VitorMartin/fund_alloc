@@ -12,6 +12,6 @@ class HttpResponse:
     body: dict
     statusCode: int
 
-    def __init__(self, body: dict, statusCode: STATUS_CODE = STATUS_CODE.OK):
-        self.statusCode = statusCode.value
+    def __init__(self, body: dict, statusCode: int = STATUS_CODE.OK.value):
+        self.statusCode = statusCode
         self.body = body
