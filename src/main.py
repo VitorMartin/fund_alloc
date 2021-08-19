@@ -7,22 +7,21 @@ from src.init import Init
 
 if __name__ == '__main__':
     ctrl: CStorageFastAPI = Init(_REPO_TYPE=REPO_TYPE.ACCESS, _CTRL_TYPE=CTRL_TYPE.FASTAPI)()
-    app = FastAPI()
 
-    @app.get('/')
+    @ctrl.app.get('/')
     async def root():
         return Response('{"msg": "Hello FastAPI"}')
 
 
-    @app.get('/fund/all')
+    @ctrl.app.get('/fund/all')
     async def getAllFunds():
         return ctrl.getAllFunds()
 
 
-    @app.get('/desemb/all')
+    @ctrl.app.get('/desemb/all')
     async def getAllDesembs():
         return ctrl.getAllDesembs()
 
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(ctrl.app, host=ctrl.host, port=ctrl.port)
 
     pass

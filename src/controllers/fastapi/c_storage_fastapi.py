@@ -1,3 +1,5 @@
+from fastapi import FastAPI
+import os
 import json
 
 from src.controllers.fastapi.enums.status_code import STATUS_CODE
@@ -9,13 +11,26 @@ from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
 from src.usecases.uc_get_values import *
+from src.controllers.fastapi.enums.config import *
 
 
 class CStorageFastAPI(ICStorage):
     __storage: IStorage
+    protocol: str
+    host: str
+    port: str
+    url: str
+    app: FastAPI
 
     def __init__(self, storage: IStorage):
+        with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
+            data = json.load(file)
         self.__storage = storage
+        self.protocol = data[CONFIG.PROTOCOL.value]
+        self.host = data[CONFIG.HOST.value]
+        self.port = data[CONFIG.PORT.value]
+        self.url = f'{self.protocol}://{self.host}:{self.port}'
+        self.app = FastAPI()
 
     def getAllFunds(self) -> HttpResponse:
         funds = UCGetAllFunds(self.__storage)()

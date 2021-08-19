@@ -20,15 +20,16 @@ class Init:
         self.configPath = os.path.join(self.rootPath, CONFIG.CONFIG_FILENAME.value)
         with open(self.configPath) as file:
             data = json.load(file)
-            if _REPO_TYPE is None:
-                self.repoType = data[REPO_TYPE.REPOSITORY_TYPE.value]
-            else:
-                self.repoType = _REPO_TYPE.value
 
-            if _CTRL_TYPE is None:
-                self.ctrlType = data[CTRL_TYPE.CONTROLLER_TYPE.value]
-            else:
-                self.ctrlType = _CTRL_TYPE.value
+        if _REPO_TYPE is None:
+            self.repoType = data[REPO_TYPE.REPOSITORY_TYPE.value]
+        else:
+            self.repoType = _REPO_TYPE.value
+
+        if _CTRL_TYPE is None:
+            self.ctrlType = data[CTRL_TYPE.CONTROLLER_TYPE.value]
+        else:
+            self.ctrlType = _CTRL_TYPE.value
 
     def __call__(self, *args, **kwargs):
         # REPOSITORY TYPE #
