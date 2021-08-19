@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     @ctrl.app.get('/')
     async def root():
-        return Response('{"msg": "Hello FastAPI"}')
+        return Response('{"msg": "Hello from FastAPI!"}')
 
 
     @ctrl.app.get('/fund/all')

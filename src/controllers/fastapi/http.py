@@ -1,9 +1,7 @@
-from pydantic import Json
-
 from src.controllers.fastapi.enums.status_code import STATUS_CODE
 
 
-class HttpRequest:
+class HttpRequestBody:
     body: dict
 
     def __init__(self, body: dict):
