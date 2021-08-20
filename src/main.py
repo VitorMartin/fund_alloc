@@ -10,7 +10,12 @@ if __name__ == '__main__':
 
     @ctrl.app.get('/')
     async def root():
-        return Response('{"msg": "Hello from Excel!"}')
+        return Response(
+            '{'
+            f'"repo": "{REPO_TYPE.MOCK.value}",'
+            f'"ctrl": "{CTRL_TYPE.EXCEL.value}"'
+            '}'
+        )
 
 
     @ctrl.app.get('/fund/all')

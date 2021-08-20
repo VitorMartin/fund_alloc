@@ -6,7 +6,12 @@ block_cipher = None
 a = Analysis(['main.py'],
              pathex=['E:\\Desktop\\rbb\\proj\\back\\src'],
              binaries=[],
-             datas=[('config.json', './src'), ('repositories/access/db.accdb', 'src/repositories/access')],
+             datas=[
+                ('config.json', './src'),
+                ('controllers/excel/config.json', 'src/controllers/excel'),
+                ('controllers/fastapi/config.json', 'src/controllers/fastapi'),
+                ('repositories/access/db.accdb', 'src/repositories/access')
+             ],
              hiddenimports=[
                 'uvicorn.lifespan.off','uvicorn.lifespan.on','uvicorn.lifespan',
                 'uvicorn.protocols.websockets.auto','uvicorn.protocols.websockets.wsproto_impl',

@@ -1,5 +1,10 @@
+import json
+import os
 from datetime import date
 
+from fastapi import FastAPI
+
+from src.controllers.excel.enums.config import CONFIG
 from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from src.controllers.fastapi.http import *
 from src.interfaces.i_storage import IStorage
@@ -14,7 +19,16 @@ class CStorageExcel(CStorageFastAPI):
     """
     def __init__(self, storage: IStorage):
         super().__init__(storage)
+
+        with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
+            data = json.load(file)
+
         self.__storage = storage
+        self.protocol = data[CONFIG.PROTOCOL.value]
+        self.host = data[CONFIG.HOST.value]
+        self.port = data[CONFIG.PORT.value]
+        self.url = f'{self.protocol}://{self.host}:{self.port}'
+        self.app = FastAPI()
         pass
 
     def getAllFunds(self) -> HttpResponse:
