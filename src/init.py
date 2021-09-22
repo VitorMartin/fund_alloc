@@ -4,7 +4,6 @@ import os
 from src.controllers.excel.c_storage_excel import CStorageExcel
 from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from src.controllers.func.c_storage_func import CStorageFunc
-from src.interfaces.i_c_storage import ICStorage
 from src.models.enums.config import *
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.storage_mock import StorageMock
