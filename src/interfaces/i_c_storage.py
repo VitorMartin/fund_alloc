@@ -1,12 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date
-from typing import Any, List
-
-from src.models.amort import Amort
-from src.models.amort_desemb import AmortDesemb
-from src.models.amort_fund import AmortFund
-from src.models.desemb import Desemb
-from src.models.fund import Fund
+from typing import Any
 
 
 class ICStorage(ABC):
@@ -35,7 +29,7 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def getFundByKold(self, dealId: int) -> Any:
+    def getFundByKold(self, kold: str) -> Any:
         pass
 
     @abstractmethod

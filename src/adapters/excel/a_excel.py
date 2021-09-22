@@ -1,39 +1,22 @@
-import json
-import os
 from datetime import date
 
-from fastapi import FastAPI
-
-from src.controllers.excel.enums.config import CONFIG
-from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from src.controllers.fastapi.http import *
-from src.interfaces.i_storage import IStorage
+from src.interfaces.i_c_storage import ICStorage
 from src.models.enums.dict_keys import *
 
 
-class CStorageExcel(CStorageFastAPI):
+class AExcel:
     """
-    Basically flattens all HttpResponse dicts from CStorageFastAPI before each method call.
-    This must be used in conjunction with FastAPI implementation.
-    This controller only exists because Excel is a pain in the ___ when dealing with complex JSONs and dicts.
+    Flattens all HTTP responses' dicts from CStorageFastAPI.
     """
-    def __init__(self, storage: IStorage):
-        super().__init__(storage)
+    ctrl: ICStorage
 
-        with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
-            data = json.load(file)
-
-        self.__storage = storage
-        self.protocol = data[CONFIG.PROTOCOL.value]
-        self.host = data[CONFIG.HOST.value]
-        self.port = data[CONFIG.PORT.value]
-        self.url = f'{self.protocol}://{self.host}:{self.port}'
-        self.app = FastAPI()
-        pass
+    def __init__(self, _ctrl: ICStorage):
+        self.ctrl = _ctrl
 
     def getAllFunds(self) -> HttpResponse:
         newDict = {}
-        httpRes = super().getAllFunds()
+        httpRes = self.ctrl.getAllFunds()
         funds = httpRes.body[MODEL.FUND]
 
         i = 0
@@ -54,7 +37,7 @@ class CStorageExcel(CStorageFastAPI):
 
     def getAllDesembs(self) -> HttpResponse:
         newDict = {}
-        httpRes = super().getAllDesembs()
+        httpRes = self.ctrl.getAllDesembs()
         desembs = httpRes.body[MODEL.DESEMB]
         i = 0
         numColumns = 0
@@ -79,49 +62,49 @@ class CStorageExcel(CStorageFastAPI):
         return httpRes
 
     def getAllAmortFunds(self) -> HttpResponse:
-        return super().getAllAmortFunds()
+        return self.ctrl.getAllAmortFunds()
 
     def getAllAmortDesembs(self) -> HttpResponse:
-        return super().getAllAmortDesembs()
+        return self.ctrl.getAllAmortDesembs()
 
     def getDesembsInFundByKold(self, kold: str) -> HttpResponse:
-        return super().getDesembsInFundByKold(kold)
+        return self.ctrl.getDesembsInFundByKold(kold)
 
     def getFundById(self, dealId: int) -> HttpResponse:
-        return super().getFundById(dealId)
+        return self.ctrl.getFundById(dealId)
 
     def getFundByKold(self, kold: str) -> HttpResponse:
-        return super().getFundByKold(kold)
+        return self.ctrl.getFundByKold(kold)
 
     def getDesembById(self, dealId: int) -> HttpResponse:
-        return super().getDesembById(dealId)
+        return self.ctrl.getDesembById(dealId)
 
     def getDesembByCcb(self, ccb: str) -> HttpResponse:
-        return super().getDesembByCcb(ccb)
+        return self.ctrl.getDesembByCcb(ccb)
 
     def getAmortFundById(self, amortId: int) -> HttpResponse:
-        return super().getAmortFundById(amortId)
+        return self.ctrl.getAmortFundById(amortId)
 
     def getAmortFundsByFundId(self, dealId: int) -> HttpResponse:
-        return super().getAmortFundsByFundId(dealId)
+        return self.ctrl.getAmortFundsByFundId(dealId)
 
     def getAmortDesembById(self, amortId: int) -> HttpResponse:
-        return super().getAmortDesembById(amortId)
+        return self.ctrl.getAmortDesembById(amortId)
 
     def getAmortDesembsByDesembId(self, dealId: int) -> HttpResponse:
-        return super().getAmortDesembsByDesembId(dealId)
+        return self.ctrl.getAmortDesembsByDesembId(dealId)
 
     def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
-        return super().getFundPrincAfterAmortById(dealId, basedate)
+        return self.ctrl.getFundPrincAfterAmortById(dealId, basedate)
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
-        return super().getDesembPrincAfterAmortById(dealId, basedate)
+        return self.ctrl.getDesembPrincAfterAmortById(dealId, basedate)
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> HttpResponse:
-        return super().getAvailableFundsForDesembByCcb(ccb, basedate)
+        return self.ctrl.getAvailableFundsForDesembByCcb(ccb, basedate)
 
     def generateAmortsInFundByKold(self, kold: str) -> HttpResponse:
-        return super().generateAmortsInFundByKold(kold)
+        return self.ctrl.generateAmortsInFundByKold(kold)
 
     def generateFundAvailByKold(self, kold: str) -> HttpResponse:
-        return super().generateFundAvailByKold(kold)
+        return self.ctrl.generateFundAvailByKold(kold)

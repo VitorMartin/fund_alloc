@@ -10,6 +10,7 @@ class CONFIG(Enum):
     DEPLOYMENT_TYPE = 'deployment_type'
     REPOSITORY_TYPE = 'repository_type'
     CONTROLLER_TYPE = 'controller_type'
+    ADAPTERS = 'adapters'
 
 
 class DEPLOYMENT_TYPE(Enum):
@@ -34,4 +35,10 @@ class CTRL_TYPE(Enum):
 
     FUNC = 'func'
     FASTAPI = 'fastapi'
+
+
+class ADAPTER(Enum):
+    def __str__(self):
+        return self.value
+
     EXCEL = 'excel'
