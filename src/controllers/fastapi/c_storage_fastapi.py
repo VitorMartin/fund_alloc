@@ -1,17 +1,14 @@
-from fastapi import FastAPI
-import os
 import json
+import os
 
-from src.controllers.fastapi.enums.status_code import STATUS_CODE
-from src.controllers.fastapi.http import HttpResponse
-from src.models.enums.dict_keys import *
-from src.interfaces.i_c_storage import ICStorage
-from src.usecases.uc_cash_flows import *
-from src.usecases.uc_get_all import *
-from src.usecases.uc_get_desembs_in_fund import *
-from src.usecases.uc_get_op_by_attr import *
-from src.usecases.uc_get_values import *
+from fastapi import FastAPI
+
+from controllers.fastapi.http.models import *
+from controllers.fastapi.http.responses import *
 from src.controllers.fastapi.enums.config import *
+from src.interfaces.i_c_storage import ICStorage
+from src.usecases.uc_get_all import *
+from src.usecases.uc_get_values import *
 
 
 class CStorageFastAPI(ICStorage):
@@ -32,64 +29,64 @@ class CStorageFastAPI(ICStorage):
         self.url = f'{self.protocol}://{self.host}:{self.port}'
         self.app = FastAPI()
 
-    def getAllFunds(self) -> HttpResponse:
+    def getAllFunds(self) -> List[FundModel]:
+        fundModels = []
         funds = UCGetAllFunds(self.__storage)()
-        body = {MODEL.FUND: []}
         for fund in funds:
-            body[MODEL.FUND].append(fund.toDict())
-        return HttpResponse(body, STATUS_CODE.OK)
+            fundModels.append(fund.toModel())
+        return fundModels
 
-    def getAllDesembs(self) -> HttpResponse:
+    def getAllDesembs(self) -> List[DesembModel]:
+        desembModels = []
         desembs = UCGetAllDesembs(self.__storage)()
-        body = {MODEL.DESEMB: []}
         for desemb in desembs:
-            body[MODEL.DESEMB].append(desemb.toDict())
-        return HttpResponse(body, STATUS_CODE.OK)
+            desembModels.append(desemb.toModel())
+        return desembModels
 
-    def getAllAmortFunds(self) -> HttpResponse:
+    def getAllAmortFunds(self) -> List[AmortFundModel]:
         pass
 
-    def getAllAmortDesembs(self) -> HttpResponse:
+    def getAllAmortDesembs(self) -> List[AmortDesembModel]:
         pass
 
-    def getDesembsInFundByKold(self, kold: str) -> HttpResponse:
+    def getDesembsInFundByKold(self, kold: str) -> List[DesembModel]:
         pass
 
-    def getFundById(self, dealId: int) -> HttpResponse:
+    def getFundById(self, dealId: int) -> FundModel:
         pass
 
-    def getFundByKold(self, kold: str) -> HttpResponse:
+    def getFundByKold(self, kold: str) -> FundModel:
         pass
 
-    def getDesembById(self, dealId: int) -> HttpResponse:
+    def getDesembById(self, dealId: int) -> DesembModel:
         pass
 
-    def getDesembByCcb(self, ccb: str) -> HttpResponse:
+    def getDesembByCcb(self, ccb: str) -> DesembModel:
         pass
 
-    def getAmortFundById(self, amortId: int) -> HttpResponse:
+    def getAmortFundById(self, amortId: int) -> AmortFundModel:
         pass
 
-    def getAmortFundsByFundId(self, dealId: int) -> HttpResponse:
+    def getAmortFundsByFundId(self, dealId: int) -> AmortFundModel:
         pass
 
-    def getAmortDesembById(self, amortId: int) -> HttpResponse:
+    def getAmortDesembById(self, amortId: int) -> AmortDesembModel:
         pass
 
-    def getAmortDesembsByDesembId(self, dealId: int) -> HttpResponse:
+    def getAmortDesembsByDesembId(self, dealId: int) -> AmortDesembModel:
         pass
 
-    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> ValueModel:
         pass
 
-    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> ValueModel:
         pass
 
-    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> HttpResponse:
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[FundModel]:
         pass
 
-    def generateAmortsInFundByKold(self, kold: str) -> HttpResponse:
+    def generateAmortsInFundByKold(self, kold: str) -> List[AmortModel]:
         pass
 
-    def generateFundAvailByKold(self, kold: str) -> HttpResponse:
+    def generateFundAvailByKold(self, kold: str) -> List[dict]:
         pass

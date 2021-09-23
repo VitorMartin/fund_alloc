@@ -65,6 +65,6 @@ class Init:
         configDict[CONFIG.ADAPTERS.value] = {}
         for adapter in self.adapters:
             if adapter == ADAPTER.EXCEL.value:
-                configDict[CONFIG.ADAPTERS.value][ADAPTER.EXCEL.value] = AExcel(ctrl)
+                configDict[CONFIG.ADAPTERS.value][ADAPTER.EXCEL.value] = AExcel
 
         return configDict

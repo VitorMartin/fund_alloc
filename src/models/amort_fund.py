@@ -1,6 +1,7 @@
 from datetime import date
 from typing import Any
 
+from controllers.fastapi.http.models import AmortFundModel
 from src.models.amort import Amort
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
@@ -34,6 +35,15 @@ class AmortFund(Amort):
 
     def __eq__(self, other: Any):
         return self.__dict__ == other.__dict__
+
+    def toModel(self) -> AmortFundModel:
+        return AmortFundModel(
+            amortId=self.amortId,
+            data=self.data,
+            ccy=self.ccy,
+            val=self.val,
+            fund=self.fund.toModel()
+        )
 
     @staticmethod
     def fromDict(d: dict):

@@ -1,6 +1,7 @@
 from datetime import date
 from typing import Any
 
+from controllers.fastapi.http.models import FundModel
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
@@ -27,6 +28,16 @@ class Fund(Deal):
 
     def __eq__(self, other: Any):
         return self.__dict__ == other.__dict__
+
+    def toModel(self) -> FundModel:
+        return FundModel(
+            dealId=self.dealId,
+            ccy=self.ccy,
+            princ=self.princ,
+            ini=self.ini,
+            venc=self.venc,
+            kold=self.kold
+        )
 
     def toDict(self):
         return {
