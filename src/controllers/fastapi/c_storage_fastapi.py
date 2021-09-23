@@ -3,9 +3,9 @@ import os
 
 from fastapi import FastAPI
 
-from controllers.fastapi.http.models import *
-from controllers.fastapi.http.responses import *
 from src.controllers.fastapi.enums.config import *
+from src.controllers.fastapi.http.models import *
+from src.controllers.fastapi.http.responses import *
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_values import *

@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Any
 
-from controllers.fastapi.http.models import AmortDesembModel
+from src.controllers.fastapi.http.models import AmortDesembModel
 from src.models.amort import Amort
 from src.models.desemb import Desemb
 from src.models.enums.ccy import CCY
@@ -70,3 +70,13 @@ class AmortDesemb(Amort):
         )
 
         return amortDesemb
+
+    @staticmethod
+    def fromModel(m: AmortDesembModel):
+        return AmortDesemb(
+            pk=m.amortId,
+            amortData=m.data,
+            ccy=m.ccy,
+            val=m.val,
+            desemb=Desemb.fromModel(m.desemb)
+        )

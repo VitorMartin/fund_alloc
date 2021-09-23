@@ -1,23 +1,19 @@
-from datetime import date
+from typing import Any, List
 
-from src.controllers.fastapi.http import *
-from src.interfaces.i_c_storage import ICStorage
+from src.models.desemb import Desemb
 from src.models.enums.dict_keys import *
+from src.models.fund import Fund
 
 
 class AExcel:
     """
     Flattens all HTTP responses' dicts from CStorageFastAPI.
     """
-    ctrl: ICStorage
 
-    def __init__(self, _ctrl: ICStorage):
-        self.ctrl = _ctrl
-
-    def getAllFunds(self) -> HttpResponse:
+    @staticmethod
+    def flattenFunds(funds: List[Fund]) -> dict[str, Any]:
         newDict = {}
-        httpRes = self.ctrl.getAllFunds()
-        funds = httpRes.body[MODEL.FUND]
+        funds = [fund.toDict() for fund in funds]
 
         i = 0
         numColumns = 0
@@ -29,16 +25,16 @@ class AExcel:
                     numColumns += 1
             i += 1
 
-        httpRes.body = newDict
-        httpRes.body['length'] = str(i)
-        httpRes.body['num_columns'] = str(numColumns)
+        newDict['length'] = str(i)
+        newDict['num_columns'] = str(numColumns)
 
-        return httpRes
+        return newDict
 
-    def getAllDesembs(self) -> HttpResponse:
+    @staticmethod
+    def flattenDesembs(desembs: List[Desemb]) -> dict[str, Any]:
         newDict = {}
-        httpRes = self.ctrl.getAllDesembs()
-        desembs = httpRes.body[MODEL.DESEMB]
+        desembs = [desemb.toDict() for desemb in desembs]
+
         i = 0
         numColumns = 0
         while i < len(desembs):
@@ -55,56 +51,7 @@ class AExcel:
                         numColumns += 1
             i += 1
 
-        httpRes.body = newDict
-        httpRes.body['length'] = str(i)
-        httpRes.body['num_columns'] = str(numColumns)
+        newDict['length'] = str(i)
+        newDict['num_columns'] = str(numColumns)
 
-        return httpRes
-
-    def getAllAmortFunds(self) -> HttpResponse:
-        return self.ctrl.getAllAmortFunds()
-
-    def getAllAmortDesembs(self) -> HttpResponse:
-        return self.ctrl.getAllAmortDesembs()
-
-    def getDesembsInFundByKold(self, kold: str) -> HttpResponse:
-        return self.ctrl.getDesembsInFundByKold(kold)
-
-    def getFundById(self, dealId: int) -> HttpResponse:
-        return self.ctrl.getFundById(dealId)
-
-    def getFundByKold(self, kold: str) -> HttpResponse:
-        return self.ctrl.getFundByKold(kold)
-
-    def getDesembById(self, dealId: int) -> HttpResponse:
-        return self.ctrl.getDesembById(dealId)
-
-    def getDesembByCcb(self, ccb: str) -> HttpResponse:
-        return self.ctrl.getDesembByCcb(ccb)
-
-    def getAmortFundById(self, amortId: int) -> HttpResponse:
-        return self.ctrl.getAmortFundById(amortId)
-
-    def getAmortFundsByFundId(self, dealId: int) -> HttpResponse:
-        return self.ctrl.getAmortFundsByFundId(dealId)
-
-    def getAmortDesembById(self, amortId: int) -> HttpResponse:
-        return self.ctrl.getAmortDesembById(amortId)
-
-    def getAmortDesembsByDesembId(self, dealId: int) -> HttpResponse:
-        return self.ctrl.getAmortDesembsByDesembId(dealId)
-
-    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
-        return self.ctrl.getFundPrincAfterAmortById(dealId, basedate)
-
-    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> HttpResponse:
-        return self.ctrl.getDesembPrincAfterAmortById(dealId, basedate)
-
-    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> HttpResponse:
-        return self.ctrl.getAvailableFundsForDesembByCcb(ccb, basedate)
-
-    def generateAmortsInFundByKold(self, kold: str) -> HttpResponse:
-        return self.ctrl.generateAmortsInFundByKold(kold)
-
-    def generateFundAvailByKold(self, kold: str) -> HttpResponse:
-        return self.ctrl.generateFundAvailByKold(kold)
+        return newDict

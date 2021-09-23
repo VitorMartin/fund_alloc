@@ -8,7 +8,6 @@ a = Analysis(['main.py'],
              binaries=[],
              datas=[
                 ('config.json', './src'),
-                ('controllers/excel/config.json', 'src/controllers/excel'),
                 ('controllers/fastapi/config.json', 'src/controllers/fastapi'),
                 ('repositories/access/db.accdb', 'src/repositories/access')
              ],

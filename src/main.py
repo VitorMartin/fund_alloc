@@ -1,10 +1,13 @@
+from typing import Any
+
 import uvicorn
 
-from adapters.excel.a_excel import AExcel
-from controllers.fastapi.http.models import *
-from controllers.fastapi.http.responses import *
+from src.adapters.excel.a_excel import AExcel
+from src.controllers.fastapi.http.responses import *
 from src.init import Init
+from src.models.desemb import Desemb
 from src.models.enums.config import *
+from src.models.fund import Fund
 
 if __name__ == '__main__':
     init = Init(_REPO_TYPE=REPO_TYPE.MOCK, _CTRL_TYPE=CTRL_TYPE.FASTAPI, _adapters=[ADAPTER.EXCEL.value])()
@@ -18,20 +21,24 @@ if __name__ == '__main__':
         return RootModel(
             repository_type=str(type(repo)),
             controller_type=str(type(ctrl)),
-            adapters=[str(type(excel))]
+            adapters=[str(excel)]
         )
 
 
-    @ctrl.app.get('/fund/all', response_model=List[FundModel])
+    @ctrl.app.get('/fund/all', response_model=dict[str, Any])
     async def getAllFunds():
-        funds = ctrl.getAllFunds()
-        return funds
+        fundModels = ctrl.getAllFunds()
+        funds = [Fund.fromModel(model) for model in fundModels]
+        fundsFlat = excel.flattenFunds(funds)
+        return fundsFlat
 
 
-    @ctrl.app.get('/desemb/all', response_model=List[DesembModel])
+    @ctrl.app.get('/desemb/all', response_model=dict[str, Any])
     async def getAllDesembs():
-        desembs = ctrl.getAllDesembs()
-        return desembs
+        desembModels = ctrl.getAllDesembs()
+        desembs = [Desemb.fromModel(model) for model in desembModels]
+        desembsFlat = excel.flattenDesembs(desembs)
+        return desembsFlat
 
 
     uvicorn.run(ctrl.app, host=ctrl.host, port=ctrl.port)

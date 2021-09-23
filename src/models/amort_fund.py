@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Any
 
-from controllers.fastapi.http.models import AmortFundModel
+from src.controllers.fastapi.http.models import AmortFundModel
 from src.models.amort import Amort
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
@@ -56,3 +56,13 @@ class AmortFund(Amort):
         )
 
         return amortFund
+
+    @staticmethod
+    def fromModel(m: AmortFundModel):
+        return AmortFund(
+            pk=m.amortId,
+            amortData=m.data,
+            ccy=m.ccy,
+            val=m.val,
+            fund=Fund.fromModel(m.fund)
+        )

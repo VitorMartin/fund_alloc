@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from models.enums.ccy import CCY
+from src.models.enums.ccy import CCY
 
 
 class DealModel(BaseModel):

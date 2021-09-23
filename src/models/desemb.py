@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Any
 
-from controllers.fastapi.http.models import DesembModel
+from src.controllers.fastapi.http.models import DesembModel
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
@@ -83,3 +83,15 @@ class Desemb(Deal):
         )
 
         return desemb
+
+    @staticmethod
+    def fromModel(m: DesembModel):
+        return Desemb(
+            pk=m.dealId,
+            ccy=m.ccy,
+            princ=m.princ,
+            ini=m.ini,
+            venc=m.venc,
+            fund=Fund.fromModel(m.fund),
+            ccb=m.ccb
+        )

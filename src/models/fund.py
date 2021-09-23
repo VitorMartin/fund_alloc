@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Any
 
-from controllers.fastapi.http.models import FundModel
+from src.controllers.fastapi.http.models import FundModel
 from src.models.deal import Deal
 from src.models.enums.ccy import CCY
 from src.models.enums.dict_keys import *
@@ -57,3 +57,14 @@ class Fund(Deal):
         )
 
         return fund
+
+    @staticmethod
+    def fromModel(m: FundModel):
+        return Fund(
+            pk=m.dealId,
+            ccy=m.ccy,
+            princ=m.princ,
+            ini=m.ini,
+            venc=m.venc,
+            kold=m.kold
+        )
