@@ -81,5 +81,6 @@ class CStorageFastAPI(ICStorage):
     def generateFundFlowByKold(self, kold: str) -> List[Amort]:
         return UCGenerateFundFlowByKold(self.__storage)(kold)
 
-    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
+    def generateFundAvailabilityByKold(self, kold: str) -> List[
+        dict[Any, str, date, float, float, float, float, float]]:
         return UCGenerateFundAvailabilityByKold(self.__storage)(kold)

@@ -22,4 +22,4 @@ class UCGenerateFundAvailabilityByKold:
         self.storage = storageRepo
 
     def __call__(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
-        return self.storage.generateFundAvailByKold(kold)
+        return self.storage.generateFundAvailabilityByKold(kold)

@@ -1,8 +1,6 @@
-from datetime import date
-from typing import Any, List
+from typing import List
 
 from src.interfaces.i_storage import IStorage
-from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
@@ -38,43 +36,50 @@ class StorageMock(IStorage):
         return self.__amortDesembs
 
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
-        pass
+        return [desemb for desemb in self.__desembs if desemb.fund.kold == kold]
 
     def getFundById(self, dealId: int) -> Fund:
-        pass
+        fundsFound = [fund for fund in self.__funds if fund.dealId == dealId]
+        return fundsFound[0]
 
     def getFundByKold(self, kold: str) -> Fund:
-        pass
+        fundsFound = [fund for fund in self.__funds if fund.kold == kold]
+        return fundsFound[0]
 
     def getDesembById(self, dealId: int) -> Desemb:
-        pass
+        desembsFound = [desemb for desemb in self.__desembs if desemb.dealId == dealId]
+        return desembsFound[0]
 
     def getDesembByCcb(self, ccb: str) -> Desemb:
-        pass
+        desembsFound = [desemb for desemb in self.__desembs if desemb.ccb == ccb]
+        return desembsFound[0]
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
-        pass
+        amortFundsFound = [amortFund for amortFund in self.__amortFunds if amortFund.amortId == amortId]
+        return amortFundsFound[0]
 
     def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
-        pass
+        return [amortFund for amortFund in self.__amortFunds if amortFund.fund.dealId == dealId]
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
-        pass
+        amortDesembsFound = [amortDesemb for amortDesemb in self.__amortDesembs if amortDesemb.amortId == amortId]
+        return amortDesembsFound[0]
 
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
-        pass
+        return [amortDesemb for amortDesemb in self.__amortDesembs if amortDesemb.desemb.dealId == dealId]
 
-    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        pass
+    # def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+    #     pass
 
-    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        pass
+    # def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+    #     pass
 
-    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
-        pass
+    # def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+    #     pass
 
-    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
-        pass
+    # def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+    #     pass
 
-    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
-        pass
+    # def generateFundAvailabilityByKold(self, kold: str) \
+    #         -> List[dict[Any, str, date, float, float, float, float, float]]:
+    #     pass

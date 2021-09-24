@@ -2,13 +2,13 @@ from src.controllers.func.c_storage_func import CStorageFunc
 
 from src.models.amort import Amort
 from src.models.enums.dict_keys import *
-from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.mock_data import MockData
+from src.repositories.mock.storage_mock import StorageMock
 
 
 class Test_UCgetValues:
     def test_generate_fund_flow_by_kold(self):
-        controller = CStorageFunc(StorageAccess())
+        controller = CStorageFunc(StorageMock())
 
         fund = MockData.fund2
         actualFlow = controller.generateFundFlowByKold(fund.kold)
@@ -41,9 +41,9 @@ class Test_UCgetValues:
             assert actualMovement == expectedMovement
 
     def test_generate_fund_avail_by_kold(self):
-        controller = CStorageFunc(StorageAccess())
+        controller = CStorageFunc(StorageMock())
 
-        actualFlow = controller.generateFundAvailByKold(MockData.fund1.kold)
+        actualFlow = controller.generateFundAvailabilityByKold(MockData.fund1.kold)
 
         expectedFlow = [
             {

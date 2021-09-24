@@ -73,5 +73,5 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def generateFundAvailByKold(self, kold: str) -> Any:
+    def generateFundAvailabilityByKold(self, kold: str) -> Any:
         pass
