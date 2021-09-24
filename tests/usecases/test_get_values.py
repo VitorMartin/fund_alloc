@@ -1,6 +1,6 @@
 from datetime import date
 
-from controllers.func.c_storage_func import CStorageFunc
+from src.controllers.func.c_storage_func import CStorageFunc
 from src.models.fund import Fund
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.mock_data import MockData

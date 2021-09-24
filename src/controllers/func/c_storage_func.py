@@ -52,16 +52,16 @@ class CStorageFunc(ICStorage):
         return UCGetAmortDesembsByDesembId(self.storage)(dealId)
 
     def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        return UCgetRemainPrincInFundById(self.storage)(dealId, basedate)
+        return UCGetFundPrincAfterAmortById(self.storage)(dealId, basedate)
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        return UCgetRemainPrincInDesembById(self.storage)(dealId, basedate=basedate)
+        return UCGetDesembPrincAfterAmortById(self.storage)(dealId, basedate=basedate)
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
         return UCgetAvailableFundsForDesembByCcb(self.storage)(ccb, basedate=basedate)
 
-    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
-        return UCGenerateFundCashFlowByKold(self.storage)(kold)
+    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+        return UCGenerateFundFlowByKold(self.storage)(kold)
 
     def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
         return UCGenerateFundAvailabilityByKold(self.storage)(kold)

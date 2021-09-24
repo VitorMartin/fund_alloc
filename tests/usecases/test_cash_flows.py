@@ -1,4 +1,5 @@
-from controllers.func.c_storage_func import CStorageFunc
+from src.controllers.func.c_storage_func import CStorageFunc
+
 from src.models.amort import Amort
 from src.models.enums.dict_keys import *
 from src.repositories.access.storage_access import StorageAccess
@@ -6,11 +7,11 @@ from src.repositories.mock.mock_data import MockData
 
 
 class Test_UCgetValues:
-    def test_get_remaining_principal_in_fund_by_id(self):
+    def test_generate_fund_flow_by_kold(self):
         controller = CStorageFunc(StorageAccess())
 
         fund = MockData.fund2
-        actualFlow = controller.generateAmortsInFundByKold(fund.kold)
+        actualFlow = controller.generateFundFlowByKold(fund.kold)
         expectedFlow = [
             MockData.amortFund3,
             MockData.amortFund4,
@@ -39,7 +40,7 @@ class Test_UCgetValues:
             assert isinstance(actualMovement, Amort)
             assert actualMovement == expectedMovement
 
-    def test_get_remaining_principal_in_fund_by_id(self):
+    def test_generate_fund_avail_by_kold(self):
         controller = CStorageFunc(StorageAccess())
 
         actualFlow = controller.generateFundAvailByKold(MockData.fund1.kold)

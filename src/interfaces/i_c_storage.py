@@ -69,7 +69,7 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def generateAmortsInFundByKold(self, kold: str) -> Any:
+    def generateFundFlowByKold(self, kold: str) -> Any:
         pass
 
     @abstractmethod

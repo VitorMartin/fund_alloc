@@ -2,8 +2,6 @@
   "deployment_type": "prod",
   "repository_type": "access",
   "controller_type": "fastapi",
-  "adapters": [
-    "excel"
-  ],
+  "adapters": [],
   "mss_name": "fund_alloc"
 }

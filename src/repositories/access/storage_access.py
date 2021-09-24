@@ -4,7 +4,6 @@ from typing import Any, List
 
 import pyodbc
 
-from src.models.enums.config import CONFIG
 from src.interfaces.i_storage import IStorage
 from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
@@ -385,7 +384,7 @@ class StorageAccess(IStorage):
 
         return availFunds
 
-    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
         fund = self.getFundByKold(kold)
         self.__cursor.execute(f'SELECT * FROM {TABLE.AMORT_FUNDS} WHERE {AMORT_FUND.FUND_ID} = {fund.dealId}')
         flow = []
@@ -429,7 +428,7 @@ class StorageAccess(IStorage):
             )
 
         # All amorts
-        amorts = self.generateAmortsInFundByKold(kold)
+        amorts = self.generateFundFlowByKold(kold)
         for amort in amorts:
             if amort.__class__.__name__ == AmortFund.__name__:
                 amortType = MODEL.AMORT_FUND.value

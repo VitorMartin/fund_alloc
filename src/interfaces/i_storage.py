@@ -75,7 +75,7 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
         pass
 
     @abstractmethod

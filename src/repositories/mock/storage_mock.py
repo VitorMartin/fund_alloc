@@ -73,7 +73,7 @@ class StorageMock(IStorage):
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
         pass
 
-    def generateAmortsInFundByKold(self, kold: str) -> List[Amort]:
+    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
         pass
 
     def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:

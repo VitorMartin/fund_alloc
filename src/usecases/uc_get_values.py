@@ -5,7 +5,7 @@ from src.interfaces.i_storage import IStorage
 from src.models.fund import Fund
 
 
-class UCgetRemainPrincInFundById:
+class UCGetFundPrincAfterAmortById:
     storage: IStorage
 
     def __init__(self, storageRepo: IStorage):
@@ -15,7 +15,7 @@ class UCgetRemainPrincInFundById:
         return self.storage.getFundPrincAfterAmortById(dealId, basedate=basedate)
 
 
-class UCgetRemainPrincInDesembById:
+class UCGetDesembPrincAfterAmortById:
     storage: IStorage
 
     def __init__(self, storageRepo: IStorage):

@@ -4,10 +4,11 @@ import os
 from fastapi import FastAPI
 
 from src.controllers.fastapi.enums.config import *
-from src.controllers.fastapi.http.models import *
-from src.controllers.fastapi.http.responses import *
 from src.interfaces.i_c_storage import ICStorage
+from src.usecases.uc_cash_flows import *
 from src.usecases.uc_get_all import *
+from src.usecases.uc_get_desembs_in_fund import *
+from src.usecases.uc_get_op_by_attr import *
 from src.usecases.uc_get_values import *
 
 
@@ -29,64 +30,56 @@ class CStorageFastAPI(ICStorage):
         self.url = f'{self.protocol}://{self.host}:{self.port}'
         self.app = FastAPI()
 
-    def getAllFunds(self) -> List[FundModel]:
-        fundModels = []
-        funds = UCGetAllFunds(self.__storage)()
-        for fund in funds:
-            fundModels.append(fund.toModel())
-        return fundModels
+    def getAllFunds(self) -> List[Fund]:
+        return UCGetAllFunds(self.__storage)()
 
-    def getAllDesembs(self) -> List[DesembModel]:
-        desembModels = []
-        desembs = UCGetAllDesembs(self.__storage)()
-        for desemb in desembs:
-            desembModels.append(desemb.toModel())
-        return desembModels
+    def getAllDesembs(self) -> List[Desemb]:
+        return UCGetAllDesembs(self.__storage)()
 
-    def getAllAmortFunds(self) -> List[AmortFundModel]:
-        pass
+    def getAllAmortFunds(self) -> List[AmortFund]:
+        return UCGetAllAmortFunds(self.__storage)()
 
-    def getAllAmortDesembs(self) -> List[AmortDesembModel]:
-        pass
+    def getAllAmortDesembs(self) -> List[AmortDesemb]:
+        return UCGetAllAmortDesembs(self.__storage)()
 
-    def getDesembsInFundByKold(self, kold: str) -> List[DesembModel]:
-        pass
+    def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
+        return UCGetDesembsInFundByKold(self.__storage)(kold)
 
-    def getFundById(self, dealId: int) -> FundModel:
-        pass
+    def getFundById(self, dealId: int) -> Fund:
+        return UCGetFundById(self.__storage)(dealId)
 
-    def getFundByKold(self, kold: str) -> FundModel:
-        pass
+    def getFundByKold(self, kold: str) -> Fund:
+        return UCGetFundByKold(self.__storage)(kold)
 
-    def getDesembById(self, dealId: int) -> DesembModel:
-        pass
+    def getDesembById(self, dealId: int) -> Desemb:
+        return UCGetDesembById(self.__storage)(dealId)
 
-    def getDesembByCcb(self, ccb: str) -> DesembModel:
-        pass
+    def getDesembByCcb(self, ccb: str) -> Desemb:
+        return UCGetDesembByCcb(self.__storage)(ccb)
 
-    def getAmortFundById(self, amortId: int) -> AmortFundModel:
-        pass
+    def getAmortFundById(self, amortId: int) -> AmortFund:
+        return UCGetAmortFundById(self.__storage)(amortId)
 
-    def getAmortFundsByFundId(self, dealId: int) -> AmortFundModel:
-        pass
+    def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
+        return UCGetAmortFundsByFundId(self.__storage)(dealId)
 
-    def getAmortDesembById(self, amortId: int) -> AmortDesembModel:
-        pass
+    def getAmortDesembById(self, amortId: int) -> AmortDesemb:
+        return UCGetAmortDesembById(self.__storage)(amortId)
 
-    def getAmortDesembsByDesembId(self, dealId: int) -> AmortDesembModel:
-        pass
+    def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
+        return UCGetAmortDesembsByDesembId(self.__storage)(dealId)
 
-    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> ValueModel:
-        pass
+    def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+        return UCGetFundPrincAfterAmortById(self.__storage)(dealId, basedate)
 
-    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> ValueModel:
-        pass
+    def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
+        return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate)
 
-    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[FundModel]:
-        pass
+    def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
+        return UCgetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate)
 
-    def generateAmortsInFundByKold(self, kold: str) -> List[AmortModel]:
-        pass
+    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+        return UCGenerateFundFlowByKold(self.__storage)(kold)
 
-    def generateFundAvailByKold(self, kold: str) -> List[dict]:
-        pass
+    def generateFundAvailByKold(self, kold: str) -> List[dict[Any, str, date, float, float, float, float, float]]:
+        return UCGenerateFundAvailabilityByKold(self.__storage)(kold)
