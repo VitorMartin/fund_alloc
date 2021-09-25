@@ -40,13 +40,15 @@ if __name__ == '__main__':
 
 
     @ctrl.app.get('/desemb', response_model=Union[DesembsModel, DesembModel])
-    async def getAllDesembs(dealId: int = None, ccb: str = None):
-        if dealId is None and ccb is None:
+    async def getAllDesembs(dealId: int = None, ccb: str = None, kold: str = None):
+        if dealId is None and ccb is None and kold is None:
             return DesembsModel(desembs=[Desemb.toModel(desemb) for desemb in ctrl.getAllDesembs()])
-        elif dealId is not None and ccb is None:
+        elif dealId is not None and ccb is None and kold is None:
             return Desemb.toModel(ctrl.getDesembById(dealId))
-        elif ccb is not None and dealId is None:
+        elif ccb is not None and dealId is None and kold is None:
             return Desemb.toModel(ctrl.getDesembByCcb(ccb))
+        elif kold is not None and dealId is None and ccb is None:
+            return DesembsModel(desembs=[Desemb.toModel(desemb) for desemb in ctrl.getDesembsInFundByKold(kold)])
         else:
             raise TooManyArgsException()
 
