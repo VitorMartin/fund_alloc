@@ -1,5 +1,8 @@
+from typing import Union
+
 import uvicorn
 
+from src.controllers.fastapi.errors.too_many_args_exception import TooManyArgsException
 from src.controllers.fastapi.http.responses import *
 from src.init import Init
 from src.models.amort_desemb import AmortDesemb
@@ -24,34 +27,60 @@ if __name__ == '__main__':
         )
 
 
-    @ctrl.app.get('/fund', response_model=FundsModel)
-    async def getAllFunds():
-        fundModels = [Fund.toModel(fund) for fund in ctrl.getAllFunds()]
-        return FundsModel(funds=fundModels)
+    @ctrl.app.get('/fund', response_model=Union[FundsModel, FundModel])
+    async def getAllFunds(dealId: int = None, kold: str = None):
+        if dealId is None and kold is None:
+            return FundsModel(funds=[Fund.toModel(fund) for fund in ctrl.getAllFunds()])
+        elif dealId is not None and kold is None:
+            return Fund.toModel(ctrl.getFundById(dealId))
+        elif kold is not None and dealId is None:
+            return Fund.toModel(ctrl.getFundByKold(kold))
+        else:
+            raise TooManyArgsException()
 
 
-    @ctrl.app.get('/desemb', response_model=DesembsModel)
-    async def getAllDesembs():
-        desembModels = [Desemb.toModel(desemb) for desemb in ctrl.getAllDesembs()]
-        return DesembsModel(desembs=desembModels)
+    @ctrl.app.get('/desemb', response_model=Union[DesembsModel, DesembModel])
+    async def getAllDesembs(dealId: int = None, ccb: str = None):
+        if dealId is None and ccb is None:
+            return DesembsModel(desembs=[Desemb.toModel(desemb) for desemb in ctrl.getAllDesembs()])
+        elif dealId is not None and ccb is None:
+            return Desemb.toModel(ctrl.getDesembById(dealId))
+        elif ccb is not None and dealId is None:
+            return Desemb.toModel(ctrl.getDesembByCcb(ccb))
+        else:
+            raise TooManyArgsException()
 
 
-    @ctrl.app.get('/amortFund', response_model=AmortFundsModel)
-    async def getAllAmortFunds():
-        amortFundModels = [AmortFund.toModel(amortFund) for amortFund in ctrl.getAllAmortFunds()]
-        return AmortFundsModel(amortFunds=amortFundModels)
+    @ctrl.app.get('/amortFund', response_model=Union[AmortFundsModel, AmortFundModel])
+    async def getAllAmortFunds(amortId: int = None, dealId: int = None):
+        if amortId is None and dealId is None:
+            return AmortFundsModel(amortFunds=[AmortFund.toModel(amortFund) for amortFund in ctrl.getAllAmortFunds()])
+        elif amortId is not None and dealId is None:
+            return AmortFund.toModel(ctrl.getAmortFundById(amortId))
+        elif dealId is not None and amortId is None:
+            return AmortFundsModel(
+                amortFunds=[AmortFund.toModel(amortFund) for amortFund in ctrl.getAmortFundsByFundId(dealId)]
+            )
+        else:
+            raise TooManyArgsException()
 
 
-    @ctrl.app.get('/amortDesemb', response_model=AmortDesembsModel)
-    async def getAllAmortDesembs():
-        amortDesembModels = [AmortDesemb.toModel(amortDesemb) for amortDesemb in ctrl.getAllAmortDesembs()]
-        return AmortDesembsModel(amortDesembs=amortDesembModels)
-
-
-    @ctrl.app.get('/amortDesemb', response_model=AmortDesembsModel)
-    async def getAllAmortDesembs():
-        amortDesembModels = [AmortDesemb.toModel(amortDesemb) for amortDesemb in ctrl.getAllAmortDesembs()]
-        return AmortDesembsModel(amortDesembs=amortDesembModels)
+    @ctrl.app.get('/amortDesemb', response_model=Union[AmortDesembsModel, AmortDesembModel])
+    async def getAllAmortDesembs(amortId: int = None, dealId: int = None):
+        if amortId is None and dealId is None:
+            return AmortDesembsModel(
+                amortDesembs=[AmortDesemb.toModel(amortDesemb) for amortDesemb in ctrl.getAllAmortDesembs()]
+            )
+        elif amortId is not None and dealId is None:
+            return AmortDesemb.toModel(ctrl.getAmortDesembById(amortId))
+        elif dealId is not None and amortId is None:
+            return AmortDesembsModel(
+                amortDesembs=[
+                    AmortDesemb.toModel(amortDesemb) for amortDesemb in ctrl.getAmortDesembsByDesembId(dealId)
+                ]
+            )
+        else:
+            raise TooManyArgsException()
 
 
     uvicorn.run(ctrl.app, host=ctrl.host, port=ctrl.port)
