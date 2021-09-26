@@ -1,35 +1,29 @@
 from datetime import date
 
-from src.controllers.func.c_storage_func import CStorageFunc
+from ctrl import Ctrl
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
-from src.repositories.mock.storage_mock import StorageMock
 
 basedate = date(2021, 8, 13)
+ctrl = Ctrl().ctrl
 
 
 class Test_UCgetValues:
     def test_get_remaining_principal_in_fund_by_id(self):
-        controller = CStorageFunc(StorageMock())
-
-        remain = controller.getFundPrincAfterAmortById(MockData.fund2.dealId, basedate=basedate)
+        remain = ctrl.getFundPrincAfterAmortById(MockData.fund2.dealId, basedate=basedate)
 
         assert isinstance(remain, float)
         assert remain == 16_000_000.
 
     def test_get_remaining_principal_in_desemb_by_id(self):
-        controller = CStorageFunc(StorageMock())
-
-        remain = controller.getDesembPrincAfterAmortById(MockData.desemb1.dealId, basedate=basedate)
+        remain = ctrl.getDesembPrincAfterAmortById(MockData.desemb1.dealId, basedate=basedate)
 
         assert isinstance(remain, float)
         assert remain == 3_500_000
 
     def test_get_available_funds_for_desemb_by_ccb(self):
-        controller = CStorageFunc(StorageMock())
-
         actualFunds = sorted(
-            controller.getAvailableFundsForDesembByCcb(MockData.desemb2.ccb, basedate=basedate),
+            ctrl.getAvailableFundsForDesembByCcb(MockData.desemb2.ccb, basedate=basedate),
             key=lambda fund: fund.venc
         )
         expectedFunds = sorted(

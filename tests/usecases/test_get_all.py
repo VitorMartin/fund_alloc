@@ -1,17 +1,16 @@
-from src.controllers.func.c_storage_func import CStorageFunc
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
-from src.repositories.mock.storage_mock import StorageMock
+from tests.ctrl import Ctrl
+
+ctrl = Ctrl().ctrl
 
 
 class Test_UCGetAll:
     def test_get_all_funds(self):
-        controller = CStorageFunc(StorageMock())
-
-        actualFunds = sorted(controller.getAllFunds(), key=lambda fund: fund.dealId)
+        actualFunds = sorted(ctrl.getAllFunds(), key=lambda fund: fund.dealId)
         expectedFunds = sorted(MockData.funds, key=lambda fund: fund.dealId, reverse=False)
 
         assert len(actualFunds) == len(expectedFunds)
@@ -24,9 +23,7 @@ class Test_UCGetAll:
             assert actualFund == expectedFund
 
     def test_get_all_desembs(self):
-        controller = CStorageFunc(StorageMock())
-
-        actualDesembs = sorted(controller.getAllDesembs(), key=lambda fund: fund.dealId)
+        actualDesembs = sorted(ctrl.getAllDesembs(), key=lambda fund: fund.dealId)
         expectedDesembs = sorted(MockData.desembs, key=lambda fund: fund.dealId)
 
         assert len(actualDesembs) == len(expectedDesembs)
@@ -39,9 +36,7 @@ class Test_UCGetAll:
             assert actualDesemb == expectedDesemb
 
     def test_get_all_amort_funds(self):
-        controller = CStorageFunc(StorageMock())
-
-        actualAmortFunds = sorted(controller.getAllAmortFunds(), key=lambda amort: amort.amortId)
+        actualAmortFunds = sorted(ctrl.getAllAmortFunds(), key=lambda amort: amort.amortId)
         expectedAmortFunds = sorted(MockData.amortFunds, key=lambda amort: amort.amortId)
 
         assert len(actualAmortFunds) == len(expectedAmortFunds)
@@ -54,9 +49,7 @@ class Test_UCGetAll:
             assert actualAmortFund == expectedAmortFund
 
     def test_get_all_amort_desembs(self):
-        controller = CStorageFunc(StorageMock())
-
-        actualAmortDesembs = sorted(controller.getAllAmortDesembs(), key=lambda amort: amort.amortId)
+        actualAmortDesembs = sorted(ctrl.getAllAmortDesembs(), key=lambda amort: amort.amortId)
         expectedAmortDesembs = sorted(MockData.amortDesembs, key=lambda amort: amort.amortId)
 
         assert len(actualAmortDesembs) == len(expectedAmortDesembs)

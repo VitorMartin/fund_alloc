@@ -1,16 +1,15 @@
 from typing import List
 
-from src.controllers.func.c_storage_func import CStorageFunc
+from ctrl import Ctrl
 from src.models.desemb import Desemb
 from src.repositories.mock.mock_data import MockData
-from src.repositories.mock.storage_mock import StorageMock
+
+ctrl = Ctrl().ctrl
 
 
 class Test_UCGetDesembsInFund:
     def test_get_desembs_in_fund_by_kold(self):
-        controller = CStorageFunc(StorageMock())
-
-        actualDesembs = sorted(controller.getDesembsInFundByKold('350151'), key=lambda desemb: desemb.venc)
+        actualDesembs = sorted(ctrl.getDesembsInFundByKold('350151'), key=lambda desemb: desemb.venc)
         expectedDesembs = [MockData.desemb4, MockData.desemb2, MockData.desemb3]
 
         assert isinstance(actualDesembs, List)
