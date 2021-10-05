@@ -84,5 +84,5 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def changeFund(self, desemb: Desemb, newFund: Fund) -> bool:
+    def changeFund(self, desemb: Desemb, newFund: Fund, override=False) -> bool:
         pass

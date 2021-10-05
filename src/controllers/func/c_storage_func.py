@@ -67,5 +67,5 @@ class CStorageFunc(ICStorage):
     def generateFundAvailabilityByKold(self, kold: str):
         return UCGenerateFundAvailabilityByKold(self.__storage)(kold)
 
-    def changeFund(self, desemb: Desemb, newFund: Fund):
-        return UCChangeFund(self.__storage)(desemb, newFund)
+    def changeFund(self, desemb: Desemb, newFund: Fund, override=False):
+        return UCChangeFund(self.__storage)(desemb, newFund, override)
