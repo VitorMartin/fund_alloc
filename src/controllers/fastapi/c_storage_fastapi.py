@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from src.controllers.fastapi.enums.config import *
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_cash_flows import *
+from src.usecases.uc_change_fund import *
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
@@ -73,14 +74,17 @@ class CStorageFastAPI(ICStorage):
         return UCGetFundPrincAfterAmortById(self.__storage)(dealId, basedate)
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate)
+        return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate=basedate)
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
-        return UCgetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate)
+        return UCgetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
 
     def generateFundFlowByKold(self, kold: str) -> List[Amort]:
         return UCGenerateFundFlowByKold(self.__storage)(kold)
 
-    def generateFundAvailabilityByKold(self, kold: str) -> List[
-        dict[Any, str, date, float, float, float, float, float]]:
+    def generateFundAvailabilityByKold(self, kold: str) \
+            -> List[dict[Any, str, date, float, float, float, float, float]]:
         return UCGenerateFundAvailabilityByKold(self.__storage)(kold)
+
+    def changeFund(self, desemb: Desemb, newFund: Fund):
+        return UCChangeFund(self.__storage)(desemb, newFund)

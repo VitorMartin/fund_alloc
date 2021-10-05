@@ -83,3 +83,12 @@ class StorageMock(IStorage):
     # def generateFundAvailabilityByKold(self, kold: str) \
     #         -> List[dict[Any, str, date, float, float, float, float, float]]:
     #     pass
+
+    def changeFund(self, desemb, newFund):
+        index = self.__desembs.index(desemb)
+        desemb.fund = newFund
+        try:
+            self.__desembs[index] = desemb
+            return True
+        except IndexError:
+            return False

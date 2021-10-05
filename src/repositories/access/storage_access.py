@@ -356,3 +356,9 @@ class StorageAccess(IStorage):
     # def generateFundAvailabilityByKold(self, kold: str) \
     #         -> List[dict[Any, str, date, float, float, float, float, float]]:
     #     pass
+
+    def changeFund(self, desemb, newFund):
+        self.__cursor.execute(
+            f'UPDATE {TABLE.DESEMBS} SET {DESEMB.FUND_ID} = {newFund.dealId} WHERE {DESEMB.ID} = {desemb.dealId}'
+        )
+        return True

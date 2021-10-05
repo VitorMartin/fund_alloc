@@ -201,3 +201,7 @@ class IStorage(ABC):
                     movement[MOVEMENT.AVAIL_BEFORE.value] + movement[MOVEMENT.VAL.value]
 
         return flow
+
+    @abstractmethod
+    def changeFund(self, desemb: Desemb, newFund: Fund):
+        pass

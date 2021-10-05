@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 from datetime import date
 from typing import Any
 
+from src.models.desemb import Desemb
+from src.models.fund import Fund
+
 
 class ICStorage(ABC):
     @abstractmethod
@@ -74,4 +77,8 @@ class ICStorage(ABC):
 
     @abstractmethod
     def generateFundAvailabilityByKold(self, kold: str) -> Any:
+        pass
+
+    @abstractmethod
+    def changeFund(self, desemb: Desemb, newFund: Fund) -> bool:
         pass

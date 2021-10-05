@@ -1,5 +1,6 @@
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_cash_flows import *
+from src.usecases.uc_change_fund import *
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
@@ -10,59 +11,62 @@ class CStorageFunc(ICStorage):
     __storage: IStorage
 
     def __init__(self, storage: IStorage):
-        self.storage = storage
+        self.__storage = storage
 
     def getAllFunds(self) -> List[Fund]:
-        return UCGetAllFunds(self.storage)()
+        return UCGetAllFunds(self.__storage)()
 
     def getAllDesembs(self) -> List[Desemb]:
-        return UCGetAllDesembs(self.storage)()
+        return UCGetAllDesembs(self.__storage)()
 
     def getAllAmortFunds(self) -> List[AmortFund]:
-        return UCGetAllAmortFunds(self.storage)()
+        return UCGetAllAmortFunds(self.__storage)()
 
     def getAllAmortDesembs(self) -> List[AmortDesemb]:
-        return UCGetAllAmortDesembs(self.storage)()
+        return UCGetAllAmortDesembs(self.__storage)()
 
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
-        return UCGetDesembsInFundByKold(self.storage)(kold)
+        return UCGetDesembsInFundByKold(self.__storage)(kold)
 
     def getFundById(self, dealId: int) -> Fund:
-        return UCGetFundById(self.storage)(dealId)
+        return UCGetFundById(self.__storage)(dealId)
 
     def getFundByKold(self, kold: str) -> Fund:
-        return UCGetFundByKold(self.storage)(kold)
+        return UCGetFundByKold(self.__storage)(kold)
 
     def getDesembById(self, dealId: int) -> Desemb:
-        return UCGetDesembById(self.storage)(dealId)
+        return UCGetDesembById(self.__storage)(dealId)
 
     def getDesembByCcb(self, ccb: str) -> Desemb:
-        return UCGetDesembByCcb(self.storage)(ccb)
+        return UCGetDesembByCcb(self.__storage)(ccb)
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
-        return UCGetAmortFundById(self.storage)(amortId)
+        return UCGetAmortFundById(self.__storage)(amortId)
 
     def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
-        return UCGetAmortFundsByFundId(self.storage)(dealId)
+        return UCGetAmortFundsByFundId(self.__storage)(dealId)
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
-        return UCGetAmortDesembById(self.storage)(amortId)
+        return UCGetAmortDesembById(self.__storage)(amortId)
 
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
-        return UCGetAmortDesembsByDesembId(self.storage)(dealId)
+        return UCGetAmortDesembsByDesembId(self.__storage)(dealId)
 
     def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        return UCGetFundPrincAfterAmortById(self.storage)(dealId, basedate)
+        return UCGetFundPrincAfterAmortById(self.__storage)(dealId, basedate)
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
-        return UCGetDesembPrincAfterAmortById(self.storage)(dealId, basedate=basedate)
+        return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate=basedate)
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
-        return UCgetAvailableFundsForDesembByCcb(self.storage)(ccb, basedate=basedate)
+        return UCgetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
 
     def generateFundFlowByKold(self, kold: str) -> List[Amort]:
-        return UCGenerateFundFlowByKold(self.storage)(kold)
+        return UCGenerateFundFlowByKold(self.__storage)(kold)
 
     def generateFundAvailabilityByKold(self, kold: str) \
             -> List[dict[Any, str, date, float, float, float, float, float]]:
-        return UCGenerateFundAvailabilityByKold(self.storage)(kold)
+        return UCGenerateFundAvailabilityByKold(self.__storage)(kold)
+
+    def changeFund(self, desemb: Desemb, newFund: Fund):
+        return UCChangeFund(self.__storage)(desemb, newFund)
