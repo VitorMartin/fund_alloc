@@ -34,59 +34,47 @@ class FundRoutes(APIRouter):
             else:
                 return PrincModel(princ=ctrl.getFundPrincAfterAmortById(dealId, basedate))
 
-        @self.get('/availability', response_model=Union[FundsModel, FundAvailabilityModel])
-        async def getAvailableFundsForDesembByCcb(ccb: str = None, basedate: date = None, kold: str = None):
-            if kold is None:
-                if ccb is None:
-                    raise MissingArgsException()
-                else:
-                    if basedate is None:
-                        return FundsModel(
-                            funds=[Fund.toModel(fund) for fund in ctrl.getAvailableFundsForDesembByCcb(ccb)])
-                    else:
-                        return FundsModel(
-                            funds=[Fund.toModel(fund) for fund in ctrl.getAvailableFundsForDesembByCcb(ccb, basedate)]
-                        )
-            else:
-                if ccb is None and basedate is None:
-                    availabilityModel = []
-                    availability = ctrl.generateFundAvailabilityByKold(kold)
-                    for avail in availability:
-                        if isinstance(avail[MOVEMENT.OP.value], Fund):
-                            opModel = Fund.toModel(avail[MOVEMENT.OP.value])
-                        elif isinstance(avail[MOVEMENT.OP.value], Desemb):
-                            opModel = Desemb.toModel(avail[MOVEMENT.OP.value])
-                        elif isinstance(avail[MOVEMENT.OP.value], AmortFund):
-                            opModel = AmortFund.toModel(avail[MOVEMENT.OP.value])
-                        elif isinstance(avail[MOVEMENT.OP.value], AmortDesemb):
-                            opModel = AmortDesemb.toModel(avail[MOVEMENT.OP.value])
-                        else:
-                            raise InternalServerError()
-
-                        availabilityModel.append(FundAvailabilityMovementModel(
-                            op=opModel,
-                            type=avail[MOVEMENT.TYPE.value],
-                            data=avail[MOVEMENT.DATA.value],
-                            val=avail[MOVEMENT.VAL.value],
-                            fundPrinc=avail[MOVEMENT.FUND_PRINC.value],
-                            desembPrinc=avail[MOVEMENT.DESEMB_PRINC.value],
-                            availBefore=avail[MOVEMENT.AVAIL_BEFORE.value],
-                            availAfter=avail[MOVEMENT.AVAIL_AFTER.value]
-                        ))
-                    return FundAvailabilityModel(availability=availabilityModel)
-                else:
-                    raise TooManyArgsException()
-
-        @self.get('/flow')
-        async def generateFundFlowByKold(kold: str = None):
+        @self.get('/amorts', response_model=CashFlowModel)
+        async def getAmortsInFundByKold(kold: str = None):
             if kold is None:
                 raise MissingArgsException()
             else:
                 flowModel = []
-                flow = ctrl.generateFundFlowByKold(kold)
+                flow = ctrl.getAmortsInFundByKold(kold)
                 for movement in flow:
                     if isinstance(movement, AmortFund):
                         flowModel.append(AmortFund.toModel(movement))
                     elif isinstance(movement, AmortDesemb):
                         flowModel.append(AmortDesemb.toModel(movement))
                 return CashFlowModel(amorts=flowModel)
+
+        @self.get('/flow', response_model=FlowModel)
+        async def generateFundFlowByKold(kold: str = None):
+            if kold is None:
+                raise MissingArgsException()
+            else:
+                availabilityModel = []
+                availability = ctrl.generateFundFlowByKold(kold)
+                for avail in availability:
+                    if isinstance(avail[MOVEMENT.OP.value], Fund):
+                        opModel = Fund.toModel(avail[MOVEMENT.OP.value])
+                    elif isinstance(avail[MOVEMENT.OP.value], Desemb):
+                        opModel = Desemb.toModel(avail[MOVEMENT.OP.value])
+                    elif isinstance(avail[MOVEMENT.OP.value], AmortFund):
+                        opModel = AmortFund.toModel(avail[MOVEMENT.OP.value])
+                    elif isinstance(avail[MOVEMENT.OP.value], AmortDesemb):
+                        opModel = AmortDesemb.toModel(avail[MOVEMENT.OP.value])
+                    else:
+                        raise InternalServerError()
+
+                    availabilityModel.append(FlowChangeModel(
+                        op=opModel,
+                        type=avail[MOVEMENT.TYPE.value],
+                        data=avail[MOVEMENT.DATA.value],
+                        val=avail[MOVEMENT.VAL.value],
+                        fundPrinc=avail[MOVEMENT.FUND_PRINC.value],
+                        desembPrinc=avail[MOVEMENT.DESEMB_PRINC.value],
+                        availBefore=avail[MOVEMENT.AVAIL_BEFORE.value],
+                        availAfter=avail[MOVEMENT.AVAIL_AFTER.value]
+                    ))
+                return FlowModel(flow=availabilityModel)

@@ -4,6 +4,7 @@ from src.controllers.fastapi.errors.errors import *
 from src.controllers.fastapi.http.responses import *
 from src.interfaces.i_c_storage import ICStorage
 from src.models.desemb import Desemb
+from src.models.fund import Fund
 
 
 class DesembRoutes(APIRouter):
@@ -31,3 +32,17 @@ class DesembRoutes(APIRouter):
                 return PrincModel(princ=ctrl.getDesembPrincAfterAmortById(dealId))
             else:
                 return PrincModel(princ=ctrl.getDesembPrincAfterAmortById(dealId, basedate))
+
+        @self.get('/availability', response_model=FundsModel)
+        async def getAvailableFundsForDesembByCcb(ccb: str = None, basedate: date = None):
+            if ccb is None:
+                raise MissingArgsException()
+            else:
+                if basedate is None:
+                    return FundsModel(
+                        funds=[Fund.toModel(fund) for fund in ctrl.getAvailableFundsForDesembByCcb(ccb)]
+                    )
+                else:
+                    return FundsModel(
+                        funds=[Fund.toModel(fund) for fund in ctrl.getAvailableFundsForDesembByCcb(ccb, basedate)]
+                    )

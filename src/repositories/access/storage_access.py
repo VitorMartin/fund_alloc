@@ -350,10 +350,10 @@ class StorageAccess(IStorage):
     # def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()) -> List[Fund]:
     #     pass
 
-    # def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+    # def getAmortsInFundByKold(self, kold: str) -> List[Amort]:
     #     pass
 
-    # def generateFundAvailabilityByKold(self, kold: str) \
+    # def generateFundFlowByKold(self, kold: str) \
     #         -> List[dict[Any, str, date, float, float, float, float, float]]:
     #     pass
 

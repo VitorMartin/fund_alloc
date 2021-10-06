@@ -10,7 +10,7 @@ ctrl = Ctrl().ctrl
 class Test_UCgetValues:
     def test_generate_fund_flow_by_kold(self):
         fund = MockData.fund2
-        actualFlow = ctrl.generateFundFlowByKold(fund.kold)
+        actualFlow = ctrl.getAmortsInFundByKold(fund.kold)
         expectedFlow = [
             MockData.amortFund3,
             MockData.amortFund4,
@@ -40,7 +40,7 @@ class Test_UCgetValues:
             assert actualMovement == expectedMovement
 
     def test_generate_fund_avail_by_kold(self):
-        actualFlow = ctrl.generateFundAvailabilityByKold(MockData.fund1.kold)
+        actualFlow = ctrl.generateFundFlowByKold(MockData.fund1.kold)
 
         expectedFlow = [
             {

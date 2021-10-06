@@ -104,7 +104,7 @@ class IStorage(ABC):
 
         return availFunds
 
-    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+    def getAmortsInFundByKold(self, kold: str) -> List[Amort]:
         fund = self.getFundByKold(kold)
         flow: List[Amort] = [amortFund for amortFund in self.getAllAmortFunds() if amortFund.fund.kold == fund.kold]
         desembs = self.getDesembsInFundByKold(kold)
@@ -116,7 +116,7 @@ class IStorage(ABC):
 
         return flow
 
-    def generateFundAvailabilityByKold(self, kold: str) -> List[dict[
+    def generateFundFlowByKold(self, kold: str) -> List[dict[
         str, Union[Fund, Desemb, AmortFund, AmortDesemb, str, date, float]]
     ]:
         def movementConstructor(_op, _opType, _opData, _opVal, _fundPrinc, _desembPrinc, _availBefore, _availAfter):
@@ -147,7 +147,7 @@ class IStorage(ABC):
             )
 
         # All amorts
-        amorts = self.generateFundFlowByKold(kold)
+        amorts = self.getAmortsInFundByKold(kold)
         for amort in amorts:
             if amort.__class__.__name__ == AmortFund.__name__:
                 amortType = MODEL.AMORT_FUND.value

@@ -75,11 +75,11 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def generateFundFlowByKold(self, kold: str) -> List[Amort]:
+    def getAmortsInFundByKold(self, kold: str) -> List[Amort]:
         pass
 
     @abstractmethod
-    def generateFundAvailabilityByKold(self, kold: str) -> List[dict[
+    def generateFundFlowByKold(self, kold: str) -> List[dict[
         str, Union[Fund, Desemb, AmortFund, AmortDesemb, str, date, float]]
     ]:
         pass

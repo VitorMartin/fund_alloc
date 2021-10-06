@@ -12,6 +12,7 @@ from src.usecases.uc_change_fund import *
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
+from src.usecases.uc_get_op_by_attr import UCGetAmortsInFundByKold
 from src.usecases.uc_get_values import *
 
 
@@ -86,13 +87,13 @@ class CStorageFastAPI(ICStorage):
         return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate=basedate)
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()):
-        return UCgetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
+        return UCGetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
+
+    def getAmortsInFundByKold(self, kold: str):
+        return UCGetAmortsInFundByKold(self.__storage)(kold)
 
     def generateFundFlowByKold(self, kold: str):
         return UCGenerateFundFlowByKold(self.__storage)(kold)
-
-    def generateFundAvailabilityByKold(self, kold: str):
-        return UCGenerateFundAvailabilityByKold(self.__storage)(kold)
 
     def changeFund(self, desemb: Desemb, newFund: Fund, override=False):
         return UCChangeFund(self.__storage)(desemb, newFund, override)

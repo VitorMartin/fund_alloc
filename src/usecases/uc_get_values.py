@@ -25,7 +25,7 @@ class UCGetDesembPrincAfterAmortById:
         return self.storage.getDesembPrincAfterAmortById(dealId, basedate=basedate)
 
 
-class UCgetAvailableFundsForDesembByCcb:
+class UCGetAvailableFundsForDesembByCcb:
     storage: IStorage
 
     def __init__(self, storageRepo: IStorage):

@@ -33,7 +33,7 @@ class CashFlowModel(BaseModel):
     amorts: List[Union[AmortFundModel, AmortDesembModel]]
 
 
-class FundAvailabilityMovementModel(BaseModel):
+class FlowChangeModel(BaseModel):
     op: Union[FundModel, DesembModel, AmortFundModel, AmortDesembModel]
     type: str
     data: date
@@ -44,5 +44,5 @@ class FundAvailabilityMovementModel(BaseModel):
     availAfter: float
 
 
-class FundAvailabilityModel(BaseModel):
-    availability: List[FundAvailabilityMovementModel]
+class FlowModel(BaseModel):
+    flow: List[FlowChangeModel]
