@@ -23,3 +23,11 @@ class InternalServerError(HTTPException):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail='Internal server error.'
         )
+
+
+class NotFoundError(HTTPException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Not found.'
+        )
