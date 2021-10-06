@@ -6,5 +6,5 @@ from src.repositories.access.storage_access import StorageAccess
 class Ctrl:
     ctrl: ICStorage
 
-    def __init__(self, ctrl: ICStorage = CStorageFastAPI(StorageAccess())):
+    def __init__(self, ctrl: ICStorage = CStorageFastAPI(StorageAccess(), autostart=False)):
         self.ctrl = ctrl

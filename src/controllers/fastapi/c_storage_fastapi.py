@@ -1,6 +1,7 @@
 import json
 import os
 
+import uvicorn
 from fastapi import FastAPI
 
 from src.controllers.fastapi.enums.config import *
@@ -22,7 +23,7 @@ class CStorageFastAPI(ICStorage):
     url: str
     app: FastAPI
 
-    def __init__(self, storage: IStorage, adapters: dict = dict({})):
+    def __init__(self, storage: IStorage, adapters: dict = dict({}), autostart=True):
         with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
             data = json.load(file)
         self.__storage = storage
@@ -32,6 +33,12 @@ class CStorageFastAPI(ICStorage):
         self.url = f'{self.protocol}://{self.host}:{self.port}'
         self.app = FastAPI()
         self.app.include_router(Router(storage, self, adapters))
+
+        if autostart:
+            self.start()
+
+    def start(self):
+        uvicorn.run(self.app, host=self.host, port=self.port)
 
     def getAllFunds(self):
         return UCGetAllFunds(self.__storage)()
