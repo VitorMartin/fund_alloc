@@ -4,6 +4,7 @@ import os
 from fastapi import FastAPI
 
 from src.controllers.fastapi.enums.config import *
+from src.controllers.fastapi.router.router import Router
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_cash_flows import *
 from src.usecases.uc_change_fund import *
@@ -21,7 +22,7 @@ class CStorageFastAPI(ICStorage):
     url: str
     app: FastAPI
 
-    def __init__(self, storage: IStorage):
+    def __init__(self, storage: IStorage, adapters: List[str]):
         with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
             data = json.load(file)
         self.__storage = storage
@@ -30,6 +31,7 @@ class CStorageFastAPI(ICStorage):
         self.port = data[CONFIG.PORT.value]
         self.url = f'{self.protocol}://{self.host}:{self.port}'
         self.app = FastAPI()
+        self.app.include_router(Router(storage, self, adapters))
 
     def getAllFunds(self):
         return UCGetAllFunds(self.__storage)()

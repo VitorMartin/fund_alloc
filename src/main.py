@@ -17,15 +17,6 @@ if __name__ == '__main__':
     adapters = init[CONFIG.ADAPTERS.value]
 
 
-    @ctrl.app.get('/', response_model=RootModel)
-    async def root():
-        return RootModel(
-            repository_type=str(type(repo)),
-            controller_type=str(type(ctrl)),
-            adapters=[str(type(ad)) for ad in adapters]
-        )
-
-
     @ctrl.app.get('/fund', response_model=Union[FundsModel, FundModel])
     async def getAllFunds(dealId: int = None, kold: str = None):
         if dealId is None and kold is None:
