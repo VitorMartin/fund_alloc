@@ -81,7 +81,7 @@ class AMORT_DESEMB(Enum):
     VAL = 'amort_desemb_val'
 
 
-class MOVEMENT(Enum):
+class FLOW_CHANGE(Enum):
     def __str__(self):
         return self.value
 

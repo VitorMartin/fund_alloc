@@ -7,7 +7,7 @@ from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.enums.ccy import CCY
-from src.models.enums.dict_keys import MODEL, MOVEMENT
+from src.models.enums.dict_keys import FLOW_CHANGE, MODEL
 from src.models.fund import Fund
 
 
@@ -119,16 +119,16 @@ class IStorage(ABC):
     def generateFundFlowByKold(self, kold: str) -> List[dict[
         str, Union[Fund, Desemb, AmortFund, AmortDesemb, str, date, float]]
     ]:
-        def movementConstructor(_op, _opType, _opData, _opVal, _fundPrinc, _desembPrinc, _availBefore, _availAfter):
+        def flowChangeConstructor(_op, _opType, _opData, _opVal, _fundPrinc, _desembPrinc, _availBefore, _availAfter):
             return {
-                MOVEMENT.OP.value: _op,
-                MOVEMENT.TYPE.value: _opType,
-                MOVEMENT.DATA.value: _opData,
-                MOVEMENT.VAL.value: _opVal,
-                MOVEMENT.FUND_PRINC.value: _fundPrinc,
-                MOVEMENT.DESEMB_PRINC.value: _desembPrinc,
-                MOVEMENT.AVAIL_BEFORE.value: _availBefore,
-                MOVEMENT.AVAIL_AFTER.value: _availAfter
+                FLOW_CHANGE.OP.value: _op,
+                FLOW_CHANGE.TYPE.value: _opType,
+                FLOW_CHANGE.DATA.value: _opData,
+                FLOW_CHANGE.VAL.value: _opVal,
+                FLOW_CHANGE.FUND_PRINC.value: _fundPrinc,
+                FLOW_CHANGE.DESEMB_PRINC.value: _desembPrinc,
+                FLOW_CHANGE.AVAIL_BEFORE.value: _availBefore,
+                FLOW_CHANGE.AVAIL_AFTER.value: _availAfter
             }
 
         flow = []
@@ -136,14 +136,14 @@ class IStorage(ABC):
         # Initial funding
         fund = self.getFundByKold(kold)
         flow.append(
-            movementConstructor(fund, MODEL.FUND.value, fund.ini, fund.princ, 0, 0, 0, 0)
+            flowChangeConstructor(fund, MODEL.FUND.value, fund.ini, fund.princ, 0, 0, 0, 0)
         )
 
         # All desembs
         desembs = self.getDesembsInFundByKold(kold)
         for desemb in desembs:
             flow.append(
-                movementConstructor(desemb, MODEL.DESEMB.value, desemb.ini, desemb.princ, 0, 0, 0, 0)
+                flowChangeConstructor(desemb, MODEL.DESEMB.value, desemb.ini, desemb.princ, 0, 0, 0, 0)
             )
 
         # All amorts
@@ -157,49 +157,49 @@ class IStorage(ABC):
                 amortType = MODEL.AMORT.value
 
             flow.append(
-                movementConstructor(amort, amortType, amort.data, amort.val, 0, 0, 0, 0)
+                flowChangeConstructor(amort, amortType, amort.data, amort.val, 0, 0, 0, 0)
             )
 
-        flow.sort(key=lambda _movement: _movement[MOVEMENT.DATA.value])
+        flow.sort(key=lambda _movement: _movement[FLOW_CHANGE.DATA.value])
 
         for i in range(len(flow)):
             if i == 0:
-                prevMovement = movementConstructor(
+                prevMovement = flowChangeConstructor(
                     Amort(date(2000, 1, 1), CCY.USD, 0., pk=-1), '', date(2000, 1, 1), 0., 0., 0., 0., 0.
                 )
             else:
                 prevMovement = flow[i - 1]
 
             movement = flow[i]
-            op = movement[MOVEMENT.OP.value]
+            op = movement[FLOW_CHANGE.OP.value]
 
-            if movement[MOVEMENT.TYPE.value] == MODEL.FUND.value:
-                movement[MOVEMENT.FUND_PRINC.value] += op.princ
-                movement[MOVEMENT.DESEMB_PRINC.value] += prevMovement[MOVEMENT.DESEMB_PRINC.value]
-                movement[MOVEMENT.AVAIL_BEFORE.value] = prevMovement[MOVEMENT.AVAIL_AFTER.value]
-                movement[MOVEMENT.AVAIL_AFTER.value] = \
-                    movement[MOVEMENT.AVAIL_BEFORE.value] + movement[MOVEMENT.VAL.value]
+            if movement[FLOW_CHANGE.TYPE.value] == MODEL.FUND.value:
+                movement[FLOW_CHANGE.FUND_PRINC.value] += op.princ
+                movement[FLOW_CHANGE.DESEMB_PRINC.value] += prevMovement[FLOW_CHANGE.DESEMB_PRINC.value]
+                movement[FLOW_CHANGE.AVAIL_BEFORE.value] = prevMovement[FLOW_CHANGE.AVAIL_AFTER.value]
+                movement[FLOW_CHANGE.AVAIL_AFTER.value] = \
+                    movement[FLOW_CHANGE.AVAIL_BEFORE.value] + movement[FLOW_CHANGE.VAL.value]
 
-            elif movement[MOVEMENT.TYPE.value] == MODEL.DESEMB.value:
-                movement[MOVEMENT.FUND_PRINC.value] += prevMovement[MOVEMENT.FUND_PRINC.value]
-                movement[MOVEMENT.DESEMB_PRINC.value] += op.princ
-                movement[MOVEMENT.AVAIL_BEFORE.value] = prevMovement[MOVEMENT.AVAIL_AFTER.value]
-                movement[MOVEMENT.AVAIL_AFTER.value] = \
-                    movement[MOVEMENT.AVAIL_BEFORE.value] - movement[MOVEMENT.VAL.value]
+            elif movement[FLOW_CHANGE.TYPE.value] == MODEL.DESEMB.value:
+                movement[FLOW_CHANGE.FUND_PRINC.value] += prevMovement[FLOW_CHANGE.FUND_PRINC.value]
+                movement[FLOW_CHANGE.DESEMB_PRINC.value] += op.princ
+                movement[FLOW_CHANGE.AVAIL_BEFORE.value] = prevMovement[FLOW_CHANGE.AVAIL_AFTER.value]
+                movement[FLOW_CHANGE.AVAIL_AFTER.value] = \
+                    movement[FLOW_CHANGE.AVAIL_BEFORE.value] - movement[FLOW_CHANGE.VAL.value]
 
-            elif movement[MOVEMENT.TYPE.value] == MODEL.AMORT_FUND.value:
-                movement[MOVEMENT.FUND_PRINC.value] += prevMovement[MOVEMENT.FUND_PRINC.value]
-                movement[MOVEMENT.DESEMB_PRINC.value] += prevMovement[MOVEMENT.DESEMB_PRINC.value]
-                movement[MOVEMENT.AVAIL_BEFORE.value] = prevMovement[MOVEMENT.AVAIL_AFTER.value]
-                movement[MOVEMENT.AVAIL_AFTER.value] = \
-                    movement[MOVEMENT.AVAIL_BEFORE.value] - movement[MOVEMENT.VAL.value]
+            elif movement[FLOW_CHANGE.TYPE.value] == MODEL.AMORT_FUND.value:
+                movement[FLOW_CHANGE.FUND_PRINC.value] += prevMovement[FLOW_CHANGE.FUND_PRINC.value]
+                movement[FLOW_CHANGE.DESEMB_PRINC.value] += prevMovement[FLOW_CHANGE.DESEMB_PRINC.value]
+                movement[FLOW_CHANGE.AVAIL_BEFORE.value] = prevMovement[FLOW_CHANGE.AVAIL_AFTER.value]
+                movement[FLOW_CHANGE.AVAIL_AFTER.value] = \
+                    movement[FLOW_CHANGE.AVAIL_BEFORE.value] - movement[FLOW_CHANGE.VAL.value]
 
-            elif movement[MOVEMENT.TYPE.value] == MODEL.AMORT_DESEMB.value:
-                movement[MOVEMENT.FUND_PRINC.value] += prevMovement[MOVEMENT.FUND_PRINC.value]
-                movement[MOVEMENT.DESEMB_PRINC.value] += prevMovement[MOVEMENT.DESEMB_PRINC.value]
-                movement[MOVEMENT.AVAIL_BEFORE.value] = prevMovement[MOVEMENT.AVAIL_AFTER.value]
-                movement[MOVEMENT.AVAIL_AFTER.value] = \
-                    movement[MOVEMENT.AVAIL_BEFORE.value] + movement[MOVEMENT.VAL.value]
+            elif movement[FLOW_CHANGE.TYPE.value] == MODEL.AMORT_DESEMB.value:
+                movement[FLOW_CHANGE.FUND_PRINC.value] += prevMovement[FLOW_CHANGE.FUND_PRINC.value]
+                movement[FLOW_CHANGE.DESEMB_PRINC.value] += prevMovement[FLOW_CHANGE.DESEMB_PRINC.value]
+                movement[FLOW_CHANGE.AVAIL_BEFORE.value] = prevMovement[FLOW_CHANGE.AVAIL_AFTER.value]
+                movement[FLOW_CHANGE.AVAIL_AFTER.value] = \
+                    movement[FLOW_CHANGE.AVAIL_BEFORE.value] + movement[FLOW_CHANGE.VAL.value]
 
         return flow
 

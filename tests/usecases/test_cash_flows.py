@@ -44,75 +44,75 @@ class Test_UCgetValues:
 
         expectedFlow = [
             {
-                MOVEMENT.OP.value: MockData.desemb1,
-                MOVEMENT.TYPE.value: MODEL.DESEMB.value,
-                MOVEMENT.DATA.value: MockData.desemb1.ini,
-                MOVEMENT.VAL.value: MockData.desemb1.princ,
-                MOVEMENT.FUND_PRINC.value: 0.,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: 0.,
-                MOVEMENT.AVAIL_AFTER.value: -MockData.desemb1.princ
+                FLOW_CHANGE.OP.value: MockData.desemb1,
+                FLOW_CHANGE.TYPE.value: MODEL.DESEMB.value,
+                FLOW_CHANGE.DATA.value: MockData.desemb1.ini,
+                FLOW_CHANGE.VAL.value: MockData.desemb1.princ,
+                FLOW_CHANGE.FUND_PRINC.value: 0.,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: 0.,
+                FLOW_CHANGE.AVAIL_AFTER.value: -MockData.desemb1.princ
             },
             {
-                MOVEMENT.OP.value: MockData.fund1,
-                MOVEMENT.TYPE.value: MODEL.FUND.value,
-                MOVEMENT.DATA.value: MockData.fund1.ini,
-                MOVEMENT.VAL.value: MockData.fund1.princ,
-                MOVEMENT.FUND_PRINC.value: MockData.fund1.princ,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: -MockData.desemb1.princ,
-                MOVEMENT.AVAIL_AFTER.value: -MockData.desemb1.princ + MockData.fund1.princ
-             },
-            {
-                MOVEMENT.OP.value: MockData.amortFund1,
-                MOVEMENT.TYPE.value: MODEL.AMORT_FUND.value,
-                MOVEMENT.DATA.value: MockData.amortFund1.data,
-                MOVEMENT.VAL.value: MockData.amortFund1.val,
-                MOVEMENT.FUND_PRINC.value: MockData.fund1.princ,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: 500_000.,
-                MOVEMENT.AVAIL_AFTER.value: -MockData.amortFund1.val + 500_000.
+                FLOW_CHANGE.OP.value: MockData.fund1,
+                FLOW_CHANGE.TYPE.value: MODEL.FUND.value,
+                FLOW_CHANGE.DATA.value: MockData.fund1.ini,
+                FLOW_CHANGE.VAL.value: MockData.fund1.princ,
+                FLOW_CHANGE.FUND_PRINC.value: MockData.fund1.princ,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: -MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_AFTER.value: -MockData.desemb1.princ + MockData.fund1.princ
             },
             {
-                MOVEMENT.OP.value: MockData.amortDesemb1,
-                MOVEMENT.TYPE.value: MODEL.AMORT_DESEMB.value,
-                MOVEMENT.DATA.value: MockData.amortDesemb1.data,
-                MOVEMENT.VAL.value: MockData.amortDesemb1.val,
-                MOVEMENT.FUND_PRINC.value: MockData.fund1.princ,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: -1_500_000.,
-                MOVEMENT.AVAIL_AFTER.value: MockData.amortDesemb1.val - 1_500_000.
+                FLOW_CHANGE.OP.value: MockData.amortFund1,
+                FLOW_CHANGE.TYPE.value: MODEL.AMORT_FUND.value,
+                FLOW_CHANGE.DATA.value: MockData.amortFund1.data,
+                FLOW_CHANGE.VAL.value: MockData.amortFund1.val,
+                FLOW_CHANGE.FUND_PRINC.value: MockData.fund1.princ,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: 500_000.,
+                FLOW_CHANGE.AVAIL_AFTER.value: -MockData.amortFund1.val + 500_000.
             },
             {
-                MOVEMENT.OP.value: MockData.amortFund2,
-                MOVEMENT.TYPE.value: MODEL.AMORT_FUND.value,
-                MOVEMENT.DATA.value: MockData.amortFund2.data,
-                MOVEMENT.VAL.value: MockData.amortFund2.val,
-                MOVEMENT.FUND_PRINC.value: MockData.fund1.princ,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: 250_000.,
-                MOVEMENT.AVAIL_AFTER.value: -MockData.amortFund2.val + 250_000.
+                FLOW_CHANGE.OP.value: MockData.amortDesemb1,
+                FLOW_CHANGE.TYPE.value: MODEL.AMORT_DESEMB.value,
+                FLOW_CHANGE.DATA.value: MockData.amortDesemb1.data,
+                FLOW_CHANGE.VAL.value: MockData.amortDesemb1.val,
+                FLOW_CHANGE.FUND_PRINC.value: MockData.fund1.princ,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: -1_500_000.,
+                FLOW_CHANGE.AVAIL_AFTER.value: MockData.amortDesemb1.val - 1_500_000.
             },
             {
-                MOVEMENT.OP.value: MockData.amortDesemb2,
-                MOVEMENT.TYPE.value: MODEL.AMORT_DESEMB.value,
-                MOVEMENT.DATA.value: MockData.amortDesemb2.data,
-                MOVEMENT.VAL.value: MockData.amortDesemb2.val,
-                MOVEMENT.FUND_PRINC.value: MockData.fund1.princ,
-                MOVEMENT.DESEMB_PRINC.value: MockData.desemb1.princ,
-                MOVEMENT.AVAIL_BEFORE.value: -1_750_000.,
-                MOVEMENT.AVAIL_AFTER.value: MockData.amortDesemb2.val - 1_750_000.
+                FLOW_CHANGE.OP.value: MockData.amortFund2,
+                FLOW_CHANGE.TYPE.value: MODEL.AMORT_FUND.value,
+                FLOW_CHANGE.DATA.value: MockData.amortFund2.data,
+                FLOW_CHANGE.VAL.value: MockData.amortFund2.val,
+                FLOW_CHANGE.FUND_PRINC.value: MockData.fund1.princ,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: 250_000.,
+                FLOW_CHANGE.AVAIL_AFTER.value: -MockData.amortFund2.val + 250_000.
+            },
+            {
+                FLOW_CHANGE.OP.value: MockData.amortDesemb2,
+                FLOW_CHANGE.TYPE.value: MODEL.AMORT_DESEMB.value,
+                FLOW_CHANGE.DATA.value: MockData.amortDesemb2.data,
+                FLOW_CHANGE.VAL.value: MockData.amortDesemb2.val,
+                FLOW_CHANGE.FUND_PRINC.value: MockData.fund1.princ,
+                FLOW_CHANGE.DESEMB_PRINC.value: MockData.desemb1.princ,
+                FLOW_CHANGE.AVAIL_BEFORE.value: -1_750_000.,
+                FLOW_CHANGE.AVAIL_AFTER.value: MockData.amortDesemb2.val - 1_750_000.
             }
         ]
-        expectedFlow.sort(key=lambda movement: movement[MOVEMENT.DATA.value])
+        expectedFlow.sort(key=lambda movement: movement[FLOW_CHANGE.DATA.value])
 
         assert len(actualFlow) == len(expectedFlow)
 
         for i in range(len(actualFlow)):
             actualMovement = actualFlow[i]
-            actualMovement[MOVEMENT.OP.value] = actualMovement[MOVEMENT.OP.value].__str__()
+            actualMovement[FLOW_CHANGE.OP.value] = actualMovement[FLOW_CHANGE.OP.value].__str__()
             expectedMovement = expectedFlow[i]
-            expectedMovement[MOVEMENT.OP.value] = expectedMovement[MOVEMENT.OP.value].__str__()
+            expectedMovement[FLOW_CHANGE.OP.value] = expectedMovement[FLOW_CHANGE.OP.value].__str__()
 
             assert isinstance(actualMovement, dict)
             assert actualMovement == expectedMovement

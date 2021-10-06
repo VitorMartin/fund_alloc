@@ -6,7 +6,7 @@ from src.interfaces.i_c_storage import ICStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
-from src.models.enums.dict_keys import MOVEMENT
+from src.models.enums.dict_keys import FLOW_CHANGE
 from src.models.fund import Fund
 
 
@@ -53,28 +53,28 @@ class FundRoutes(APIRouter):
             if kold is None:
                 raise MissingArgsException()
             else:
-                availabilityModel = []
-                availability = ctrl.generateFundFlowByKold(kold)
-                for avail in availability:
-                    if isinstance(avail[MOVEMENT.OP.value], Fund):
-                        opModel = Fund.toModel(avail[MOVEMENT.OP.value])
-                    elif isinstance(avail[MOVEMENT.OP.value], Desemb):
-                        opModel = Desemb.toModel(avail[MOVEMENT.OP.value])
-                    elif isinstance(avail[MOVEMENT.OP.value], AmortFund):
-                        opModel = AmortFund.toModel(avail[MOVEMENT.OP.value])
-                    elif isinstance(avail[MOVEMENT.OP.value], AmortDesemb):
-                        opModel = AmortDesemb.toModel(avail[MOVEMENT.OP.value])
+                flowModel = []
+                flow = ctrl.generateFundFlowByKold(kold)
+                for flowChange in flow:
+                    if isinstance(flowChange[FLOW_CHANGE.OP.value], Fund):
+                        opModel = Fund.toModel(flowChange[FLOW_CHANGE.OP.value])
+                    elif isinstance(flowChange[FLOW_CHANGE.OP.value], Desemb):
+                        opModel = Desemb.toModel(flowChange[FLOW_CHANGE.OP.value])
+                    elif isinstance(flowChange[FLOW_CHANGE.OP.value], AmortFund):
+                        opModel = AmortFund.toModel(flowChange[FLOW_CHANGE.OP.value])
+                    elif isinstance(flowChange[FLOW_CHANGE.OP.value], AmortDesemb):
+                        opModel = AmortDesemb.toModel(flowChange[FLOW_CHANGE.OP.value])
                     else:
                         raise InternalServerError()
 
-                    availabilityModel.append(FlowChangeModel(
+                    flowModel.append(FlowChangeModel(
                         op=opModel,
-                        type=avail[MOVEMENT.TYPE.value],
-                        data=avail[MOVEMENT.DATA.value],
-                        val=avail[MOVEMENT.VAL.value],
-                        fundPrinc=avail[MOVEMENT.FUND_PRINC.value],
-                        desembPrinc=avail[MOVEMENT.DESEMB_PRINC.value],
-                        availBefore=avail[MOVEMENT.AVAIL_BEFORE.value],
-                        availAfter=avail[MOVEMENT.AVAIL_AFTER.value]
+                        type=flowChange[FLOW_CHANGE.TYPE.value],
+                        data=flowChange[FLOW_CHANGE.DATA.value],
+                        val=flowChange[FLOW_CHANGE.VAL.value],
+                        fundPrinc=flowChange[FLOW_CHANGE.FUND_PRINC.value],
+                        desembPrinc=flowChange[FLOW_CHANGE.DESEMB_PRINC.value],
+                        availBefore=flowChange[FLOW_CHANGE.AVAIL_BEFORE.value],
+                        availAfter=flowChange[FLOW_CHANGE.AVAIL_AFTER.value]
                     ))
-                return FlowModel(flow=availabilityModel)
+                return FlowModel(flow=flowModel)
