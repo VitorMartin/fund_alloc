@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter
 
 from src.controllers.fastapi.http.responses import RootModel
@@ -8,7 +6,7 @@ from src.interfaces.i_storage import IStorage
 
 
 class RootRoutes(APIRouter):
-    def __init__(self, repo: IStorage, ctrl: ICStorage, adapters: List[str]):
+    def __init__(self, repo: IStorage, ctrl: ICStorage, adapters: dict):
         super(RootRoutes, self).__init__(
             prefix=''
         )
@@ -18,5 +16,5 @@ class RootRoutes(APIRouter):
             return RootModel(
                 repository_type=str(type(repo)),
                 controller_type=str(type(ctrl)),
-                adapters=[str(ad) for ad in adapters]
+                adapters=[str(adapter) for (_, adapter) in adapters.items()]
             )
