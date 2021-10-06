@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, Dict, List
 
 from src.models.desemb import Desemb
 from src.models.enums.dict_keys import *
@@ -11,7 +11,7 @@ class AExcel:
     """
 
     @staticmethod
-    def flattenFunds(funds: List[Fund]) -> dict[str, Any]:
+    def flattenFunds(funds: List[Fund]) -> Dict[str, Any]:
         newDict = {}
         funds = [fund.toDict() for fund in funds]
 
@@ -31,7 +31,7 @@ class AExcel:
         return newDict
 
     @staticmethod
-    def flattenDesembs(desembs: List[Desemb]) -> dict[str, Any]:
+    def flattenDesembs(desembs: List[Desemb]) -> Dict[str, Any]:
         newDict = {}
         desembs = [desemb.toDict() for desemb in desembs]
 

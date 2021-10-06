@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date
-from typing import Any, List
+from typing import List, Union
 
 from src.models.amort import Amort
 from src.models.amort_desemb import AmortDesemb
@@ -116,8 +116,9 @@ class IStorage(ABC):
 
         return flow
 
-    def generateFundAvailabilityByKold(self, kold: str) \
-            -> List[dict[Any, str, date, float, float, float, float, float]]:
+    def generateFundAvailabilityByKold(self, kold: str) -> List[dict[
+        str, Union[Fund, Desemb, AmortFund, AmortDesemb, str, date, float]]
+    ]:
         def movementConstructor(_op, _opType, _opData, _opVal, _fundPrinc, _desembPrinc, _availBefore, _availAfter):
             return {
                 MOVEMENT.OP.value: _op,

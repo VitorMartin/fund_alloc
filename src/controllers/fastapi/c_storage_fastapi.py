@@ -22,7 +22,7 @@ class CStorageFastAPI(ICStorage):
     url: str
     app: FastAPI
 
-    def __init__(self, storage: IStorage, adapters: List[str]):
+    def __init__(self, storage: IStorage, adapters: dict = dict({})):
         with open(os.path.join(os.path.dirname(__file__), 'config.json')) as file:
             data = json.load(file)
         self.__storage = storage

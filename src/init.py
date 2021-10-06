@@ -1,10 +1,12 @@
 import json
 import os
-from typing import Any, List
+from typing import Any, List, Union
 
 from src.adapters.excel.a_excel import AExcel
 from src.controllers.fastapi.c_storage_fastapi import CStorageFastAPI
 from src.controllers.func.c_storage_func import CStorageFunc
+from src.interfaces.i_c_storage import ICStorage
+from src.interfaces.i_storage import IStorage
 from src.models.enums.config import *
 from src.repositories.access.storage_access import StorageAccess
 from src.repositories.mock.storage_mock import StorageMock
@@ -14,7 +16,6 @@ class Init:
     repoType: str
     ctrlType: str
     adaptersList: List[str]
-    adapters: List[Any]
     rootPath: str
     configPath: str
 
@@ -36,14 +37,13 @@ class Init:
         else:
             self.ctrlType = _CTRL_TYPE.value
 
-        self.adapters = []
         if _adaptersList is None:
             self.adaptersList = deployConfig[CONFIG.ADAPTERS.value]
         else:
             self.adaptersList = _adaptersList
 
     def __call__(self, *args, **kwargs):
-        configDict = {}
+        configDict: dict[str, Union[IStorage, ICStorage, dict]] = {}
 
         # REPOSITORY TYPE #
         if self.repoType == REPO_TYPE.MOCK.value:
@@ -55,17 +55,16 @@ class Init:
         configDict[CONFIG.REPOSITORY_TYPE.value] = repo
 
         # ADAPTERS #
-        configDict[CONFIG.ADAPTERS.value] = {}
+        configDict[CONFIG.ADAPTERS.value]: dict[str, Any] = {}
         for adapter in self.adaptersList:
             if adapter == ADAPTER.EXCEL.value:
-                self.adapters.append(AExcel)
                 configDict[CONFIG.ADAPTERS.value][ADAPTER.EXCEL.value] = AExcel
 
         # CONTROLLER TYPE #
         if self.ctrlType == CTRL_TYPE.FUNC.value:
             ctrl = CStorageFunc(repo)
         elif self.ctrlType == CTRL_TYPE.FASTAPI.value:
-            ctrl = CStorageFastAPI(repo, self.adapters)
+            ctrl = CStorageFastAPI(repo, configDict[CONFIG.ADAPTERS.value])
         else:
             raise Exception('Invalid controller type')
         configDict[CONFIG.CONTROLLER_TYPE.value] = ctrl
