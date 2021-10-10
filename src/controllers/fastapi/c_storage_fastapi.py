@@ -100,13 +100,22 @@ class CStorageFastAPI(ICStorage):
         return UCGetAmortDesembsByDesembId(self.__storage)(dealId)
 
     def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()):
-        return UCGetFundPrincAfterAmortById(self.__storage)(dealId, basedate)
+        try:
+            return UCGetFundPrincAfterAmortById(self.__storage)(dealId, basedate)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getDesembPrincAfterAmortById(self, dealId: int, basedate: date = date.today()):
-        return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate=basedate)
+        try:
+            return UCGetDesembPrincAfterAmortById(self.__storage)(dealId, basedate=basedate)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAvailableFundsForDesembByCcb(self, ccb: str, basedate: date = date.today()):
-        return UCGetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
+        try:
+            return UCGetAvailableFundsForDesembByCcb(self.__storage)(ccb, basedate=basedate)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAmortsInFundByKold(self, kold: str):
         return UCGetAmortsInFundByKold(self.__storage)(kold)
