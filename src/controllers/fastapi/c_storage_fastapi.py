@@ -118,10 +118,17 @@ class CStorageFastAPI(ICStorage):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAmortsInFundByKold(self, kold: str):
-        return UCGetAmortsInFundByKold(self.__storage)(kold)
+        try:
+            return UCGetAmortsInFundByKold(self.__storage)(kold)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
+
 
     def generateFundFlowByKold(self, kold: str):
-        return UCGenerateFundFlowByKold(self.__storage)(kold)
+        try:
+            return UCGenerateFundFlowByKold(self.__storage)(kold)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def changeFund(self, desemb: Desemb, newFund: Fund, override=False):
         return UCChangeFund(self.__storage)(desemb, newFund, override)
