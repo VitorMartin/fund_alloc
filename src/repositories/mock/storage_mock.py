@@ -1,5 +1,6 @@
 from typing import List
 
+from repositories.errors.repository_error import NotFoundError
 from src.interfaces.i_storage import IStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
@@ -40,30 +41,48 @@ class StorageMock(IStorage):
 
     def getFundById(self, dealId: int) -> Fund:
         fundsFound = [fund for fund in self.__funds if fund.dealId == dealId]
-        return fundsFound[0]
+        try:
+            return fundsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getFundByKold(self, kold: str) -> Fund:
         fundsFound = [fund for fund in self.__funds if fund.kold == kold]
-        return fundsFound[0]
+        try:
+            return fundsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getDesembById(self, dealId: int) -> Desemb:
         desembsFound = [desemb for desemb in self.__desembs if desemb.dealId == dealId]
-        return desembsFound[0]
+        try:
+            return desembsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getDesembByCcb(self, ccb: str) -> Desemb:
         desembsFound = [desemb for desemb in self.__desembs if desemb.ccb == ccb]
-        return desembsFound[0]
+        try:
+            return desembsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
         amortFundsFound = [amortFund for amortFund in self.__amortFunds if amortFund.amortId == amortId]
-        return amortFundsFound[0]
+        try:
+            return amortFundsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
         return [amortFund for amortFund in self.__amortFunds if amortFund.fund.dealId == dealId]
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         amortDesembsFound = [amortDesemb for amortDesemb in self.__amortDesembs if amortDesemb.amortId == amortId]
-        return amortDesembsFound[0]
+        try:
+            return amortDesembsFound[0]
+        except IndexError:
+            raise NotFoundError()
 
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
         return [amortDesemb for amortDesemb in self.__amortDesembs if amortDesemb.desemb.dealId == dealId]

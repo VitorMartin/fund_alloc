@@ -1,9 +1,14 @@
+import pytest
+from fastapi import HTTPException
+
 from ctrl import Ctrl
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
+from src.repositories.errors.repository_error import *
+
 
 ctrl = Ctrl().ctrl
 
@@ -15,11 +20,19 @@ class Test_UCGetOpByAttr:
         assert isinstance(fund, Fund)
         assert fund == MockData.fund1
 
+    def test_fund_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getFundById(9999)
+
     def test_get_fund_by_kold(self):
         fund = ctrl.getFundByKold(MockData.fund1.kold)
 
         assert isinstance(fund, Fund)
         assert fund == MockData.fund1
+
+    def test_fund_not_found_by_kold(self):
+        with pytest.raises(HTTPException):
+            ctrl.getFundByKold('999999')
 
     def test_get_desemb_by_id(self):
         desemb = ctrl.getDesembById(MockData.desemb1.dealId)
@@ -27,17 +40,29 @@ class Test_UCGetOpByAttr:
         assert isinstance(desemb, Desemb)
         assert desemb == MockData.desemb1
 
+    def test_get_desemb_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getDesembById(9999)
+
     def test_get_desemb_by_ccb(self):
         desemb = ctrl.getDesembByCcb(MockData.desemb1.ccb)
 
         assert isinstance(desemb, Desemb)
         assert desemb == MockData.desemb1
 
+    def test_get_desemb_not_found_by_ccb(self):
+        with pytest.raises(HTTPException):
+            ctrl.getDesembByCcb('9999')
+
     def test_get_amort_fund_by_id(self):
         amortFund = ctrl.getAmortFundById(MockData.amortFund1.amortId)
 
         assert isinstance(amortFund, AmortFund)
         assert amortFund == MockData.amortFund1
+
+    def test_get_amort_fund_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getAmortFundById(9999)
 
     def test_get_amort_funds_by_fund_id(self):
         actualAmorts = ctrl.getAmortFundsByFundId(MockData.fund2.dealId)
@@ -58,11 +83,18 @@ class Test_UCGetOpByAttr:
             assert isinstance(actualAmort, AmortFund)
             assert actualAmort == expectedAmort
 
+    def test_get_amort_funds_not_found_by_fund_id(self):
+        assert ctrl.getAmortFundsByFundId(9999) == []
+
     def test_get_amort_desemb_by_id(self):
         amortDesemb = ctrl.getAmortDesembById(MockData.amortDesemb1.amortId)
 
         assert isinstance(amortDesemb, AmortDesemb)
         assert amortDesemb == MockData.amortDesemb1
+
+    def test_get_amort_desemb_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getAmortDesembById(9999)
 
     def test_get_amort_desembs_by_desemb_id(self):
         actualAmorts = ctrl.getAmortDesembsByDesembId(MockData.desemb1.dealId)
@@ -79,3 +111,6 @@ class Test_UCGetOpByAttr:
 
             assert isinstance(actualAmort, AmortDesemb)
             assert actualAmort == expectedAmort
+
+    def test_get_amort_desembs_not_found_by_desemb_id(self):
+        assert ctrl.getAmortDesembsByDesembId(9999) == []

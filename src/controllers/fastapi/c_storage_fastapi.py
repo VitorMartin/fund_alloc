@@ -2,8 +2,9 @@ import json
 import os
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 
+from repositories.errors.repository_error import NotFoundError
 from src.controllers.fastapi.enums.config import *
 from src.controllers.fastapi.router.router import Router
 from src.interfaces.i_c_storage import ICStorage
@@ -57,25 +58,43 @@ class CStorageFastAPI(ICStorage):
         return UCGetDesembsInFundByKold(self.__storage)(kold)
 
     def getFundById(self, dealId: int):
-        return UCGetFundById(self.__storage)(dealId)
+        try:
+            return UCGetFundById(self.__storage)(dealId)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getFundByKold(self, kold: str):
-        return UCGetFundByKold(self.__storage)(kold)
+        try:
+            return UCGetFundByKold(self.__storage)(kold)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getDesembById(self, dealId: int):
-        return UCGetDesembById(self.__storage)(dealId)
+        try:
+            return UCGetDesembById(self.__storage)(dealId)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getDesembByCcb(self, ccb: str):
-        return UCGetDesembByCcb(self.__storage)(ccb)
+        try:
+            return UCGetDesembByCcb(self.__storage)(ccb)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAmortFundById(self, amortId: int):
-        return UCGetAmortFundById(self.__storage)(amortId)
+        try:
+            return UCGetAmortFundById(self.__storage)(amortId)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAmortFundsByFundId(self, dealId: int):
         return UCGetAmortFundsByFundId(self.__storage)(dealId)
 
     def getAmortDesembById(self, amortId: int):
-        return UCGetAmortDesembById(self.__storage)(amortId)
+        try:
+            return UCGetAmortDesembById(self.__storage)(amortId)
+        except NotFoundError as err:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
     def getAmortDesembsByDesembId(self, dealId: int):
         return UCGetAmortDesembsByDesembId(self.__storage)(dealId)
