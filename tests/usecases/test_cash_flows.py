@@ -7,6 +7,7 @@ from src.models.amort import Amort
 from src.models.enums.dict_keys import *
 from src.repositories.mock.mock_data import MockData
 
+
 ctrl = Ctrl().ctrl
 
 

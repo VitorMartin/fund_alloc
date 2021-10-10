@@ -7,8 +7,9 @@ from ctrl import Ctrl
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
 
-basedate = date(2021, 8, 13)
+
 ctrl = Ctrl().ctrl
+basedate = date(2021, 8, 13)
 
 
 class Test_UCgetValues:
