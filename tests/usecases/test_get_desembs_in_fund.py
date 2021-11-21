@@ -4,6 +4,7 @@ from ctrl import Ctrl
 from src.models.desemb import Desemb
 from src.repositories.mock.mock_data import MockData
 
+
 ctrl = Ctrl().ctrl
 
 

@@ -5,6 +5,7 @@ from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
 from tests.ctrl import Ctrl
 
+
 ctrl = Ctrl().ctrl
 
 

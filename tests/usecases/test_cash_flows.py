@@ -1,14 +1,18 @@
+import pytest
+from fastapi import HTTPException
+
 from ctrl import Ctrl
 
 from src.models.amort import Amort
 from src.models.enums.dict_keys import *
 from src.repositories.mock.mock_data import MockData
 
+
 ctrl = Ctrl().ctrl
 
 
 class Test_UCgetValues:
-    def test_generate_fund_flow_by_kold(self):
+    def test_get_amorts_in_fund_by_kold(self):
         fund = MockData.fund2
         actualFlow = ctrl.getAmortsInFundByKold(fund.kold)
         expectedFlow = [
@@ -38,6 +42,10 @@ class Test_UCgetValues:
 
             assert isinstance(actualMovement, Amort)
             assert actualMovement == expectedMovement
+
+    def test_get_amorts_in_fund_not_found_by_kold(self):
+        with pytest.raises(HTTPException):
+            ctrl.getAmortsInFundByKold('9999')
 
     def test_generate_fund_avail_by_kold(self):
         actualFlow = ctrl.generateFundFlowByKold(MockData.fund1.kold)
@@ -116,3 +124,7 @@ class Test_UCgetValues:
 
             assert isinstance(actualMovement, dict)
             assert actualMovement == expectedMovement
+
+    def test_generate_fund_avail_not_found_by_kold(self):
+        with pytest.raises(HTTPException):
+            ctrl.generateFundFlowByKold('9999')

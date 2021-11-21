@@ -1,11 +1,15 @@
 from datetime import date
 
+import pytest
+from fastapi import HTTPException
+
 from ctrl import Ctrl
 from src.models.fund import Fund
 from src.repositories.mock.mock_data import MockData
 
-basedate = date(2021, 8, 13)
+
 ctrl = Ctrl().ctrl
+basedate = date(2021, 8, 13)
 
 
 class Test_UCgetValues:
@@ -15,11 +19,19 @@ class Test_UCgetValues:
         assert isinstance(remain, float)
         assert remain == 16_000_000.
 
+    def test_get_remaining_principal_in_fund_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getFundPrincAfterAmortById(9999)
+
     def test_get_remaining_principal_in_desemb_by_id(self):
         remain = ctrl.getDesembPrincAfterAmortById(MockData.desemb1.dealId, basedate=basedate)
 
         assert isinstance(remain, float)
         assert remain == 3_500_000
+
+    def test_get_remaining_principal_in_desemb_not_found_by_id(self):
+        with pytest.raises(HTTPException):
+            ctrl.getDesembPrincAfterAmortById(9999)
 
     def test_get_available_funds_for_desemb_by_ccb(self):
         actualFunds = sorted(
@@ -39,4 +51,8 @@ class Test_UCgetValues:
 
             assert isinstance(actualFund, Fund)
             assert actualFund == expectedFund
+
+    def test_get_available_funds_for_desemb_by_ccb(self):
+        with pytest.raises(HTTPException):
+            ctrl.getAvailableFundsForDesembByCcb('9999')
         

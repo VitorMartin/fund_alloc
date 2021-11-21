@@ -1,5 +1,6 @@
 from typing import List
 
+from src.repositories.errors.repository_error import *
 from src.interfaces.i_storage import IStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
