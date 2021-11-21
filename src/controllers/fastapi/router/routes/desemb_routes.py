@@ -57,3 +57,9 @@ class DesembRoutes(APIRouter):
                     return FundsModel(
                         funds=[Fund.toModel(fund) for fund in ctrl.getAvailableFundsForDesembByCcb(ccb, basedate)]
                     )
+
+        @self.put('/', response_model=DesembModel)
+        async def changeFund(ccb: str, kold: str, override: bool = False):
+            desemb = ctrl.getDesembByCcb(ccb)
+            fund = ctrl.getFundByKold(kold)
+            return Desemb.toModel(ctrl.changeFund(desemb, fund, override))

@@ -6,6 +6,7 @@ from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.repositories.errors.creating_errors import *
+from src.repositories.errors.getter_errors import *
 from src.repositories.errors.repository_error import *
 from src.repositories.mock.mock_data import MockData
 
@@ -104,13 +105,15 @@ class StorageMock(IStorage):
     #     pass
 
     def changeFund(self, desemb, newFund):
-        index = self.__desembs.index(desemb)
-        desemb.fund = newFund
         try:
+            index = self.__desembs.index(desemb)
+            desemb.fund = newFund
             self.__desembs[index] = desemb
-            return True
+            return desemb
+        except ValueError:
+            raise DealNotFoundError
         except IndexError:
-            return False
+            raise RepositoryError
 
     def createFund(self, fund, amorts):
         dealIdFound = False

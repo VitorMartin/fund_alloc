@@ -13,7 +13,7 @@ class UCChangeFund:
     def __init__(self, storageRepo: IStorage):
         self.storage = storageRepo
 
-    def __call__(self, desemb: Desemb, newFund: Fund, override) -> bool:
+    def __call__(self, desemb: Desemb, newFund: Fund, override) -> Desemb:
         if override:
             return self.storage.changeFund(desemb, newFund)
         else:
