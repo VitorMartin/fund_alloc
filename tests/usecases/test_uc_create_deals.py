@@ -33,7 +33,7 @@ class Test_UCChangeFund:
         assert ctrl.getFundById(fund.dealId) == fund
 
     def test_create_repeated_fund(self):
-        fund = fund = Fund('222', CCY.EUR, 200., date(2021, 12, 10), date(2023, 12, 10))
+        fund = Fund('222', CCY.EUR, 200., date(2021, 12, 10), date(2023, 12, 10))
         amorts = [
             AmortFund(fund, date(2022, 12, 10), CCY.EUR, 100),
             AmortFund(fund, date(2023, 12, 10), CCY.EUR, 100)
@@ -44,7 +44,7 @@ class Test_UCChangeFund:
             ctrl.createFund(fund, amorts)
 
     def test_create_fund_without_amort(self):
-        fund = fund = Fund('333', CCY.EUR, 200., date(2021, 12, 10), date(2023, 12, 10))
+        fund = Fund('333', CCY.EUR, 200., date(2021, 12, 10), date(2023, 12, 10))
         with pytest.raises(MissingAmortError):
             ctrl.createFund(fund, [])
 

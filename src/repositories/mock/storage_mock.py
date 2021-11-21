@@ -1,13 +1,12 @@
 from typing import List
 
-from src.repositories.errors.repository_error import *
 from src.interfaces.i_storage import IStorage
 from src.models.amort_desemb import AmortDesemb
 from src.models.amort_fund import AmortFund
 from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.repositories.errors.creating_errors import *
-from src.repositories.errors.getter_errors import *
+from src.repositories.errors.repository_error import *
 from src.repositories.mock.mock_data import MockData
 
 
@@ -44,34 +43,34 @@ class StorageMock(IStorage):
     def getFundById(self, dealId: int) -> Fund:
         fundsFound = [fund for fund in self.__funds if fund.dealId == dealId]
         if len(fundsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         return fundsFound[0]
 
     def getFundByKold(self, kold: str) -> Fund:
         fundsFound = [fund for fund in self.__funds if fund.kold == kold]
         if len(fundsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         else:
             return fundsFound[0]
 
     def getDesembById(self, dealId: int) -> Desemb:
         desembsFound = [desemb for desemb in self.__desembs if desemb.dealId == dealId]
         if len(desembsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         else:
             return desembsFound[0]
 
     def getDesembByCcb(self, ccb: str) -> Desemb:
         desembsFound = [desemb for desemb in self.__desembs if desemb.ccb == ccb]
         if len(desembsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         else:
             return desembsFound[0]
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
         amortFundsFound = [amortFund for amortFund in self.__amortFunds if amortFund.amortId == amortId]
         if len(amortFundsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         else:
             return amortFundsFound[0]
 
@@ -81,7 +80,7 @@ class StorageMock(IStorage):
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         amortDesembsFound = [amortDesemb for amortDesemb in self.__amortDesembs if amortDesemb.amortId == amortId]
         if len(amortDesembsFound) == 0:
-            raise DealNotFound
+            raise NotFoundError
         else:
             return amortDesembsFound[0]
 
@@ -119,7 +118,7 @@ class StorageMock(IStorage):
         while not dealIdFound:
             try:
                 self.getFundById(dealId)
-            except DealNotFound:
+            except NotFoundError:
                 fund.dealId = dealId
                 dealIdFound = True
             else:
@@ -132,7 +131,7 @@ class StorageMock(IStorage):
             while not amortIdFound:
                 try:
                     self.getAmortFundById(amortId)
-                except DealNotFound:
+                except NotFoundError:
                     amort.amortId = amortId + amortIdOffset
                     amort.fund.dealId = dealId
                     amortIdOffset += 1
@@ -153,7 +152,7 @@ class StorageMock(IStorage):
         while not dealIdFound:
             try:
                 self.getDesembById(dealId)
-            except DealNotFound:
+            except NotFoundError:
                 desemb.dealId = dealId
                 dealIdFound = True
             else:
@@ -166,7 +165,7 @@ class StorageMock(IStorage):
             while not amortIdFound:
                 try:
                     self.getAmortDesembById(amortId)
-                except DealNotFound:
+                except NotFoundError:
                     amort.amortId = amortId + amortIdOffset
                     amort.desemb.dealId = dealId
                     amortIdOffset += 1

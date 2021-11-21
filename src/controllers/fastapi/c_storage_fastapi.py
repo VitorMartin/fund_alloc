@@ -4,7 +4,6 @@ import os
 import uvicorn
 from fastapi import FastAPI, HTTPException, status
 
-from repositories.errors.repository_error import NotFoundError
 from src.controllers.fastapi.enums.config import *
 from src.controllers.fastapi.router.router import Router
 from src.interfaces.i_c_storage import ICStorage
