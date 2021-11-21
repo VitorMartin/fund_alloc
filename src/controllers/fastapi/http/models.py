@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -30,7 +31,7 @@ class DesembModel(BaseModel):
     ini: date
     venc: date
 
-    fund: FundModel
+    fund: Union[FundModel, None] = None
 
     ccb: str
 

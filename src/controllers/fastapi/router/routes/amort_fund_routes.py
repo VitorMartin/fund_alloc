@@ -8,7 +8,7 @@ from src.models.amort_fund import AmortFund
 
 class AmortFundRoutes(APIRouter):
     def __init__(self, ctrl: ICStorage):
-        super(AmortFundRoutes, self).__init__(
+        super().__init__(
             prefix='/amort_fund'
         )
 

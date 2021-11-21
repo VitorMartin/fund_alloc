@@ -87,3 +87,11 @@ class ICStorage(ABC):
     @abstractmethod
     def changeFund(self, desemb: Desemb, newFund: Fund, override=False) -> bool:
         pass
+
+    @abstractmethod
+    def createFund(self, fund: Fund, amorts: List[AmortFund]) -> Fund:
+        pass
+
+    @abstractmethod
+    def createDesemb(self, desemb: Desemb, amorts: List[AmortDesemb]) -> Desemb:
+        pass

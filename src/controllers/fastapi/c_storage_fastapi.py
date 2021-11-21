@@ -9,6 +9,7 @@ from src.controllers.fastapi.router.router import Router
 from src.interfaces.i_c_storage import ICStorage
 from src.usecases.uc_cash_flows import *
 from src.usecases.uc_change_fund import *
+from src.usecases.uc_create_deals import *
 from src.usecases.uc_get_all import *
 from src.usecases.uc_get_desembs_in_fund import *
 from src.usecases.uc_get_op_by_attr import *
@@ -97,3 +98,9 @@ class CStorageFastAPI(ICStorage):
 
     def changeFund(self, desemb: Desemb, newFund: Fund, override=False):
         return UCChangeFund(self.__storage)(desemb, newFund, override)
+
+    def createFund(self, fund, amorts):
+        return UCCreateFund(self.__storage)(fund, amorts)
+
+    def createDesemb(self, desemb, amorts):
+        return UCCreateDesemb(self.__storage)(desemb, amorts)

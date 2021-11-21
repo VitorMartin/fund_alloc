@@ -43,15 +43,26 @@ class Desemb(Deal):
         return self.__dict__ == other.__dict__
 
     def toModel(self) -> DesembModel:
-        return DesembModel(
-            dealId=self.dealId,
-            ccy=self.ccy,
-            princ=self.princ,
-            ini=self.ini,
-            venc=self.venc,
-            fund=self.fund.toModel(),
-            ccb=self.ccb
-        )
+        if self.fund is not None:
+            return DesembModel(
+                dealId=self.dealId,
+                ccy=self.ccy,
+                princ=self.princ,
+                ini=self.ini,
+                venc=self.venc,
+                fund=self.fund.toModel(),
+                ccb=self.ccb
+            )
+        else:
+            return DesembModel(
+                dealId=self.dealId,
+                ccy=self.ccy,
+                princ=self.princ,
+                ini=self.ini,
+                venc=self.venc,
+                fund=None,
+                ccb=self.ccb
+            )
 
     def toDict(self):
         return {
@@ -86,12 +97,15 @@ class Desemb(Deal):
 
     @staticmethod
     def fromModel(m: DesembModel):
-        return Desemb(
-            pk=m.dealId,
-            ccy=m.ccy,
-            princ=m.princ,
-            ini=m.ini,
-            venc=m.venc,
-            fund=Fund.fromModel(m.fund),
-            ccb=m.ccb
-        )
+        if m is None:
+            return None
+        else:
+            return Desemb(
+                pk=m.dealId,
+                ccy=m.ccy,
+                princ=m.princ,
+                ini=m.ini,
+                venc=m.venc,
+                fund=Fund.fromModel(m.fund),
+                ccb=m.ccb
+            )

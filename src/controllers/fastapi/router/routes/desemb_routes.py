@@ -3,15 +3,26 @@ from fastapi import APIRouter
 from src.controllers.fastapi.errors.errors import *
 from src.controllers.fastapi.http.responses import *
 from src.interfaces.i_c_storage import ICStorage
+from src.models.amort_desemb import AmortDesemb
 from src.models.desemb import Desemb
 from src.models.fund import Fund
 
 
 class DesembRoutes(APIRouter):
     def __init__(self, ctrl: ICStorage):
-        super(DesembRoutes, self).__init__(
+        super().__init__(
             prefix='/desemb'
         )
+
+        @self.post('/', response_model=DesembModel)
+        async def createFund(desemb: DesembModel, amorts: AmortDesembsModel):
+            desemb = Desemb.fromModel(desemb)
+            amortsTmp = []
+            for amortModel in amorts.amortDesembs:
+                amortsTmp.append(AmortDesemb.fromModel(amortModel))
+            amorts = amortsTmp.copy()
+
+            return Desemb.toModel(ctrl.createDesemb(desemb, amorts))
 
         @self.get('/', response_model=Union[DesembsModel, DesembModel])
         async def getAllDesembs(dealId: int = None, ccb: str = None, kold: str = None):

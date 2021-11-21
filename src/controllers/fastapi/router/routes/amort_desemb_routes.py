@@ -8,7 +8,7 @@ from src.models.amort_desemb import AmortDesemb
 
 class AmortDesembRoutes(APIRouter):
     def __init__(self, ctrl: ICStorage):
-        super(AmortDesembRoutes, self).__init__(
+        super().__init__(
             prefix='/amort_desemb'
         )
 

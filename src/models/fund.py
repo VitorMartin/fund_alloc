@@ -60,11 +60,14 @@ class Fund(Deal):
 
     @staticmethod
     def fromModel(m: FundModel):
-        return Fund(
-            pk=m.dealId,
-            ccy=m.ccy,
-            princ=m.princ,
-            ini=m.ini,
-            venc=m.venc,
-            kold=m.kold
-        )
+        if m is None:
+            return None
+        else:
+            return Fund(
+                pk=m.dealId,
+                ccy=m.ccy,
+                princ=m.princ,
+                ini=m.ini,
+                venc=m.venc,
+                kold=m.kold
+            )

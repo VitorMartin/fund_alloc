@@ -7,7 +7,7 @@ from src.interfaces.i_storage import IStorage
 
 class RootRoutes(APIRouter):
     def __init__(self, repo: IStorage, ctrl: ICStorage, adapters: dict):
-        super(RootRoutes, self).__init__(
+        super().__init__(
             prefix=''
         )
 

@@ -17,30 +17,49 @@ class AmortDesemb(Amort):
         self.desemb = desemb
 
     def __str__(self):
-        return (
-            f'{MODEL.AMORT_DESEMB} = {{ '
-            f'{AMORT_DESEMB.ID} = {self.amortId},'
-            f'\t{AMORT_DESEMB.CCY} = {self.ccy},'
-            f'\t{AMORT_DESEMB.VAL} = {self.val},'
-            f'\t{AMORT_DESEMB.DATA} = {self.data},'
-            f'\t{MODEL.DESEMB} = {{ '
-            f'{DESEMB.ID} = {self.desemb.dealId},'
-            f'{DESEMB.CCB} = {self.desemb.ccb},'
-            f'\t{DESEMB.CCY} = {self.desemb.ccy},'
-            f'\t{DESEMB.PRINC} = {self.desemb.princ}'
-            f'\t{DESEMB.INI} = {self.desemb.ini}'
-            f'\t{DESEMB.VENC} = {self.desemb.venc},'
-            f'\t{MODEL.FUND} = {{ '
-            f'{FUND.ID} = {self.desemb.fund.dealId},'
-            f'\t{FUND.KOLD} = {self.desemb.fund.kold},'
-            f'\t{FUND.CCY} = {self.desemb.fund.ccy},'
-            f'\t{FUND.PRINC} = {self.desemb.fund.princ},'
-            f'\t{FUND.INI} = {self.desemb.fund.ini},'
-            f'\t{FUND.VENC} = {self.desemb.fund.venc} '
-            f'}} '
-            f'}} '
-            f'}}'
-        )
+        if self.desemb.fund is not None:
+            return (
+                f'{MODEL.AMORT_DESEMB} = {{ '
+                f'{AMORT_DESEMB.ID} = {self.amortId},'
+                f'\t{AMORT_DESEMB.CCY} = {self.ccy},'
+                f'\t{AMORT_DESEMB.VAL} = {self.val},'
+                f'\t{AMORT_DESEMB.DATA} = {self.data},'
+                f'\t{MODEL.DESEMB} = {{ '
+                f'{DESEMB.ID} = {self.desemb.dealId},'
+                f'{DESEMB.CCB} = {self.desemb.ccb},'
+                f'\t{DESEMB.CCY} = {self.desemb.ccy},'
+                f'\t{DESEMB.PRINC} = {self.desemb.princ}'
+                f'\t{DESEMB.INI} = {self.desemb.ini}'
+                f'\t{DESEMB.VENC} = {self.desemb.venc},'
+                f'\t{MODEL.FUND} = {{ '
+                f'{FUND.ID} = {self.desemb.fund.dealId},'
+                f'\t{FUND.KOLD} = {self.desemb.fund.kold},'
+                f'\t{FUND.CCY} = {self.desemb.fund.ccy},'
+                f'\t{FUND.PRINC} = {self.desemb.fund.princ},'
+                f'\t{FUND.INI} = {self.desemb.fund.ini},'
+                f'\t{FUND.VENC} = {self.desemb.fund.venc} '
+                f'}} '
+                f'}} '
+                f'}}'
+            )
+        else:
+            return (
+                f'{MODEL.AMORT_DESEMB} = {{ '
+                f'{AMORT_DESEMB.ID} = {self.amortId},'
+                f'\t{AMORT_DESEMB.CCY} = {self.ccy},'
+                f'\t{AMORT_DESEMB.VAL} = {self.val},'
+                f'\t{AMORT_DESEMB.DATA} = {self.data},'
+                f'\t{MODEL.DESEMB} = {{ '
+                f'{DESEMB.ID} = {self.desemb.dealId},'
+                f'{DESEMB.CCB} = {self.desemb.ccb},'
+                f'\t{DESEMB.CCY} = {self.desemb.ccy},'
+                f'\t{DESEMB.PRINC} = {self.desemb.princ}'
+                f'\t{DESEMB.INI} = {self.desemb.ini}'
+                f'\t{DESEMB.VENC} = {self.desemb.venc},'
+                f'\t{MODEL.FUND} = {{ {None} }} '
+                f'}} '
+                f'}}'
+            )
 
     def __eq__(self, other: Any):
         return self.__dict__ == other.__dict__

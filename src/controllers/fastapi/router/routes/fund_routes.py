@@ -12,9 +12,18 @@ from src.models.fund import Fund
 
 class FundRoutes(APIRouter):
     def __init__(self, ctrl: ICStorage):
-        super(FundRoutes, self).__init__(
+        super().__init__(
             prefix='/fund'
         )
+
+        @self.post('/', response_model=FundModel)
+        async def createFund(fund: FundModel, amorts: AmortFundsModel):
+            fundInst = Fund.fromModel(fund)
+            amortsInst = []
+            for amort in amorts.amortFunds:
+                amortsInst.append(AmortFund.fromModel(amort))
+
+            return Fund.toModel(ctrl.createFund(fundInst, amortsInst))
 
         @self.get('/', response_model=Union[FundsModel, FundModel])
         async def getAllFunds(dealId: int = None, kold: str = None):
