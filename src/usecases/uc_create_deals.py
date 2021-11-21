@@ -7,6 +7,7 @@ from src.models.desemb import Desemb
 from src.models.fund import Fund
 from src.repositories.errors.getter_errors import *
 from src.usecases.errors.invalid_deal_error import *
+from src.usecases.errors.missing_amort_error import MissingAmortError
 from src.usecases.errors.repeated_deal_error import *
 
 
@@ -17,12 +18,15 @@ class UCCreateFund:
         self.storage = storageRepo
 
     def __call__(self, fund: Fund, amorts: List[AmortFund]):
-        try:
-            self.storage.getFundByKold(fund.kold)
-        except DealNotFound:
-            return self.storage.createFund(fund, amorts)
+        if len(amorts) == 0:
+            raise MissingAmortError
         else:
-            raise RepeatedDealError
+            try:
+                self.storage.getFundByKold(fund.kold)
+            except DealNotFound:
+                return self.storage.createFund(fund, amorts)
+            else:
+                raise RepeatedDealError
 
 
 class UCCreateDesemb:
@@ -32,15 +36,20 @@ class UCCreateDesemb:
         self.storage = storageRepo
 
     def __call__(self, desemb: Desemb, amorts: List[AmortDesemb]):
-        try:
-            self.storage.getDesembByCcb(desemb.ccb)
-        except DealNotFound:
-            if desemb.fund is not None:
-                try:
-                    self.storage.getAmortsInFundByKold(desemb.fund.kold)
-                except DealNotFound:
-                    raise InvalidDealError
-            else:
-                return self.storage.createDesemb(desemb, amorts)
+        if len(amorts) == 0:
+            raise MissingAmortError
         else:
-            raise RepeatedDealError
+            try:
+                self.storage.getDesembByCcb(desemb.ccb)
+            except DealNotFound:
+                if desemb.fund is not None:
+                    try:
+                        self.storage.getFundByKold(desemb.fund.kold)
+                    except DealNotFound:
+                        raise InvalidDealError
+                    else:
+                        return self.storage.createDesemb(desemb, amorts)
+                else:
+                    return self.storage.createDesemb(desemb, amorts)
+            else:
+                raise RepeatedDealError

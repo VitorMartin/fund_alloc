@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Any
+from typing import Any, Union
 
 from src.controllers.fastapi.http.models import DesembModel
 from src.models.deal import Deal
@@ -13,7 +13,7 @@ class Desemb(Deal):
     ccb: str
 
     def __init__(
-            self, fund: Fund, ccb: str, ccy: CCY, princ: float, ini: date, venc: date, pk: int = None
+            self, fund: Union[Fund, None], ccb: str, ccy: CCY, princ: float, ini: date, venc: date, pk: int = None
     ):
         super().__init__(ccy, princ, ini, venc, pk=pk)
         self.fund = fund
