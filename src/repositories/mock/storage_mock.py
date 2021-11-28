@@ -39,7 +39,12 @@ class StorageMock(IStorage):
         return self.__amortDesembs
 
     def getDesembsInFundByKold(self, kold: str) -> List[Desemb]:
-        return [desemb for desemb in self.__desembs if desemb.fund.kold == kold]
+        desembs = []
+        for desemb in self.__desembs:
+            if desemb.fund is not None:
+                if desemb.fund.kold == kold:
+                    desembs.append(desemb)
+        return desembs
 
     def getFundById(self, dealId: int) -> Fund:
         fundsFound = [fund for fund in self.__funds if fund.dealId == dealId]
