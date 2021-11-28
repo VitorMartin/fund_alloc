@@ -3,6 +3,7 @@ import os
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.controllers.fastapi.enums.config import *
 from src.controllers.fastapi.router.router import Router
@@ -34,6 +35,13 @@ class CStorageFastAPI(ICStorage):
         self.port = data[CONFIG.PORT.value]
         self.url = f'{self.protocol}://{self.host}:{self.port}'
         self.app = FastAPI()
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=['*'],
+            allow_credentials=True,
+            allow_methods=['*'],
+            allow_headers=['*'],
+        )
         self.app.include_router(Router(storage, self, adapters))
 
         if autostart:
