@@ -99,7 +99,7 @@ class IStorage(ABC):
 
         for fund in allFunds:
             fundAvailability = self.getFundPrincAfterAmortById(fund.dealId, basedate=basedate)
-            if fund.ccy == desemb.ccy and fundAvailability > desemb.princ:
+            if fund.ccy == desemb.ccy and fundAvailability >= desemb.princ:
                 availFunds.append(fund)
 
         return availFunds
