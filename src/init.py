@@ -28,12 +28,12 @@ class Init:
             deployConfig = json.load(file)
 
         if _REPO_TYPE is None:
-            self.repoType = deployConfig[REPO_TYPE.REPOSITORY_TYPE.value]
+            self.repoType = deployConfig[CONFIG.REPOSITORY_TYPE.value]
         else:
             self.repoType = _REPO_TYPE.value
 
         if _CTRL_TYPE is None:
-            self.ctrlType = deployConfig[CTRL_TYPE.CONTROLLER_TYPE.value]
+            self.ctrlType = deployConfig[CONFIG.CONTROLLER_TYPE.value]
         else:
             self.ctrlType = _CTRL_TYPE.value
 
