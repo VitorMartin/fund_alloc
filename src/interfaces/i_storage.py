@@ -204,7 +204,7 @@ class IStorage(ABC):
         return flow
 
     @abstractmethod
-    def changeFund(self, desemb: Desemb, newFund: Fund) -> Desemb:
+    def changeFund(self, desemb: Desemb, newFund: Union[Fund, None]) -> Desemb:
         pass
 
     @abstractmethod

@@ -138,7 +138,7 @@ class CStorageFastAPI(ICStorage):
         except NotFoundError as err:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err))
 
-    def changeFund(self, desemb: Desemb, newFund: Fund, override=False):
+    def changeFund(self, desemb: Desemb, newFund: Union[Fund, None], override=False):
         return UCChangeFund(self.__storage)(desemb, newFund, override)
 
     def createFund(self, fund, amorts):

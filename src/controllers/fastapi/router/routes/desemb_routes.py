@@ -59,7 +59,7 @@ class DesembRoutes(APIRouter):
                     )
 
         @self.put('/', response_model=DesembModel)
-        async def changeFund(ccb: str, kold: str, override: bool = False):
+        async def changeFund(ccb: str, kold: Union[str, None] = None, override: bool = False):
             desemb = ctrl.getDesembByCcb(ccb)
-            fund = ctrl.getFundByKold(kold)
+            fund = ctrl.getFundByKold(kold) if kold is not None else None
             return Desemb.toModel(ctrl.changeFund(desemb, fund, override))

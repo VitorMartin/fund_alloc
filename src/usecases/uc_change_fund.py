@@ -1,3 +1,5 @@
+from typing import Union
+
 from src.interfaces.i_storage import IStorage
 from src.models.desemb import Desemb
 from src.models.fund import Fund
@@ -13,10 +15,15 @@ class UCChangeFund:
     def __init__(self, storageRepo: IStorage):
         self.storage = storageRepo
 
-    def __call__(self, desemb: Desemb, newFund: Fund, override) -> Desemb:
+    def __call__(self, desemb: Desemb, newFund: Union[Fund, None], override) -> Desemb:
         if override:
             return self.storage.changeFund(desemb, newFund)
         else:
+            if newFund is None:
+                try:
+                    return self.storage.changeFund(desemb, newFund)
+                except RepositoryError as err:
+                    raise err
             if desemb.ccy != newFund.ccy:
                 raise CcyBreakError()
             elif self.storage.getFundPrincAfterAmortById(newFund.dealId) - desemb.princ < 0:

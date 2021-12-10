@@ -85,7 +85,7 @@ class ICStorage(ABC):
         pass
 
     @abstractmethod
-    def changeFund(self, desemb: Desemb, newFund: Fund, override=False) -> Desemb:
+    def changeFund(self, desemb: Desemb, newFund: Union[Fund, None], override=False) -> Desemb:
         pass
 
     @abstractmethod
