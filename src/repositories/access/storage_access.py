@@ -10,6 +10,7 @@ from src.models.desemb import Desemb
 from src.models.enums.dict_keys import *
 from src.models.fund import Fund
 from src.repositories.access.en_tables import TABLE
+from src.repositories.errors.repository_error import NotFoundError, RepositoryError
 
 
 class StorageAccess(IStorage):
@@ -53,13 +54,27 @@ class StorageAccess(IStorage):
             self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS}')
             desembColumns = [column[0] for column in self.__cursor.description]
             dDesemb = dict(zip(desembColumns, row))
-            self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}')
+
+            sql = f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = ?fund_deal_id?'
+            if dDesemb[DESEMB.FUND_ID.value] is None:
+                sql = sql.replace('?fund_deal_id?', 'null')
+
+            else:
+                sql = sql.replace('?fund_deal_id?', str(dDesemb[DESEMB.FUND_ID.value]))
+
+            self.__cursor.execute(sql)
             fundColumns = [column[0] for column in self.__cursor.description]
-            dFund = dict(zip(fundColumns, self.__cursor.fetchone()))
+
+            result = self.__cursor.fetchone()
+            if result is None:
+                dFund = {}
+            else:
+                dFund = dict(zip(fundColumns, result))
+                dFund[FUND.INI.value] = dFund[FUND.INI.value].date()
+                dFund[FUND.VENC.value] = dFund[FUND.VENC.value].date()
+
             dJoin = dFund | dDesemb
 
-            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
-            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
             dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
             dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
 
@@ -92,16 +107,21 @@ class StorageAccess(IStorage):
             )
             desembColumns = [column[0] for column in self.__cursor.description]
             dDesemb = dict(zip(desembColumns, self.__cursor.fetchone()))
-            self.__cursor.execute(
-                f'SELECT * FROM {TABLE.FUNDS} '
-                f'WHERE {DESEMB.FUND_ID} = {dDesemb[DESEMB.FUND_ID.value]}'
-            )
-            fundColumns = [column[0] for column in self.__cursor.description]
-            dFund = dict(zip(fundColumns, self.__cursor.fetchone()))
+
+            if dDesemb[DESEMB.FUND_ID.value] is None:
+                dFund = {}
+            else:
+                self.__cursor.execute(
+                    f'SELECT * FROM {TABLE.FUNDS} '
+                    f'WHERE {DESEMB.FUND_ID} = {dDesemb[DESEMB.FUND_ID.value]}'
+                )
+                fundColumns = [column[0] for column in self.__cursor.description]
+                dFund = dict(zip(fundColumns, self.__cursor.fetchone()))
+                dFund[FUND.INI.value] = dFund[FUND.INI.value].date()
+                dFund[FUND.VENC.value] = dFund[FUND.VENC.value].date()
+
             dJoin = dFund | dDesemb | dAmortDesemb
 
-            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
-            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
             dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
             dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
             dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
@@ -173,15 +193,24 @@ class StorageAccess(IStorage):
         d = dict(zip(columns, self.__cursor.fetchone()))
         d[FUND.INI.value] = d[FUND.INI.value].date()
         d[FUND.VENC.value] = d[FUND.VENC.value].date()
-        return Fund.fromDict(d)
+
+        if bool(d):
+            return Fund.fromDict(d)
+        else:
+            raise NotFoundError
 
     def getFundByKold(self, kold: str) -> Fund:
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.KOLD} = \'{kold}\'')
         columns = [column[0] for column in self.__cursor.description]
-        d = dict(zip(columns, self.__cursor.fetchone()))
-        d[FUND.INI.value] = d[FUND.INI.value].date()
-        d[FUND.VENC.value] = d[FUND.VENC.value].date()
-        return Fund.fromDict(d)
+        result = self.__cursor.fetchone()
+        if bool(result):
+            d = dict(zip(columns, result))
+            d[FUND.INI.value] = d[FUND.INI.value].date()
+            d[FUND.VENC.value] = d[FUND.VENC.value].date()
+
+            return Fund.fromDict(d)
+        else:
+            raise NotFoundError
 
     def getDesembById(self, dealId: int) -> Desemb:
         # Fetching desemb
@@ -201,15 +230,26 @@ class StorageAccess(IStorage):
         dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
         dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
 
-        return Desemb.fromDict(dJoin)
+        if bool(dJoin):
+            return Desemb.fromDict(dJoin)
+        else:
+            raise NotFoundError
 
     def getDesembByCcb(self, ccb: str) -> Desemb:
         # Fetching desemb
         self.__cursor.execute(f'SELECT * FROM {TABLE.DESEMBS} WHERE {DESEMB.CCB} = \'{ccb}\'')
         colsDesemb = [column[0] for column in self.__cursor.description]
-        dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
+        result = self.__cursor.fetchone()
+        if not result:
+            raise NotFoundError
+        dDesemb = dict(zip(colsDesemb, result))
 
         # Fetching Fund by fund_id
+        if not dDesemb[DESEMB.FUND_ID.value]:
+            dDesemb[DESEMB.INI.value] = dDesemb[DESEMB.INI.value].date()
+            dDesemb[DESEMB.VENC.value] = dDesemb[DESEMB.VENC.value].date()
+            return Desemb.fromDict(dDesemb)
+
         self.__cursor.execute(f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}')
         colsFund = [column[0] for column in self.__cursor.description]
         dFund = dict(zip(colsFund, self.__cursor.fetchone()))
@@ -221,7 +261,10 @@ class StorageAccess(IStorage):
         dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
         dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
 
-        return Desemb.fromDict(dJoin)
+        if bool(dJoin):
+            return Desemb.fromDict(dJoin)
+        else:
+            raise NotFoundError
 
     def getAmortFundById(self, amortId: int) -> AmortFund:
         # Fetching amort fund
@@ -240,7 +283,10 @@ class StorageAccess(IStorage):
         dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
         dJoin[AMORT_FUND.DATA.value] = dJoin[AMORT_FUND.DATA.value].date()
 
-        return AmortFund.fromDict(dJoin)
+        if bool(dJoin):
+            return AmortFund.fromDict(dJoin)
+        else:
+            raise NotFoundError
 
     def getAmortFundsByFundId(self, dealId: int) -> List[AmortFund]:
         # Fetching amort funds
@@ -270,7 +316,10 @@ class StorageAccess(IStorage):
         for amort in lAmortFunds:
             retAmortFunds.append(AmortFund.fromDict(amort))
 
-        return retAmortFunds
+        if bool(retAmortFunds):
+            return retAmortFunds
+        else:
+            raise NotFoundError
 
     def getAmortDesembById(self, amortId: int) -> AmortDesemb:
         # Fetching amort desemb
@@ -300,7 +349,10 @@ class StorageAccess(IStorage):
         dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
         dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
 
-        return AmortDesemb.fromDict(dJoin)
+        if bool(dJoin):
+            return AmortDesemb.fromDict(dJoin)
+        else:
+            raise NotFoundError
 
     def getAmortDesembsByDesembId(self, dealId: int) -> List[AmortDesemb]:
         # Fetching amort desemb
@@ -339,7 +391,10 @@ class StorageAccess(IStorage):
         for amort in lAmortDesembs:
             retAmortDesembs.append(AmortDesemb.fromDict(amort))
 
-        return retAmortDesembs
+        if bool(retAmortDesembs):
+            return retAmortDesembs
+        else:
+            raise NotFoundError
 
     # def getFundPrincAfterAmortById(self, dealId: int, basedate: date = date.today()) -> float:
     #     pass
@@ -358,7 +413,90 @@ class StorageAccess(IStorage):
     #     pass
 
     def changeFund(self, desemb, newFund):
-        self.__cursor.execute(
-            f'UPDATE {TABLE.DESEMBS} SET {DESEMB.FUND_ID} = {newFund.dealId} WHERE {DESEMB.ID} = {desemb.dealId}'
+        fundId = newFund.dealId if newFund is not None else 'null'
+        try:
+            self.__cursor.execute(
+                f'UPDATE {TABLE.DESEMBS} SET {DESEMB.FUND_ID} = {fundId} WHERE {DESEMB.ID} = {desemb.dealId}'
+            )
+            self.__cursor.commit()
+        except pyodbc.Error as e:
+            raise RepositoryError(e)
+        else:
+            return self.getDesembByCcb(desemb.ccb)
+
+    def createFund(self, fund: Fund, amorts: List[AmortFund]):
+        # Insert Fund
+        try:
+            self.__cursor.execute(
+                f'INSERT INTO {TABLE.FUNDS} ('
+                f'  {FUND.KOLD}, {FUND.CCY}, {FUND.PRINC}, {FUND.INI}, {FUND.VENC}'
+                f') '
+                f'VALUES ('
+                f'  \'{fund.kold}\', \'{fund.ccy}\', {fund.princ}, \'{fund.ini}\', \'{fund.venc}\''
+                f')'
+            )
+            self.__cursor.commit()
+            fund = self.getFundByKold(fund.kold)
+        except pyodbc.Error as e:
+            raise RepositoryError(e)
+
+        # Insert Amort Funds
+        for amort_fund in amorts:
+            amort_fund.fund = fund
+            try:
+                self.__cursor.execute(
+                    f'INSERT INTO {TABLE.AMORT_FUNDS} ('
+                    f'  {AMORT_FUND.FUND_ID}, {AMORT_FUND.DATA}, {AMORT_FUND.CCY}, {AMORT_FUND.VAL}'
+                    f') '
+                    f'VALUES ('
+                    f'  {amort_fund.fund.dealId}, \'{amort_fund.data.isoformat()}\', \'{amort_fund.ccy}\', {amort_fund.val}'
+                    f')'
+                )
+                self.__cursor.commit()
+            except pyodbc.Error as e:
+                raise RepositoryError(e)
+
+        return self.getFundByKold(fund.kold)
+
+    def createDesemb(self, desemb: Desemb, amorts: List[AmortDesemb]):
+        sql = (
+            f'INSERT INTO {TABLE.DESEMBS} ('
+            f'  {DESEMB.FUND_ID}, {DESEMB.CCB}, {DESEMB.CCY},'
+            f'  {DESEMB.PRINC}, {DESEMB.INI}, {DESEMB.VENC}'
+            f') '
+            f'VALUES ('
+            f'  ?fund_deal_id?, \'{desemb.ccb}\', \'{desemb.ccy}\','
+            f'  {desemb.princ}, \'{desemb.ini}\', \'{desemb.venc}\''
+            f')'
         )
-        return True
+        if desemb.fund:
+            desemb.fund = self.getFundByKold(desemb.fund.kold)
+            sql = sql.replace('?fund_deal_id?', str(desemb.fund.dealId))
+        else:
+            sql = sql.replace('?fund_deal_id?', 'null')
+
+        # Insert Desemb
+        try:
+            self.__cursor.execute(sql)
+            self.__cursor.commit()
+            desemb = self.getDesembByCcb(desemb.ccb)
+        except pyodbc.Error as e:
+            raise RepositoryError(e)
+
+        # Insert Amort Funds
+        for amort_desemb in amorts:
+            amort_desemb.desemb = desemb
+            try:
+                self.__cursor.execute(
+                    f'INSERT INTO {TABLE.AMORT_DESEMBS} ('
+                    f'  {AMORT_DESEMB.DESEMB_ID}, {AMORT_DESEMB.DATA}, {AMORT_DESEMB.CCY}, {AMORT_DESEMB.VAL}'
+                    f') '
+                    f'VALUES ('
+                    f'  {amort_desemb.desemb.dealId}, \'{amort_desemb.data}\', \'{amort_desemb.ccy}\', {amort_desemb.val}'
+                    f')'
+                )
+                self.__cursor.commit()
+            except pyodbc.Error as e:
+                raise RepositoryError(e)
+
+        return self.getDesembByCcb(desemb.ccb)
