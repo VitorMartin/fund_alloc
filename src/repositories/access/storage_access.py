@@ -1,4 +1,5 @@
 import os
+import shutil
 from typing import Any, List
 
 import pyodbc
@@ -21,13 +22,22 @@ class StorageAccess(IStorage):
     __cursor: pyodbc.Cursor
 
     def __init__(self):
-        self.__dbFilename = 'db.accdb'
         self.__dbPath = os.path.dirname(__file__)
+        self.__dbFilename = 'db.accdb'
+        self.__dbBkpFilename = 'db_bkp.accdb'
         self.__connectionStr = (
-            r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
-            r'DBQ=' + os.path.join(self.__dbPath, self.__dbFilename)
+                r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
+                r'DBQ=' + os.path.join(self.__dbPath, self.__dbFilename)
         )
-        self.__connection = pyodbc.connect(self.__connectionStr)
+        try:
+            self.__connection = pyodbc.connect(self.__connectionStr)
+        except pyodbc.Error:
+            shutil.copy(
+                os.path.join(self.__dbPath, self.__dbBkpFilename),
+                os.path.join(self.__dbPath, self.__dbFilename)
+            )
+            self.__connection = pyodbc.connect(self.__connectionStr)
+
         self.__cursor = self.__connection.cursor()
 
     def customQuery(self, sql: str, params: Any = None) -> List[Any]:
