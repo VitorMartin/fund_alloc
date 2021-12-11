@@ -371,16 +371,19 @@ class StorageAccess(IStorage):
             dDesemb = dict(zip(colsDesemb, self.__cursor.fetchone()))
 
             # Fetching Fund
-            self.__cursor.execute(
-                f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}'
-            )
-            colsFund = [column[0] for column in self.__cursor.description]
-            dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+            if dDesemb[DESEMB.FUND_ID.value] is None:
+                dFund = {}
+            else:
+                self.__cursor.execute(
+                    f'SELECT * FROM {TABLE.FUNDS} WHERE {FUND.ID} = {dDesemb[DESEMB.FUND_ID.value]}'
+                )
+                colsFund = [column[0] for column in self.__cursor.description]
+                dFund = dict(zip(colsFund, self.__cursor.fetchone()))
+                dFund[FUND.INI.value] = dFund[FUND.INI.value].date()
+                dFund[FUND.VENC.value] = dFund[FUND.VENC.value].date()
 
             dJoin = dFund | dDesemb | dAmortDesemb
 
-            dJoin[FUND.INI.value] = dJoin[FUND.INI.value].date()
-            dJoin[FUND.VENC.value] = dJoin[FUND.VENC.value].date()
             dJoin[DESEMB.INI.value] = dJoin[DESEMB.INI.value].date()
             dJoin[DESEMB.VENC.value] = dJoin[DESEMB.VENC.value].date()
             dJoin[AMORT_DESEMB.DATA.value] = dJoin[AMORT_DESEMB.DATA.value].date()
