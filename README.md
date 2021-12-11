@@ -30,10 +30,14 @@ This project was created with [FastAPI](https://fastapi.tiangolo.com/) version 0
 
 ### **Local**
 
-The server uses **port 80** by default
+To configure what interfaces to use, edit the file [src/config.json](src/config.json). For now, the only setup that is
+currently working 100% is the original setup (using Access and FastAPI)
+
+The server uses **port 8080** by default. To specify a custom port (and change other settings), edit the
+file [src/controllers/fastapi/config.json](src/controllers/fastapi/config.json).
 
 Run command: `"path/to/python3.9/python.exe" -m src.main`
 
 ## API Documentation
 
-For information on this service's endpoints, deploy it and visit its [Documentation](http://127.0.0.1:80/docs)
+For information on this service's endpoints, deploy it and visit its [Documentation](http://127.0.0.1:8080/docs)

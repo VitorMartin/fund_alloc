@@ -1,5 +1,5 @@
 {
   "protocol": "http",
   "host": "localhost",
-  "port": 80
+  "port": 8080
 }
